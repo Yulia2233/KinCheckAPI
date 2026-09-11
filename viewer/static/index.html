@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KinCheck Motion Viewer</title>
+    <link rel="stylesheet" href="./static/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="identity">
+          <span class="product-mark" aria-hidden="true"></span>
+          <div class="identity-copy">
+            <strong id="viewer-title">KinCheck Motion Viewer</strong>
+            <span id="viewer-subtitle">Loading assembly</span>
+          </div>
+        </div>
+        <div class="status-strip" aria-label="Simulation status">
+          <span class="status-badge" id="motion-status">Loading</span>
+          <span class="backend-label" id="backend-label"></span>
+        </div>
+        <div class="toolbar-actions">
+          <button class="icon-button" id="fit-view" type="button" title="Fit view" aria-label="Fit view">&#9713;</button>
+          <button class="icon-button panel-toggle" id="toggle-panel" type="button" title="Toggle components" aria-label="Toggle components">&#9776;</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="viewport" id="viewport" aria-label="3D motion viewport">
+          <canvas id="scene-canvas"></canvas>
+          <div class="loading-state" id="loading-state">
+            <span class="spinner" aria-hidden="true"></span>
+            <span id="loading-copy">Loading geometry</span>
+          </div>
+          <div class="viewport-readout">
+            <span><b id="time-readout">0.000</b> s</span>
+            <span id="sample-readout">Frame 0 / 0</span>
+          </div>
+        </section>
+
+        <aside class="side-panel" id="side-panel">
+          <section class="metrics-section">
+            <h2>Transmission</h2>
+            <dl class="metrics-grid">
+              <div><dt>Input</dt><dd id="input-speed">--</dd></div>
+              <div><dt>Output</dt><dd id="output-speed">--</dd></div>
+              <div><dt>Ratio</dt><dd id="ratio-value">--</dd></div>
+              <div><dt>Expected</dt><dd id="expected-ratio">--</dd></div>
+            </dl>
+          </section>
+          <section class="selection-section" id="selection-section" hidden>
+            <h2>Selection</h2>
+            <strong id="selection-name"></strong>
+            <span id="selection-id"></span>
+          </section>
+          <section class="components-section">
+            <div class="section-heading">
+              <h2>Components</h2>
+              <label class="visibility-all"><input id="show-all" type="checkbox" checked> All</label>
+            </div>
+            <div class="component-list" id="component-list"></div>
+          </section>
+          <section class="issues-section" id="issues-section" hidden>
+            <h2>Issues</h2>
+            <div id="issues-list"></div>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="transport">
+        <button class="transport-button" id="restart" type="button" title="Restart" aria-label="Restart">&#8634;</button>
+        <button class="transport-button primary" id="play-pause" type="button" title="Play" aria-label="Play">&#9654;</button>
+        <div class="timeline-wrap">
+          <input id="timeline" type="range" min="0" max="1" step="0.0001" value="0" aria-label="Motion timeline">
+          <div class="timeline-labels"><span id="timeline-start">0.000 s</span><span id="timeline-end">0.000 s</span></div>
+        </div>
+        <label class="speed-control">
+          <span>Speed</span>
+          <select id="playback-speed" aria-label="Playback speed">
+            <option value="0.25">0.25x</option>
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="2">2x</option>
+            <option value="4">4x</option>
+          </select>
+        </label>
+      </footer>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./static/vendor/three.module.min.js",
+          "three/addons/": "./static/vendor/addons/"
+        }
+      }
+    </script>
+    <script type="module" src="./static/app.js?v=0.2.2"></script>
+  </body>
+</html>

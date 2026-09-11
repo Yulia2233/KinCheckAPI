@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kincheckapi"
+version = "0.5.3"
+description = "Agent-friendly kinematics validation for CadIR assemblies"
+requires-python = ">=3.10"
+dependencies = [
+    "mujoco>=3.3,<4",
+    "python-fcl>=0.7.0",
+    "rtree>=1.3,<2",
+    "trimesh>=4.0,<5",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+addon = ["simplecadapi>=2.1.3b3,<2.1.4", "packaging>=23.2"]
+
+[project.scripts]
+kincheck = "kincheckapi.cli:main"
+kincheck-skill-pack = "kincheckapi.auto_tools.skill_pack:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+kincheckapi = [
+    "_viewer_static/*.html",
+    "_viewer_static/*.css",
+    "_viewer_static/*.js",
+    "_viewer_static/vendor/*.js",
+    "_viewer_static/vendor/*.txt",
+    "_viewer_static/vendor/addons/controls/*.js",
+    "_viewer_static/vendor/addons/loaders/*.js",
+    "_skill_en/**/*.md",
+    "_skill_zh/**/*.md",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+
+[tool.uv.sources]
+simplecadapi = { path = "../CADIR", editable = true }

@@ -1,0 +1,31 @@
+{
+  "authored_pose": {
+    "coupler_angle_degrees": 27.790856879904535,
+    "coupler_rocker_pin_mm": [
+      117.38726803908338,
+      79.9573238152729
+    ],
+    "crank_angle_degrees": 55.0,
+    "crank_pin_mm": [
+      20.07517527228661,
+      28.670321550114714
+    ],
+    "ground_left_mm": [
+      0.0,
+      0.0
+    ],
+    "ground_right_mm": [
+      120.0,
+      0.0
+    ],
+    "rocker_angle_degrees": 91.871564238085
+  },
+  "design_parameters": {
+    "coupler_length_mm": 110.0,
+    "crank_length_mm": 35.0,
+    "grashof_full_rotation": true,
+    "ground_span_mm": 120.0,
+    "initial_crank_angle_degrees": 55.0,
+    "rocker_length_mm": 80.0
+  }
+}

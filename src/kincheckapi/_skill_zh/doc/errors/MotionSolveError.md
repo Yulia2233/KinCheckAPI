@@ -1,0 +1,45 @@
+# `MotionSolveError`
+
+## API 定义
+
+```python
+class MotionSolveError(KinCheckError): ...
+
+MotionSolveError(*, failure_time_s: 'float | None' = None, last_valid_result: 'Any' = None, backend_failure: 'BackendFailure | None' = None, **kwargs: 'Any') -> 'None'
+```
+
+源码：`src/kincheckapi/errors.py`。
+
+## 导入
+
+```python
+from kincheckapi.errors import MotionSolveError
+```
+
+## 用途
+
+运动求解开始后未能产生完整结果时抛出的异常；可包含失败时刻和最后有效结果。
+
+## 参数与字段
+
+| 名称 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `failure_time_s` | `float | None` | `None` | `failure_time_s`，单位 s，必须为有限值。 |
+| `last_valid_result` | `Any` | `None` | `last_valid_result` 的公开输入或数据字段。 |
+| `backend_failure` | `BackendFailure | None` | `None` | `backend_failure` 的公开输入或数据字段。 |
+| `kwargs` | `Any` | 必填 | `kwargs` 的公开输入或数据字段。 |
+
+## 返回与失败
+
+构造公开领域异常。捕获后读取 `code`、`report` 和结构化上下文，不匹配自由文本消息。
+
+## 模块约束
+
+- 捕获预期领域失败时优先捕获 `KinCheckError`，再按需要细分子类。
+- 保留 `code`、`report`、`object_ids`、`source_paths` 和 `suggested_actions`。
+- 不要通过匹配异常消息文本决定修复逻辑。
+
+## 相关文档
+
+- [`公开异常`](README.md)
+- [`统一证据与通过规则`](../guides/evidence-and-pass-rules.md)

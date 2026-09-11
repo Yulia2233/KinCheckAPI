@@ -1,0 +1,795 @@
+{
+  "before": {
+    "export": {
+      "output_path": "/Users/liuyu/Documents/mypapers/CADJ/CADSimAPI/examples/four_bar_linkage/output/four_bar_before.step",
+      "schema": "AP242DIS",
+      "definition_ids": [
+        "coupler",
+        "crank",
+        "ground_span",
+        "pivot_bolt",
+        "rocker",
+        "four_bar_linkage"
+      ],
+      "occurrence_count": 8,
+      "material_ids": [
+        "bolt_steel",
+        "linkage_steel"
+      ],
+      "metadata_item_count": 14,
+      "limitations": [
+        "Connector, constraint, grounding, revision, content-hash, and placement semantics are encoded as named AP242 descriptive property items containing deterministically sorted JSON.",
+        "The evaluated BREP and product structure are transferred through STEPCAF; canonical feature history is not reconstructed as AP242 features."
+      ]
+    },
+    "inspection": {
+      "model_path": "/Users/liuyu/Documents/mypapers/CADJ/CADSimAPI/examples/four_bar_linkage/output/four_bar_before.step",
+      "length_unit": "mm",
+      "valid": true,
+      "root_shape_type": "Compound",
+      "body_count": 8,
+      "material_body_count": 1,
+      "face_count": 264,
+      "edge_count": 768,
+      "vertex_count": 512,
+      "bounding_box": {
+        "min": [
+          -5.0,
+          -5.621873748999122,
+          -11.0
+        ],
+        "max": [
+          67.56520264336136,
+          32.94373999199485,
+          2.0000000000000586
+        ],
+        "size": [
+          72.56520264336136,
+          38.565613740993975,
+          13.000000000000059
+        ],
+        "diagonal": 83.1986490148226,
+        "center": [
+          31.28260132168068,
+          13.660933121497866,
+          -4.499999999999971
+        ]
+      },
+      "root_bounding_box": {
+        "min": [
+          -5.0,
+          -5.621873748999122,
+          -11.0
+        ],
+        "max": [
+          67.56520264336136,
+          32.94373999199485,
+          2.0000000000000586
+        ],
+        "size": [
+          72.56520264336136,
+          38.565613740993975,
+          13.000000000000059
+        ],
+        "diagonal": 83.1986490148226,
+        "center": [
+          31.28260132168068,
+          13.660933121497866,
+          -4.499999999999971
+        ]
+      },
+      "volume": 2773.3908518495014,
+      "volume_is_solid_material": true,
+      "material_operations_supported": true,
+      "surface_area": 3503.6031139355746,
+      "centroid": [
+        33.71521131864543,
+        8.185637720055874,
+        -1.1107230744538539
+      ],
+      "surface_type_statistics": {
+        "CONE": 32,
+        "CYLINDER": 40,
+        "PLANE": 192
+      },
+      "curve_type_statistics": {
+        "CIRCLE": 208,
+        "HYPERBOLA": 64,
+        "LINE": 496
+      },
+      "bodies": [
+        {
+          "entity_id": "body:0",
+          "volume": 187.1246414177689,
+          "surface_area": 222.22538850063307,
+          "centroid": [
+            3.1015700762643404e-14,
+            -1.8457305741476262e-14,
+            -4.3261303064968075
+          ],
+          "bounding_box": {
+            "min": [
+              -3.400000000000606,
+              -2.9444863728670008,
+              -11.0
+            ],
+            "max": [
+              3.400000000000606,
+              2.944486372867,
+              0.3
+            ],
+            "size": [
+              6.800000000001212,
+              5.888972745734001,
+              11.3
+            ],
+            "diagonal": 14.44333756442791,
+            "center": [
+              0.0,
+              -4.440892098500626e-16,
+              -5.35
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:1",
+          "volume": 187.1246414177689,
+          "surface_area": 222.22538850063307,
+          "centroid": [
+            20.000000000000032,
+            -1.8540532360470582e-14,
+            -4.3261303064968075
+          ],
+          "bounding_box": {
+            "min": [
+              16.599999999999394,
+              -2.9444863728670008,
+              -11.0
+            ],
+            "max": [
+              23.400000000000606,
+              2.944486372867,
+              0.3
+            ],
+            "size": [
+              6.800000000001212,
+              5.888972745734001,
+              11.3
+            ],
+            "diagonal": 14.44333756442791,
+            "center": [
+              20.0,
+              -4.440892098500626e-16,
+              -5.35
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:2",
+          "volume": 187.1246414177689,
+          "surface_area": 222.22538850063307,
+          "centroid": [
+            61.875000000000036,
+            27.321866242993014,
+            -4.3261303064968075
+          ],
+          "bounding_box": {
+            "min": [
+              58.51396106189171,
+              24.15450018529162,
+              -11.0
+            ],
+            "max": [
+              65.2360389381083,
+              30.48923230069438,
+              0.3
+            ],
+            "size": [
+              6.722077876216581,
+              6.334732115402758,
+              11.3
+            ],
+            "diagonal": 14.594696363673878,
+            "center": [
+              61.875,
+              27.321866242993,
+              -5.35
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:3",
+          "volume": 187.1246414177689,
+          "surface_area": 222.22538850063307,
+          "centroid": [
+            40.00000000000003,
+            -1.841681760236047e-14,
+            -4.3261303064968075
+          ],
+          "bounding_box": {
+            "min": [
+              36.59999999999939,
+              -2.9444863728670008,
+              -11.0
+            ],
+            "max": [
+              43.40000000000061,
+              2.944486372867,
+              0.3
+            ],
+            "size": [
+              6.800000000001219,
+              5.888972745734001,
+              11.3
+            ],
+            "diagonal": 14.443337564427914,
+            "center": [
+              40.0,
+              -4.440892098500626e-16,
+              -5.35
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:4",
+          "volume": 1104.72926464857,
+          "surface_area": 1573.3720636667,
+          "centroid": [
+            40.937499999996504,
+            13.660933121497711,
+            1.7365932522504157e-16
+          ],
+          "bounding_box": {
+            "min": [
+              14.309797356635434,
+              -5.035311624299615,
+              -2.0000000000000586
+            ],
+            "max": [
+              67.56520264336136,
+              32.35717786729752,
+              2.0000000000000586
+            ],
+            "size": [
+              53.255405286725924,
+              37.39248949159714,
+              4.000000000000117
+            ],
+            "diagonal": 65.19460455154736,
+            "center": [
+              40.937499999998394,
+              13.660933121498953,
+              0.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        },
+        {
+          "entity_id": "body:5",
+          "volume": 589.9292646485766,
+          "surface_area": 821.8720636666746,
+          "centroid": [
+            9.999999999998966,
+            -2.6220966282647534e-14,
+            7.377281510391187e-16
+          ],
+          "bounding_box": {
+            "min": [
+              -5.0,
+              -5.0,
+              -2.0000000000000586
+            ],
+            "max": [
+              25.0,
+              5.0,
+              2.0000000000000586
+            ],
+            "size": [
+              30.0,
+              10.0,
+              4.000000000000117
+            ],
+            "diagonal": 31.87475490101847,
+            "center": [
+              10.0,
+              0.0,
+              0.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        },
+        {
+          "entity_id": "body:6",
+          "volume": 933.1292646485721,
+          "surface_area": 1322.8720636666912,
+          "centroid": [
+            19.999999999998167,
+            -1.6104927184965998e-14,
+            5.120833821224413e-16
+          ],
+          "bounding_box": {
+            "min": [
+              -5.0,
+              -5.0,
+              -2.0000000000000586
+            ],
+            "max": [
+              45.0,
+              5.0,
+              2.0000000000000586
+            ],
+            "size": [
+              50.0,
+              10.0,
+              4.000000000000117
+            ],
+            "diagonal": 51.1468474101777,
+            "center": [
+              20.0,
+              0.0,
+              0.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        },
+        {
+          "entity_id": "body:7",
+          "volume": 847.3292646485734,
+          "surface_area": 1197.6220636666876,
+          "centroid": [
+            50.937499999997286,
+            13.660933121496571,
+            5.597437689309312e-16
+          ],
+          "bounding_box": {
+            "min": [
+              34.72828193805082,
+              -5.621873748999122,
+              -2.0000000000000586
+            ],
+            "max": [
+              67.14671806194576,
+              32.94373999199485,
+              2.0000000000000586
+            ],
+            "size": [
+              32.41843612389494,
+              38.565613740993975,
+              4.000000000000117
+            ],
+            "diagonal": 50.539702847747336,
+            "center": [
+              50.937499999998295,
+              13.660933121497866,
+              0.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        }
+      ],
+      "entity_id_format": {
+        "body": "body:<zero-based-index>",
+        "face": "face:<zero-based-index>",
+        "edge": "edge:<zero-based-index>",
+        "vertex": "vertex:<zero-based-index>"
+      }
+    }
+  },
+  "after": {
+    "export": {
+      "output_path": "/Users/liuyu/Documents/mypapers/CADJ/CADSimAPI/examples/four_bar_linkage/output/four_bar_after.step",
+      "schema": "AP242DIS",
+      "definition_ids": [
+        "coupler",
+        "crank",
+        "ground_pivot_bolt",
+        "ground_span",
+        "pivot_bolt",
+        "rocker",
+        "four_bar_linkage"
+      ],
+      "occurrence_count": 8,
+      "material_ids": [
+        "bolt_steel",
+        "linkage_steel"
+      ],
+      "metadata_item_count": 15,
+      "limitations": [
+        "Connector, constraint, grounding, revision, content-hash, and placement semantics are encoded as named AP242 descriptive property items containing deterministically sorted JSON.",
+        "The evaluated BREP and product structure are transferred through STEPCAF; canonical feature history is not reconstructed as AP242 features."
+      ]
+    },
+    "inspection": {
+      "model_path": "/Users/liuyu/Documents/mypapers/CADJ/CADSimAPI/examples/four_bar_linkage/output/four_bar_after.step",
+      "length_unit": "mm",
+      "valid": true,
+      "root_shape_type": "Compound",
+      "body_count": 8,
+      "material_body_count": 4,
+      "face_count": 264,
+      "edge_count": 768,
+      "vertex_count": 512,
+      "bounding_box": {
+        "min": [
+          -5.0,
+          -5.621873748999122,
+          -11.0
+        ],
+        "max": [
+          67.56520264336136,
+          32.94373999199485,
+          7.000000000000059
+        ],
+        "size": [
+          72.56520264336136,
+          38.565613740993975,
+          18.000000000000057
+        ],
+        "diagonal": 84.1249974614659,
+        "center": [
+          31.28260132168068,
+          13.660933121497866,
+          -1.9999999999999707
+        ]
+      },
+      "root_bounding_box": {
+        "min": [
+          -5.0,
+          -5.621873748999122,
+          -11.0
+        ],
+        "max": [
+          67.56520264336136,
+          32.94373999199485,
+          7.000000000000059
+        ],
+        "size": [
+          72.56520264336136,
+          38.565613740993975,
+          18.000000000000057
+        ],
+        "diagonal": 84.1249974614659,
+        "center": [
+          31.28260132168068,
+          13.660933121497866,
+          -1.9999999999999707
+        ]
+      },
+      "volume": 3976.3866571843823,
+      "volume_is_solid_material": true,
+      "material_operations_supported": true,
+      "surface_area": 5267.249909006131,
+      "centroid": [
+        32.51018308706659,
+        7.7400721551125775,
+        -0.517211914752349
+      ],
+      "surface_type_statistics": {
+        "CONE": 32,
+        "CYLINDER": 40,
+        "PLANE": 192
+      },
+      "curve_type_statistics": {
+        "CIRCLE": 208,
+        "HYPERBOLA": 64,
+        "LINE": 496
+      },
+      "bodies": [
+        {
+          "entity_id": "body:0",
+          "volume": 136.85915896033066,
+          "surface_area": 171.95990604319306,
+          "centroid": [
+            2.3749151694222535e-14,
+            -2.5259432920082047e-14,
+            2.3904834508274764
+          ],
+          "bounding_box": {
+            "min": [
+              -3.400000000000606,
+              -2.9444863728670008,
+              -2.0
+            ],
+            "max": [
+              3.400000000000606,
+              2.944486372867,
+              5.3
+            ],
+            "size": [
+              6.800000000001212,
+              5.888972745734001,
+              7.3
+            ],
+            "diagonal": 11.584903970254322,
+            "center": [
+              0.0,
+              -4.440892098500626e-16,
+              1.65
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:1",
+          "volume": 187.1246414177689,
+          "surface_area": 222.22538850063307,
+          "centroid": [
+            20.000000000000032,
+            -1.8540532360470582e-14,
+            -4.3261303064968075
+          ],
+          "bounding_box": {
+            "min": [
+              16.599999999999394,
+              -2.9444863728670008,
+              -11.0
+            ],
+            "max": [
+              23.400000000000606,
+              2.944486372867,
+              0.3
+            ],
+            "size": [
+              6.800000000001212,
+              5.888972745734001,
+              11.3
+            ],
+            "diagonal": 14.44333756442791,
+            "center": [
+              20.0,
+              -4.440892098500626e-16,
+              -5.35
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:2",
+          "volume": 187.1246414177689,
+          "surface_area": 222.22538850063307,
+          "centroid": [
+            61.875000000000036,
+            27.321866242993014,
+            -4.3261303064968075
+          ],
+          "bounding_box": {
+            "min": [
+              58.51396106189171,
+              24.15450018529162,
+              -11.0
+            ],
+            "max": [
+              65.2360389381083,
+              30.48923230069438,
+              0.3
+            ],
+            "size": [
+              6.722077876216581,
+              6.334732115402758,
+              11.3
+            ],
+            "diagonal": 14.594696363673878,
+            "center": [
+              61.875,
+              27.321866242993,
+              -5.35
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:3",
+          "volume": 136.85915896033066,
+          "surface_area": 171.95990604319306,
+          "centroid": [
+            40.00000000000002,
+            -2.5233687686026798e-14,
+            2.3904834508274773
+          ],
+          "bounding_box": {
+            "min": [
+              36.59999999999939,
+              -2.9444863728670008,
+              -2.0
+            ],
+            "max": [
+              43.40000000000061,
+              2.944486372867,
+              5.3
+            ],
+            "size": [
+              6.800000000001219,
+              5.888972745734001,
+              7.3
+            ],
+            "diagonal": 11.584903970254326,
+            "center": [
+              40.0,
+              -4.440892098500626e-16,
+              1.65
+            ]
+          },
+          "face_count": 12,
+          "edge_count": 24,
+          "vertex_count": 16
+        },
+        {
+          "entity_id": "body:4",
+          "volume": 1104.7292646485698,
+          "surface_area": 1573.3720636667,
+          "centroid": [
+            40.937499999996504,
+            13.660933121497717,
+            -5.0
+          ],
+          "bounding_box": {
+            "min": [
+              14.309797356635434,
+              -5.035311624299615,
+              -7.000000000000059
+            ],
+            "max": [
+              67.56520264336136,
+              32.35717786729752,
+              -2.999999999999942
+            ],
+            "size": [
+              53.255405286725924,
+              37.39248949159714,
+              4.000000000000117
+            ],
+            "diagonal": 65.19460455154736,
+            "center": [
+              40.937499999998394,
+              13.660933121498953,
+              -5.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        },
+        {
+          "entity_id": "body:5",
+          "volume": 589.9292646485766,
+          "surface_area": 821.8720636666746,
+          "centroid": [
+            9.999999999998966,
+            -2.6220966282647534e-14,
+            7.377281510391187e-16
+          ],
+          "bounding_box": {
+            "min": [
+              -5.0,
+              -5.0,
+              -2.0000000000000586
+            ],
+            "max": [
+              25.0,
+              5.0,
+              2.0000000000000586
+            ],
+            "size": [
+              30.0,
+              10.0,
+              4.000000000000117
+            ],
+            "diagonal": 31.87475490101847,
+            "center": [
+              10.0,
+              0.0,
+              0.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        },
+        {
+          "entity_id": "body:6",
+          "volume": 933.1292646485722,
+          "surface_area": 1322.8720636666912,
+          "centroid": [
+            19.999999999998153,
+            -1.6104927184965995e-14,
+            4.999999999999998
+          ],
+          "bounding_box": {
+            "min": [
+              -5.0,
+              -5.0,
+              2.999999999999942
+            ],
+            "max": [
+              45.0,
+              5.0,
+              7.000000000000059
+            ],
+            "size": [
+              50.0,
+              10.0,
+              4.000000000000117
+            ],
+            "diagonal": 51.1468474101777,
+            "center": [
+              20.0,
+              0.0,
+              5.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        },
+        {
+          "entity_id": "body:7",
+          "volume": 847.3292646485734,
+          "surface_area": 1197.6220636666876,
+          "centroid": [
+            50.937499999997286,
+            13.660933121496571,
+            5.597437689309312e-16
+          ],
+          "bounding_box": {
+            "min": [
+              34.72828193805082,
+              -5.621873748999122,
+              -2.0000000000000586
+            ],
+            "max": [
+              67.14671806194576,
+              32.94373999199485,
+              2.0000000000000586
+            ],
+            "size": [
+              32.41843612389494,
+              38.565613740993975,
+              4.000000000000117
+            ],
+            "diagonal": 50.539702847747336,
+            "center": [
+              50.937499999998295,
+              13.660933121497866,
+              0.0
+            ]
+          },
+          "face_count": 54,
+          "edge_count": 168,
+          "vertex_count": 112
+        }
+      ],
+      "entity_id_format": {
+        "body": "body:<zero-based-index>",
+        "face": "face:<zero-based-index>",
+        "edge": "edge:<zero-based-index>",
+        "vertex": "vertex:<zero-based-index>"
+      }
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "closures": [
+    {
+      "joint_id": "joint/four_bar_linkage/coupler_to_rocker",
+      "joint_type": "revolute",
+      "name": "closure_joint_four_bar_linkage_coupler_to_rocker_9692ef4610db",
+      "sites": [
+        {
+          "group": "node/four_bar_linkage/rocker",
+          "name": "closure_a_joint_four_bar_linkage_coupler_to_rocker_3179291fc4a4"
+        },
+        {
+          "group": "node/four_bar_linkage/coupler",
+          "name": "closure_b_joint_four_bar_linkage_coupler_to_rocker_51066f5bc660"
+        }
+      ]
+    }
+  ],
+  "collision_exclusions": [
+    [
+      "node/four_bar_linkage",
+      "node/four_bar_linkage/crank"
+    ],
+    [
+      "node/four_bar_linkage",
+      "node/four_bar_linkage/rocker"
+    ],
+    [
+      "node/four_bar_linkage/coupler",
+      "node/four_bar_linkage/crank"
+    ],
+    [
+      "node/four_bar_linkage/coupler",
+      "node/four_bar_linkage/rocker"
+    ]
+  ],
+  "default_density_count": 0,
+  "equalities": [],
+  "grounded_group_id": "node/four_bar_linkage",
+  "groups": [
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "node/four_bar_linkage",
+      "members": [
+        "node/four_bar_linkage",
+        "node/four_bar_linkage/bolt_a",
+        "node/four_bar_linkage/bolt_d",
+        "node/four_bar_linkage/ground"
+      ],
+      "parent_group": null,
+      "representative": "node/four_bar_linkage",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_coupler",
+      "grounded": false,
+      "group_id": "node/four_bar_linkage/coupler",
+      "members": [
+        "node/four_bar_linkage/coupler"
+      ],
+      "parent_group": "node/four_bar_linkage/crank",
+      "representative": "node/four_bar_linkage/coupler",
+      "tree_joint": "joint_joint_four_bar_linkage_coupler_to_crank_4124f57674a4"
+    },
+    {
+      "body_name": "body_crank",
+      "grounded": false,
+      "group_id": "node/four_bar_linkage/crank",
+      "members": [
+        "node/four_bar_linkage/bolt_b",
+        "node/four_bar_linkage/crank"
+      ],
+      "parent_group": "node/four_bar_linkage",
+      "representative": "node/four_bar_linkage/bolt_b",
+      "tree_joint": "joint_joint_four_bar_linkage_crank_to_ground_e0a5b0c656ec"
+    },
+    {
+      "body_name": "body_rocker",
+      "grounded": false,
+      "group_id": "node/four_bar_linkage/rocker",
+      "members": [
+        "node/four_bar_linkage/bolt_c",
+        "node/four_bar_linkage/rocker"
+      ],
+      "parent_group": "node/four_bar_linkage",
+      "representative": "node/four_bar_linkage/bolt_c",
+      "tree_joint": "joint_joint_four_bar_linkage_rocker_to_ground_b8d24aab50f4"
+    }
+  ],
+  "meshes": {
+    "coupler": "mesh_coupler",
+    "crank": "mesh_crank",
+    "ground_pivot_bolt": "mesh_ground_pivot_bolt",
+    "ground_span": "mesh_ground_span",
+    "pivot_bolt": "mesh_pivot_bolt",
+    "rocker": "mesh_rocker"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [],
+  "rigid_edges": [
+    {
+      "a": "node/four_bar_linkage",
+      "b": "node/four_bar_linkage/ground",
+      "kind": "ground"
+    },
+    {
+      "a": "node/four_bar_linkage/ground",
+      "b": "node/four_bar_linkage/bolt_a",
+      "joint_id": "joint/four_bar_linkage/bolt_a_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/four_bar_linkage/crank",
+      "b": "node/four_bar_linkage/bolt_b",
+      "joint_id": "joint/four_bar_linkage/bolt_b_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/four_bar_linkage/rocker",
+      "b": "node/four_bar_linkage/bolt_c",
+      "joint_id": "joint/four_bar_linkage/bolt_c_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/four_bar_linkage/ground",
+      "b": "node/four_bar_linkage/bolt_d",
+      "joint_id": "joint/four_bar_linkage/bolt_d_pin",
+      "kind": "fixed"
+    }
+  ],
+  "root_definition_id": "four_bar_linkage",
+  "schema_version": "1.0",
+  "sites": [
+    {
+      "attached_group": "node/four_bar_linkage/crank",
+      "connector_id": "crank_input_axis",
+      "connector_snapshot_id": "connector/four_bar_linkage/crank_input_axis",
+      "name": "crank_input_axis",
+      "node_id": "node/four_bar_linkage"
+    }
+  ],
+  "tree_joints": [
+    {
+      "group": "node/four_bar_linkage/coupler",
+      "joint_id": "joint/four_bar_linkage/coupler_to_crank",
+      "joint_name": "joint_joint_four_bar_linkage_coupler_to_crank_4124f57674a4",
+      "parent_group": "node/four_bar_linkage/crank"
+    },
+    {
+      "group": "node/four_bar_linkage/crank",
+      "joint_id": "joint/four_bar_linkage/crank_to_ground",
+      "joint_name": "joint_joint_four_bar_linkage_crank_to_ground_e0a5b0c656ec",
+      "parent_group": "node/four_bar_linkage"
+    },
+    {
+      "group": "node/four_bar_linkage/rocker",
+      "joint_id": "joint/four_bar_linkage/rocker_to_ground",
+      "joint_name": "joint_joint_four_bar_linkage_rocker_to_ground_b8d24aab50f4",
+      "parent_group": "node/four_bar_linkage"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

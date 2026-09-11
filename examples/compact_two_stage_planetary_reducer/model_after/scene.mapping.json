@@ -1,0 +1,1344 @@
+{
+  "closures": [],
+  "default_density_count": 0,
+  "equalities": [
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": -18.0,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_1_revolute_25655304f7b0": -6.75
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_1_internal_mesh",
+      "independent": true,
+      "joint_type": "belt",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_1_internal_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_8793e02e20b7",
+      "reference_phase_source_units": -20.027653166634934,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_fa343f5c7d00"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": -18.0,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_2_revolute_225f62621f28": -6.75
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_2_internal_mesh",
+      "independent": true,
+      "joint_type": "belt",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_2_internal_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_bd7cfa9166eb",
+      "reference_phase_source_units": 8.246680715673206,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_6f3f2891ff08"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": -18.0,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_3_revolute_beb8ce1563d3": -6.75
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_3_internal_mesh",
+      "independent": true,
+      "joint_type": "belt",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_3_internal_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_1431123a1212",
+      "reference_phase_source_units": -5.89048622548086,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_ba19cc3803c3"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_input_shaft_revolute_660c7977fc43": 4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": -4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_1_revolute_25655304f7b0": 6.75
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_1_external_mesh",
+      "independent": true,
+      "joint_type": "gear",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_1_external_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external__166bafaced5f",
+      "reference_phase_source_units": 20.027653166634934,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external__25802f5f181e"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_input_shaft_revolute_660c7977fc43": 4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": -4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_2_revolute_225f62621f28": 6.75
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_2_external_mesh",
+      "independent": false,
+      "joint_type": "gear",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_2_external_mesh",
+      "reference_phase_source_units": -8.246680715673206
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_input_shaft_revolute_660c7977fc43": 4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": -4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_3_revolute_beb8ce1563d3": 6.75
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_3_external_mesh",
+      "independent": false,
+      "joint_type": "gear",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_3_external_mesh",
+      "reference_phase_source_units": 5.89048622548086
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f": -13.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_1_revolute_c650c1f4cc1a": -4.5
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_1_internal_mesh",
+      "independent": true,
+      "joint_type": "belt",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_1_internal_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_d3bc1acd217b",
+      "reference_phase_source_units": -12.959069696057895,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_2ff79a3e90c1"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f": -13.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_2_revolute_2f83464e9782": -4.5
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_2_internal_mesh",
+      "independent": true,
+      "joint_type": "belt",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_2_internal_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_c584c0041c38",
+      "reference_phase_source_units": 5.890486225480864,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_6e876804bf3b"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f": -13.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_3_revolute_b470190f204d": -4.5
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_3_internal_mesh",
+      "independent": true,
+      "joint_type": "belt",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_3_internal_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_e37e2aa68661",
+      "reference_phase_source_units": -3.5342917352885164,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_6da2bf6ebf71"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": 4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f": -4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_1_revolute_c650c1f4cc1a": 4.5
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_1_external_mesh",
+      "independent": true,
+      "joint_type": "gear",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_1_external_mesh",
+      "name": "equality_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external__df420176f189",
+      "reference_phase_source_units": 12.959069696057895,
+      "tendon": "coupling_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external__43613578c371"
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": 4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f": -4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_2_revolute_2f83464e9782": 4.5
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_2_external_mesh",
+      "independent": false,
+      "joint_type": "gear",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_2_external_mesh",
+      "reference_phase_source_units": -5.890486225480864
+    },
+    {
+      "coefficients": {
+        "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8": 4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f": -4.5,
+        "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_3_revolute_b470190f204d": 4.5
+      },
+      "equality_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_3_external_mesh",
+      "independent": false,
+      "joint_type": "gear",
+      "mesh_constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_3_external_mesh",
+      "reference_phase_source_units": 3.5342917352885164
+    }
+  ],
+  "grounded_group_id": "node/compact_two_stage_planetary_reducer",
+  "groups": [
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "node/compact_two_stage_planetary_reducer",
+      "members": [
+        "node/compact_two_stage_planetary_reducer",
+        "node/compact_two_stage_planetary_reducer/housing",
+        "node/compact_two_stage_planetary_reducer/input_bearing",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_00",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_01",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_02",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_03",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_04",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_05",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_06",
+        "node/compact_two_stage_planetary_reducer/input_bearing/ball_07",
+        "node/compact_two_stage_planetary_reducer/input_bearing/outer_ring",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_00",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_01",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_02",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_03",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_04",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_05",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_06",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_07",
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/outer_ring",
+        "node/compact_two_stage_planetary_reducer/output_bearing",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_00",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_01",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_02",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_03",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_04",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_05",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_06",
+        "node/compact_two_stage_planetary_reducer/output_bearing/ball_07",
+        "node/compact_two_stage_planetary_reducer/output_bearing/outer_ring",
+        "node/compact_two_stage_planetary_reducer/stage1_ring",
+        "node/compact_two_stage_planetary_reducer/stage2_ring"
+      ],
+      "parent_group": null,
+      "representative": "node/compact_two_stage_planetary_reducer/housing",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_input_shaft",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/input_shaft",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/input_bearing/inner_ring",
+        "node/compact_two_stage_planetary_reducer/input_flange",
+        "node/compact_two_stage_planetary_reducer/input_shaft",
+        "node/compact_two_stage_planetary_reducer/stage1_sun"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer",
+      "representative": "node/compact_two_stage_planetary_reducer/input_bearing/inner_ring",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_input_shaft_revolute_660c7977fc43"
+    },
+    {
+      "body_name": "body_stage1_carrier",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/intermediate_bearing/inner_ring",
+        "node/compact_two_stage_planetary_reducer/stage1_carrier",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/inner_ring",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/inner_ring",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/inner_ring",
+        "node/compact_two_stage_planetary_reducer/stage2_sun"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer",
+      "representative": "node/compact_two_stage_planetary_reducer/intermediate_bearing/inner_ring",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8"
+    },
+    {
+      "body_name": "body_stage1_planet_1",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/stage1_planet_1",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_00",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_01",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_02",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_03",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_04",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_05",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_06",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_07",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/outer_ring"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "representative": "node/compact_two_stage_planetary_reducer/stage1_planet_1",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_1_revolute_25655304f7b0"
+    },
+    {
+      "body_name": "body_stage1_planet_2",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/stage1_planet_2",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_00",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_01",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_02",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_03",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_04",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_05",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_06",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_07",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/outer_ring"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "representative": "node/compact_two_stage_planetary_reducer/stage1_planet_2",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_2_revolute_225f62621f28"
+    },
+    {
+      "body_name": "body_stage1_planet_3",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/stage1_planet_3",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_00",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_01",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_02",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_03",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_04",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_05",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_06",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_07",
+        "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/outer_ring"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "representative": "node/compact_two_stage_planetary_reducer/stage1_planet_3",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_3_revolute_beb8ce1563d3"
+    },
+    {
+      "body_name": "body_stage2_carrier",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/output_bearing/inner_ring",
+        "node/compact_two_stage_planetary_reducer/output_flange",
+        "node/compact_two_stage_planetary_reducer/stage2_carrier",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/inner_ring",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/inner_ring",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/inner_ring"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer",
+      "representative": "node/compact_two_stage_planetary_reducer/output_bearing/inner_ring",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f"
+    },
+    {
+      "body_name": "body_stage2_planet_1",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/stage2_planet_1",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_00",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_01",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_02",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_03",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_04",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_05",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_06",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_07",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/outer_ring"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "representative": "node/compact_two_stage_planetary_reducer/stage2_planet_1",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_1_revolute_c650c1f4cc1a"
+    },
+    {
+      "body_name": "body_stage2_planet_2",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/stage2_planet_2",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_00",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_01",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_02",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_03",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_04",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_05",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_06",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_07",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/outer_ring"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "representative": "node/compact_two_stage_planetary_reducer/stage2_planet_2",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_2_revolute_2f83464e9782"
+    },
+    {
+      "body_name": "body_stage2_planet_3",
+      "grounded": false,
+      "group_id": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "members": [
+        "node/compact_two_stage_planetary_reducer/stage2_planet_3",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_00",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_01",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_02",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_03",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_04",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_05",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_06",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_07",
+        "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/outer_ring"
+      ],
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "representative": "node/compact_two_stage_planetary_reducer/stage2_planet_3",
+      "tree_joint": "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_3_revolute_b470190f204d"
+    }
+  ],
+  "mesh_constraints": [
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_ring/axis",
+        "group": "node/compact_two_stage_planetary_reducer",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_mes_f6990d44db5c"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_planet_1/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_mes_373d24c38beb"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_1_internal_mesh",
+      "constraint_type": "belt",
+      "parameters_m": {
+        "pulley_radius_a": 0.018000000000000002,
+        "pulley_radius_b": 0.00675
+      },
+      "reference_phase_source_units": -20.027653166634934
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_ring/axis",
+        "group": "node/compact_two_stage_planetary_reducer",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_mes_9877bf02d468"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_planet_2/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_mes_fa35db898f60"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_2_internal_mesh",
+      "constraint_type": "belt",
+      "parameters_m": {
+        "pulley_radius_a": 0.018000000000000002,
+        "pulley_radius_b": 0.00675
+      },
+      "reference_phase_source_units": 8.246680715673206
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_ring/axis",
+        "group": "node/compact_two_stage_planetary_reducer",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_mes_32434b1556d8"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_planet_3/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_mes_88a324ab3181"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_planet_3_internal_mesh",
+      "constraint_type": "belt",
+      "parameters_m": {
+        "pulley_radius_a": 0.018000000000000002,
+        "pulley_radius_b": 0.00675
+      },
+      "reference_phase_source_units": -5.89048622548086
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/input_shaft/sun_axis",
+        "group": "node/compact_two_stage_planetary_reducer/input_shaft",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external_mesh_c2590a0bfd48"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_planet_1/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external_mesh_0d82b285bb3d"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_1_external_mesh",
+      "constraint_type": "gear",
+      "parameters_m": {
+        "pitch_radius_a": 0.0045000000000000005,
+        "pitch_radius_b": 0.00675
+      },
+      "reference_phase_source_units": 20.027653166634934
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/input_shaft/sun_axis",
+        "group": "node/compact_two_stage_planetary_reducer/input_shaft",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_2_external_mesh_ce468f5bcf1e"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_planet_2/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_2_external_mesh_afae7acdcf59"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_2_external_mesh",
+      "constraint_type": "gear",
+      "parameters_m": {
+        "pitch_radius_a": 0.0045000000000000005,
+        "pitch_radius_b": 0.00675
+      },
+      "reference_phase_source_units": -8.246680715673206
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/input_shaft/sun_axis",
+        "group": "node/compact_two_stage_planetary_reducer/input_shaft",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_3_external_mesh_6177e8a68f11"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_planet_3/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_3_external_mesh_adb7d31cf716"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_planet_3_external_mesh",
+      "constraint_type": "gear",
+      "parameters_m": {
+        "pitch_radius_a": 0.0045000000000000005,
+        "pitch_radius_b": 0.00675
+      },
+      "reference_phase_source_units": 5.89048622548086
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_ring/axis",
+        "group": "node/compact_two_stage_planetary_reducer",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_mes_d51459eb3121"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_planet_1/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_mes_c13538d5a162"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_1_internal_mesh",
+      "constraint_type": "belt",
+      "parameters_m": {
+        "pulley_radius_a": 0.0135,
+        "pulley_radius_b": 0.0045000000000000005
+      },
+      "reference_phase_source_units": -12.959069696057895
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_ring/axis",
+        "group": "node/compact_two_stage_planetary_reducer",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_mes_3bddad72e145"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_planet_2/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_mes_7f1b74f8d45d"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_2_internal_mesh",
+      "constraint_type": "belt",
+      "parameters_m": {
+        "pulley_radius_a": 0.0135,
+        "pulley_radius_b": 0.0045000000000000005
+      },
+      "reference_phase_source_units": 5.890486225480864
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_ring/axis",
+        "group": "node/compact_two_stage_planetary_reducer",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_mes_4b9790daa9cb"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_planet_3/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_mes_d59582ce5167"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_planet_3_internal_mesh",
+      "constraint_type": "belt",
+      "parameters_m": {
+        "pulley_radius_a": 0.0135,
+        "pulley_radius_b": 0.0045000000000000005
+      },
+      "reference_phase_source_units": -3.5342917352885164
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_carrier/carrier_axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external_mesh_3588c1ce3483"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_planet_1/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external_mesh_339eff3d8a29"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_1_external_mesh",
+      "constraint_type": "gear",
+      "parameters_m": {
+        "pitch_radius_a": 0.0045000000000000005,
+        "pitch_radius_b": 0.0045000000000000005
+      },
+      "reference_phase_source_units": 12.959069696057895
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_carrier/carrier_axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_2_external_mesh_65f92bbb6e4e"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_planet_2/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_2_external_mesh_50057c8f3985"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_2_external_mesh",
+      "constraint_type": "gear",
+      "parameters_m": {
+        "pitch_radius_a": 0.0045000000000000005,
+        "pitch_radius_b": 0.0045000000000000005
+      },
+      "reference_phase_source_units": -5.890486225480864
+    },
+    {
+      "connector_a": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage1_carrier/carrier_axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_3_external_mesh_893ce928b0c6"
+      },
+      "connector_b": {
+        "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/stage2_planet_3/axis",
+        "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+        "site": "mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_3_external_mesh_e66bc0176836"
+      },
+      "constraint_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_planet_3_external_mesh",
+      "constraint_type": "gear",
+      "parameters_m": {
+        "pitch_radius_a": 0.0045000000000000005,
+        "pitch_radius_b": 0.0045000000000000005
+      },
+      "reference_phase_source_units": 3.5342917352885164
+    }
+  ],
+  "meshes": {
+    "input_flange": "mesh_input_flange",
+    "input_shaft": "mesh_input_shaft",
+    "micro_radial_ball_bearing_ball": "mesh_micro_radial_ball_bearing_ball",
+    "micro_radial_ball_bearing_inner_ring": "mesh_micro_radial_ball_bearing_inner_ring",
+    "micro_radial_ball_bearing_outer_ring": "mesh_micro_radial_ball_bearing_outer_ring",
+    "output_flange": "mesh_output_flange",
+    "reducer_housing": "mesh_reducer_housing",
+    "stage1_carrier": "mesh_stage1_carrier",
+    "stage1_planet_gear": "mesh_stage1_planet_gear",
+    "stage1_ring_gear": "mesh_stage1_ring_gear",
+    "stage1_sun_gear": "mesh_stage1_sun_gear",
+    "stage2_carrier": "mesh_stage2_carrier",
+    "stage2_planet_gear": "mesh_stage2_planet_gear",
+    "stage2_ring_gear": "mesh_stage2_ring_gear",
+    "stage2_sun_gear": "mesh_stage2_sun_gear"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/input_shaft_revolute",
+      "coordinate_sign": 1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/input_bearing/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage1_carrier_revolute",
+      "coordinate_sign": 1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/intermediate_bearing/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage2_carrier_revolute",
+      "coordinate_sign": 1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/output_bearing/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_1_revolute",
+      "coordinate_sign": -1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_2_revolute",
+      "coordinate_sign": -1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_3_revolute",
+      "coordinate_sign": -1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_1_revolute",
+      "coordinate_sign": -1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_2_revolute",
+      "coordinate_sign": -1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    },
+    {
+      "canonical_joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_3_revolute",
+      "coordinate_sign": -1.0,
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/inner_outer_revolute",
+      "line_offset_mm": 0.0,
+      "reason": "coincident_axis_same_rigid_groups"
+    }
+  ],
+  "rigid_edges": [
+    {
+      "a": "node/compact_two_stage_planetary_reducer",
+      "b": "node/compact_two_stage_planetary_reducer/housing",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/intermediate_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/output_bearing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_00",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_01",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_02",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_03",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_04",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_05",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_06",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/ball_07",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/outer_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_ring",
+      "kind": "ground"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_shaft",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/input_bearing_inner_to_shaft",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/housing",
+      "b": "node/compact_two_stage_planetary_reducer/input_bearing/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/input_bearing_outer_to_housing",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_flange",
+      "b": "node/compact_two_stage_planetary_reducer/input_shaft",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/input_flange_to_shaft",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/intermediate_bearing_inner_to_stage1_carrier",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/housing",
+      "b": "node/compact_two_stage_planetary_reducer/intermediate_bearing/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/intermediate_bearing_outer_to_housing",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/output_bearing_inner_to_stage2_carrier",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/housing",
+      "b": "node/compact_two_stage_planetary_reducer/output_bearing/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/output_bearing_outer_to_housing",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/output_flange",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/output_flange_to_stage2_carrier",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_1_inner_to_carrier_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_1_outer_to_planet",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_2_inner_to_carrier_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_2_outer_to_planet",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_3_inner_to_carrier_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_planet_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_bearing_3_outer_to_planet",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/housing",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_ring_fixed",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/input_shaft",
+      "b": "node/compact_two_stage_planetary_reducer/stage1_sun",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_sun_to_input_shaft",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_1_inner_to_carrier_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_1",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_1_outer_to_planet",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_2_inner_to_carrier_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_2",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_2_outer_to_planet",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/inner_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_3_inner_to_carrier_pin",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage2_planet_3",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3/outer_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_bearing_3_outer_to_planet",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/housing",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_ring",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_ring_fixed",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "b": "node/compact_two_stage_planetary_reducer/stage2_sun",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_sun_to_stage1_carrier",
+      "kind": "fixed"
+    }
+  ],
+  "root_definition_id": "compact_two_stage_planetary_reducer",
+  "schema_version": "1.0",
+  "sites": [
+    {
+      "attached_group": "node/compact_two_stage_planetary_reducer",
+      "connector_id": "housing_mount_axis",
+      "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/housing_mount_axis",
+      "name": "housing_mount_axis",
+      "node_id": "node/compact_two_stage_planetary_reducer"
+    },
+    {
+      "attached_group": "node/compact_two_stage_planetary_reducer/input_shaft",
+      "connector_id": "input_motor_axis",
+      "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/input_motor_axis",
+      "name": "input_motor_axis",
+      "node_id": "node/compact_two_stage_planetary_reducer"
+    },
+    {
+      "attached_group": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "connector_id": "output_link_axis",
+      "connector_snapshot_id": "connector/compact_two_stage_planetary_reducer/output_link_axis",
+      "name": "output_link_axis",
+      "node_id": "node/compact_two_stage_planetary_reducer"
+    }
+  ],
+  "tree_joints": [
+    {
+      "group": "node/compact_two_stage_planetary_reducer/input_shaft",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/input_shaft_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_input_shaft_revolute_660c7977fc43",
+      "parent_group": "node/compact_two_stage_planetary_reducer"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage1_carrier",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_carrier_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8",
+      "parent_group": "node/compact_two_stage_planetary_reducer"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_1",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_1_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_1_revolute_25655304f7b0",
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage1_carrier"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_2",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_2_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_2_revolute_225f62621f28",
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage1_carrier"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage1_planet_bearing_3",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage1_planet_3_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage1_planet_3_revolute_beb8ce1563d3",
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage1_carrier"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage2_carrier",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_carrier_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f",
+      "parent_group": "node/compact_two_stage_planetary_reducer"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_1",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_1_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_1_revolute_c650c1f4cc1a",
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage2_carrier"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_2",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_2_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_2_revolute_2f83464e9782",
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage2_carrier"
+    },
+    {
+      "group": "node/compact_two_stage_planetary_reducer/stage2_planet_bearing_3",
+      "joint_id": "joint/compact_two_stage_planetary_reducer/stage2_planet_3_revolute",
+      "joint_name": "joint_joint_compact_two_stage_planetary_reducer_stage2_planet_3_revolute_b470190f204d",
+      "parent_group": "node/compact_two_stage_planetary_reducer/stage2_carrier"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

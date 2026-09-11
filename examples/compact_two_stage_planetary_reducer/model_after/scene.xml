@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="compact_two_stage_planetary_reducer">
+  <compiler angle="radian" coordinate="local" />
+  <option gravity="0 0 -9.81" />
+  <asset>
+    <mesh name="mesh_input_flange" file="meshes/mesh_input_flange.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_input_shaft" file="meshes/mesh_input_shaft.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_micro_radial_ball_bearing_ball" file="meshes/mesh_micro_radial_ball_bearing_ball.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_micro_radial_ball_bearing_inner_ring" file="meshes/mesh_micro_radial_ball_bearing_inner_ring.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_micro_radial_ball_bearing_outer_ring" file="meshes/mesh_micro_radial_ball_bearing_outer_ring.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_output_flange" file="meshes/mesh_output_flange.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_reducer_housing" file="meshes/mesh_reducer_housing.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage1_carrier" file="meshes/mesh_stage1_carrier.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage1_planet_gear" file="meshes/mesh_stage1_planet_gear.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage1_ring_gear" file="meshes/mesh_stage1_ring_gear.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage1_sun_gear" file="meshes/mesh_stage1_sun_gear.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage2_carrier" file="meshes/mesh_stage2_carrier.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage2_planet_gear" file="meshes/mesh_stage2_planet_gear.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage2_ring_gear" file="meshes/mesh_stage2_ring_gear.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_stage2_sun_gear" file="meshes/mesh_stage2_sun_gear.obj" scale="0.001 0.001 0.001" />
+  </asset>
+  <worldbody>
+    <geom name="housing" type="mesh" mesh="mesh_reducer_housing" density="2700" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_00_86e37e20652e" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00245 0 -0.011" quat="1 0 0 0" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_01_4b1df2922b9e" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.001732411614 0.001732411614 -0.011" quat="0.923879532511 0 0 0.382683432365" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_02_f320a17354e4" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 0.00245 -0.011" quat="0.707106781187 0 0 0.707106781187" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_03_f97690887b79" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.001732411614 0.001732411614 -0.011" quat="0.382683432365 0 0 0.923879532511" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_04_f78e514c71f5" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00245 0 -0.011" quat="0 0 0 1" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_05_9115a2f93885" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.001732411614 -0.001732411614 -0.011" quat="-0.382683432365 0 0 0.923879532511" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_06_2d98b9263ede" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 -0.00245 -0.011" quat="0.707106781187 0 -0 -0.707106781187" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_ball_07_d16fdc192c22" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.001732411614 -0.001732411614 -0.011" quat="0.923879532511 0 -0 -0.382683432365" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_outer_ring_55722aebc9a4" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="0 0 -0.011" quat="1 0 0 0" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_00_c251a80b382b" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00245 0 0" quat="1 0 0 0" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_01_ac8ca225146b" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.001732411614 0.001732411614 0" quat="0.923879532511 0 0 0.382683432365" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_02_a78237ec9e0b" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 0.00245 0" quat="0.707106781187 0 0 0.707106781187" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_03_5bc8f384e6e0" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.001732411614 0.001732411614 0" quat="0.382683432365 0 0 0.923879532511" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_04_9c74e1e7070e" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00245 0 0" quat="0 0 0 1" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_05_f890b1b8792a" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.001732411614 -0.001732411614 0" quat="-0.382683432365 0 0 0.923879532511" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_06_0da2600896d3" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 -0.00245 0" quat="0.707106781187 0 -0 -0.707106781187" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_ball_07_ccf1727b51ea" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.001732411614 -0.001732411614 0" quat="0.923879532511 0 -0 -0.382683432365" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_outer_ring_195f28a3b7a9" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_00_38574efa6805" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00245 0 0.0108" quat="1 0 0 0" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_01_e5e2aaac3884" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.001732411614 0.001732411614 0.0108" quat="0.923879532511 0 0 0.382683432365" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_02_ce8bedff7ab0" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 0.00245 0.0108" quat="0.707106781187 0 0 0.707106781187" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_03_1f2f4602f8f5" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.001732411614 0.001732411614 0.0108" quat="0.382683432365 0 0 0.923879532511" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_04_1304d06166d0" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00245 0 0.0108" quat="0 0 0 1" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_05_2d284e68e25b" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.001732411614 -0.001732411614 0.0108" quat="-0.382683432365 0 0 0.923879532511" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_06_453f2c665d50" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 -0.00245 0.0108" quat="0.707106781187 0 -0 -0.707106781187" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_ball_07_a3e972dcb518" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.001732411614 -0.001732411614 0.0108" quat="0.923879532511 0 -0 -0.382683432365" />
+    <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_outer_ring_a405c9892201" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0.0108" quat="1 0 0 0" />
+    <geom name="stage1_ring" type="mesh" mesh="mesh_stage1_ring_gear" density="7850" contype="1" conaffinity="1" pos="0 0 -0.0084" quat="1 0 0 0" />
+    <geom name="stage2_ring" type="mesh" mesh="mesh_stage2_ring_gear" density="7850" contype="1" conaffinity="1" pos="0 0 0.0012" quat="1 0 0 0" />
+    <body name="body_input_shaft" pos="0 0 -0.011" quat="1 0 0 0">
+      <joint name="joint_joint_compact_two_stage_planetary_reducer_input_shaft_revolute_660c7977fc43" type="hinge" pos="0 0 0.0072" axis="0 0 1" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_input_bearing_inner_ring_087ce5d313cb" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="input_flange" type="mesh" mesh="mesh_input_flange" density="7850" contype="1" conaffinity="1" pos="0 0 0.011" quat="1 0 0 0" />
+      <geom name="input_shaft" type="mesh" mesh="mesh_input_shaft" density="7850" contype="1" conaffinity="1" pos="0 0 0.011" quat="1 0 0 0" />
+      <geom name="stage1_sun" type="mesh" mesh="mesh_stage1_sun_gear" density="7850" contype="1" conaffinity="1" pos="0 0 0.0026" quat="1 0 0 0" />
+      <site name="input_motor_axis" size="0.0012" type="sphere" pos="0 0 -0.001" quat="1 0 0 0" />
+      <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external_mesh_c2590a0bfd48" size="0.0008" type="sphere" pos="0 0 0.0072" quat="1 0 0 0" />
+      <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_2_external_mesh_ce468f5bcf1e" size="0.0008" type="sphere" pos="0 0 0.0072" quat="1 0 0 0" />
+      <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_3_external_mesh_6177e8a68f11" size="0.0008" type="sphere" pos="0 0 0.0072" quat="1 0 0 0" />
+    </body>
+    <body name="body_stage1_carrier" pos="0 0 0" quat="1 0 0 0">
+      <joint name="joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8" type="hinge" pos="0 0 0.0058" axis="0 0 1" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_intermediate_bearing_inner_ring_b13817ee5b57" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="stage1_carrier" type="mesh" mesh="mesh_stage1_carrier" density="2810" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_inner_ring_9b09d3fcf88c" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="0.01125 0 -0.0061" quat="1 0 0 0" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_inner_ring_0d808cc54f91" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="-0.005625 0.009742785793 -0.0061" quat="1 0 0 0" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_inner_ring_512d5cd7ce67" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="-0.005625 -0.009742785793 -0.0061" quat="1 0 0 0" />
+      <geom name="stage2_sun" type="mesh" mesh="mesh_stage2_sun_gear" density="7850" contype="1" conaffinity="1" pos="0 0 0.0012" quat="1 0 0 0" />
+      <body name="body_stage1_planet_1" pos="0.01125 0 -0.0084" quat="0.0871557429121 0 0 0.996194698077">
+        <joint name="joint_joint_compact_two_stage_planetary_reducer_stage1_planet_1_revolute_25655304f7b0" type="hinge" pos="0 0 0.0046" axis="0 0 1" />
+        <geom name="stage1_planet_1" type="mesh" mesh="mesh_stage1_planet_gear" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_00_013d58cf59f7" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00241277899474 -0.000425438036081 0.0023" quat="-0.0871557429121 0 0 0.996194698077" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_01_3c65a06d0d4e" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00140526226847 -0.00200692250908 0.0023" quat="-0.461748613381 0 0 0.887010833102" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_02_a472a9395b0a" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.000425438036081 -0.00241277899474 0.0023" quat="0.766044443225 0 -0 -0.64278760956" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_03_f38d2ad9f88f" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00200692250908 -0.00140526226847 0.0023" quat="0.953716950798 0 -0 -0.300705799347" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_04_29f76441422a" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00241277899474 0.000425438036081 0.0023" quat="0.996194698077 0 0 0.0871557429121" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_05_a2c1f4f408b3" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00140526226847 0.00200692250908 0.0023" quat="0.887010833102 0 0 0.461748613381" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_06_d14bdf35e507" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.000425438036081 0.00241277899474 0.0023" quat="0.64278760956 0 0 0.766044443225" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_ball_07_c44ba60b3cf8" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00200692250908 0.00140526226847 0.0023" quat="0.300705799347 0 0 0.953716950798" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_1_outer_ring_aef2deb4090d" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0.0023" quat="-0.0871557429121 0 0 0.996194698077" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_mes_373d24c38beb" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external_mesh_0d82b285bb3d" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+      </body>
+      <body name="body_stage1_planet_2" pos="-0.005625 0.009742785793 -0.0084" quat="0.81915204418 0 -0 -0.573576436506">
+        <joint name="joint_joint_compact_two_stage_planetary_reducer_stage1_planet_2_revolute_225f62621f28" type="hinge" pos="0 0 0.0046" axis="0 0 1" />
+        <geom name="stage1_planet_2" type="mesh" mesh="mesh_stage1_planet_gear" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_00_243ffa162ee9" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.000837949350275 0.00230224692124 0.0023" quat="0.81915204418 0 0 0.573576436506" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_01_8513299880ea" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00103541474216 0.00222045407797 0.0023" quat="0.537299608187 0 0 0.843391445915" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_02_d414daf8a285" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00230224692124 0.000837949350275 0.0023" quat="0.17364817748 0 0 0.984807753045" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_03_681ffb43723c" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00222045407797 -0.00103541474216 0.0023" quat="-0.216439614123 0 0 0.976296007079" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_04_7f87d16b5ceb" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.000837949350275 -0.00230224692124 0.0023" quat="0.573576436506 0 0 -0.81915204418" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_05_88e0ccdd1ad7" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00103541474216 -0.00222045407797 0.0023" quat="0.843391445915 0 -0 -0.537299608187" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_06_581312af49c6" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00230224692124 -0.000837949350275 0.0023" quat="0.984807753045 0 -0 -0.17364817748" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_ball_07_aeece84fd10b" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00222045407797 0.00103541474216 0.0023" quat="0.976296007079 0 0 0.216439614123" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_2_outer_ring_5f4019691873" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0.0023" quat="0.81915204418 0 0 0.573576436506" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_mes_fa35db898f60" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_2_external_mesh_afae7acdcf59" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+      </body>
+      <body name="body_stage1_planet_3" pos="-0.005625 -0.009742785793 -0.0084" quat="0.906307787104 0 0 0.422618261597">
+        <joint name="joint_joint_compact_two_stage_planetary_reducer_stage1_planet_3_revolute_beb8ce1563d3" type="hinge" pos="-8.881784197e-19 0 0.0046" axis="0 0 1" />
+        <geom name="stage1_planet_3" type="mesh" mesh="mesh_stage1_planet_gear" density="7850" contype="1" conaffinity="1" pos="-8.881784197e-19 0 0" quat="1 0 0 0" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_00_a26b7e9c985a" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00157482964433 -0.00187680888514 0.0023" quat="0.906307787104 0 -0 -0.422618261597" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_01_7497f46082b8" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00244067701052 -0.00021353156897 0.0023" quat="0.999048221589 0 -0 -0.0436193872072" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_02_c3bbbc94d1cb" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00187680888514 0.00157482964433 0.0023" quat="0.939692620732 0 0 0.342020143474" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_03_c96dc13e02b1" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00021353156897 0.00244067701052 0.0023" quat="0.737277336703 0 0 0.675590207732" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_04_026e9f380820" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00157482964433 0.00187680888514 0.0023" quat="0.422618261597 0 0 0.906307787104" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_05_884d44e114b5" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00244067701052 0.00021353156897 0.0023" quat="0.0436193872072 0 0 0.999048221589" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_06_fe5ae37b2495" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00187680888514 -0.00157482964433 0.0023" quat="-0.342020143474 0 0 0.939692620732" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_ball_07_dffb3d35ee62" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00021353156897 -0.00244067701052 0.0023" quat="0.675590207732 0 0 -0.737277336703" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage1_planet_bearing_3_outer_ring_94de8d533e6d" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="-8.881784197e-19 0 0.0023" quat="0.906307787104 0 -0 -0.422618261597" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_mes_88a324ab3181" size="0.0008" type="sphere" pos="-8.881784197e-19 0 0.0046" quat="1 0 0 0" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_3_external_mesh_adb7d31cf716" size="0.0008" type="sphere" pos="-8.881784197e-19 0 0.0046" quat="1 0 0 0" />
+      </body>
+      <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external_mesh_3588c1ce3483" size="0.0008" type="sphere" pos="0 0 0.0058" quat="1 0 0 0" />
+      <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_2_external_mesh_65f92bbb6e4e" size="0.0008" type="sphere" pos="0 0 0.0058" quat="1 0 0 0" />
+      <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_3_external_mesh_893ce928b0c6" size="0.0008" type="sphere" pos="0 0 0.0058" quat="1 0 0 0" />
+    </body>
+    <body name="body_stage2_carrier" pos="0 0 0.0108" quat="1 0 0 0">
+      <joint name="joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f" type="hinge" pos="0 0 0.0042" axis="0 0 1" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_output_bearing_inner_ring_2199ab39e8d6" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="output_flange" type="mesh" mesh="mesh_output_flange" density="7850" contype="1" conaffinity="1" pos="0 0 -0.0108" quat="1 0 0 0" />
+      <geom name="stage2_carrier" type="mesh" mesh="mesh_stage2_carrier" density="2810" contype="1" conaffinity="1" pos="0 0 -0.0108" quat="1 0 0 0" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_inner_ring_9193d0f58388" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="0.009 0 -0.0073" quat="1 0 0 0" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_inner_ring_8a2a948f8d02" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="-0.0045 0.007794228634 -0.0073" quat="1 0 0 0" />
+      <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_inner_ring_a53af78bce97" type="mesh" mesh="mesh_micro_radial_ball_bearing_inner_ring" density="7850" contype="1" conaffinity="1" pos="-0.0045 -0.007794228634 -0.0073" quat="1 0 0 0" />
+      <body name="body_stage2_planet_1" pos="0.009 0 -0.0096" quat="0.130526192208 0 0 0.991444861375">
+        <joint name="joint_joint_compact_two_stage_planetary_reducer_stage2_planet_1_revolute_c650c1f4cc1a" type="hinge" pos="0 0 0.0046" axis="0 0 1" />
+        <geom name="stage2_planet_1" type="mesh" mesh="mesh_stage2_planet_gear" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_00_d3de108c554f" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00236651827442 -0.000634106660444 0.0023" quat="-0.130526192208 0 0 0.991444861375" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_01_296d997078a4" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00122500000012 -0.00212176223936 0.0023" quat="-0.49999999999 0 0 0.86602540379" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_02_bfeef2e5bc79" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.000634106660444 -0.00236651827442 0.0023" quat="0.793353340284 0 -0 -0.608761429018" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_03_b99d832d2982" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00212176223936 -0.00122500000012 0.0023" quat="0.965925826286 0 -0 -0.258819045114" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_04_fe43d2d8b569" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00236651827442 0.000634106660444 0.0023" quat="0.991444861375 0 0 0.130526192208" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_05_ba8833de116e" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00122500000012 0.00212176223936 0.0023" quat="0.86602540379 0 0 0.49999999999" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_06_1d9f66bc4301" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.000634106660444 0.00236651827442 0.0023" quat="0.608761429018 0 0 0.793353340284" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_ball_07_8a9d64cce7cc" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00212176223936 0.00122500000012 0.0023" quat="0.258819045114 0 0 0.965925826286" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_1_outer_ring_f2ab95b73345" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0.0023" quat="-0.130526192208 0 0 0.991444861375" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_mes_c13538d5a162" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external_mesh_339eff3d8a29" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+      </body>
+      <body name="body_stage2_planet_2" pos="-0.0045 0.007794228634 -0.0096" quat="0.793353340284 0 -0 -0.608761429018">
+        <joint name="joint_joint_compact_two_stage_planetary_reducer_stage2_planet_2_revolute_2f83464e9782" type="hinge" pos="0 0 0.0046" axis="0 0 1" />
+        <geom name="stage2_planet_2" type="mesh" mesh="mesh_stage2_planet_gear" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_00_96d7c969d99e" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.000634106660444 0.00236651827442 0.0023" quat="0.793353340284 0 0 0.608761429018" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_01_0b51586a1ce5" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00122500000012 0.00212176223936 0.0023" quat="0.49999999999 0 0 0.86602540379" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_02_7b996941a69f" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00236651827442 0.000634106660444 0.0023" quat="0.130526192208 0 0 0.991444861375" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_03_e99cfa5359f8" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00212176223936 -0.00122500000012 0.0023" quat="-0.258819045114 0 0 0.965925826286" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_04_1b0918af1fd5" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.000634106660444 -0.00236651827442 0.0023" quat="0.608761429018 0 0 -0.793353340284" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_05_ce0c33157890" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00122500000012 -0.00212176223936 0.0023" quat="0.86602540379 0 -0 -0.49999999999" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_06_4ca32a3ecdd3" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00236651827442 -0.000634106660444 0.0023" quat="0.991444861375 0 -0 -0.130526192208" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_ball_07_5c1ce7c39f63" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00212176223936 0.00122500000012 0.0023" quat="0.965925826286 0 0 0.258819045114" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_2_outer_ring_f5c06fa17c5d" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0.0023" quat="0.793353340284 0 0 0.608761429018" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_mes_7f1b74f8d45d" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_2_external_mesh_50057c8f3985" size="0.0008" type="sphere" pos="0 0 0.0046" quat="1 0 0 0" />
+      </body>
+      <body name="body_stage2_planet_3" pos="-0.0045 -0.007794228634 -0.0096" quat="0.923879532511 0 0 0.382683432365">
+        <joint name="joint_joint_compact_two_stage_planetary_reducer_stage2_planet_3_revolute_b470190f204d" type="hinge" pos="-8.881784197e-19 0 0.0046" axis="0 0 1" />
+        <geom name="stage2_planet_3" type="mesh" mesh="mesh_stage2_planet_gear" density="7850" contype="1" conaffinity="1" pos="-8.881784197e-19 0 0" quat="1 0 0 0" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_00_1c3352e7486c" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00173241161391 -0.00173241161391 0.0023" quat="0.923879532511 0 -0 -0.382683432365" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_01_f456a79c26e0" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00245000000013 0 0.0023" quat="1 0 0 0" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_02_56c7680e6b46" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0.00173241161391 0.00173241161391 0.0023" quat="0.923879532511 0 0 0.382683432365" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_03_121b5885c0cc" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 0.00245000000013 0.0023" quat="0.707106781187 0 0 0.707106781187" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_04_1b50b8823d9d" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00173241161391 0.00173241161391 0.0023" quat="0.382683432365 0 0 0.923879532511" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_05_e5584f9cc6ee" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00245000000013 0 0.0023" quat="0 0 0 1" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_06_a73175c36e2d" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="-0.00173241161391 -0.00173241161391 0.0023" quat="-0.382683432365 0 0 0.923879532511" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_ball_07_2a441c6089b7" type="mesh" mesh="mesh_micro_radial_ball_bearing_ball" density="7850" contype="1" conaffinity="1" pos="0 -0.00245000000013 0.0023" quat="0.707106781187 0 -0 -0.707106781187" />
+        <geom name="geom_node_compact_two_stage_planetary_reducer_stage2_planet_bearing_3_outer_ring_472ffad40c95" type="mesh" mesh="mesh_micro_radial_ball_bearing_outer_ring" density="7850" contype="1" conaffinity="1" pos="-8.881784197e-19 0 0.0023" quat="0.923879532511 0 -0 -0.382683432365" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_mes_d59582ce5167" size="0.0008" type="sphere" pos="-8.881784197e-19 0 0.0046" quat="1 0 0 0" />
+        <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_3_external_mesh_e66bc0176836" size="0.0008" type="sphere" pos="-8.881784197e-19 0 0.0046" quat="1 0 0 0" />
+      </body>
+      <site name="output_link_axis" size="0.0012" type="sphere" pos="0 0 0.0042" quat="1 0 0 0" />
+    </body>
+    <site name="housing_mount_axis" size="0.0012" type="sphere" pos="0 0 0.015" quat="1 0 0 0" />
+    <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_mes_f6990d44db5c" size="0.0008" type="sphere" pos="0 0 -0.0038" quat="1 0 0 0" />
+    <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_mes_9877bf02d468" size="0.0008" type="sphere" pos="0 0 -0.0038" quat="1 0 0 0" />
+    <site name="mesh_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_mes_32434b1556d8" size="0.0008" type="sphere" pos="0 0 -0.0038" quat="1 0 0 0" />
+    <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_mes_d51459eb3121" size="0.0008" type="sphere" pos="0 0 0.0058" quat="1 0 0 0" />
+    <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_mes_3bddad72e145" size="0.0008" type="sphere" pos="0 0 0.0058" quat="1 0 0 0" />
+    <site name="mesh_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_mes_4b9790daa9cb" size="0.0008" type="sphere" pos="0 0 0.0058" quat="1 0 0 0" />
+  </worldbody>
+  <tendon>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_fa343f5c7d00">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8" coef="-18" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_planet_1_revolute_25655304f7b0" coef="-6.75" />
+    </fixed>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_6f3f2891ff08">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8" coef="-18" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_planet_2_revolute_225f62621f28" coef="-6.75" />
+    </fixed>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_ba19cc3803c3">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8" coef="-18" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_planet_3_revolute_beb8ce1563d3" coef="-6.75" />
+    </fixed>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external__25802f5f181e">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_input_shaft_revolute_660c7977fc43" coef="4.5" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8" coef="-4.5" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_planet_1_revolute_25655304f7b0" coef="6.75" />
+    </fixed>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_2ff79a3e90c1">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f" coef="-13.5" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_planet_1_revolute_c650c1f4cc1a" coef="-4.5" />
+    </fixed>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_6e876804bf3b">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f" coef="-13.5" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_planet_2_revolute_2f83464e9782" coef="-4.5" />
+    </fixed>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_6da2bf6ebf71">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f" coef="-13.5" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_planet_3_revolute_b470190f204d" coef="-4.5" />
+    </fixed>
+    <fixed name="coupling_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external__43613578c371">
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage1_carrier_revolute_38f6fa1fc4c8" coef="4.5" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_carrier_revolute_b5eba2d4d17f" coef="-4.5" />
+      <joint joint="joint_joint_compact_two_stage_planetary_reducer_stage2_planet_1_revolute_c650c1f4cc1a" coef="4.5" />
+    </fixed>
+  </tendon>
+  <equality>
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_8793e02e20b7" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_1_internal_fa343f5c7d00" polycoef="0 0 0 0 0" />
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_bd7cfa9166eb" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_2_internal_6f3f2891ff08" polycoef="0 0 0 0 0" />
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_1431123a1212" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage1_ring_planet_3_internal_ba19cc3803c3" polycoef="0 0 0 0 0" />
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external__166bafaced5f" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage1_sun_planet_1_external__25802f5f181e" polycoef="0 0 0 0 0" />
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_d3bc1acd217b" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_1_internal_2ff79a3e90c1" polycoef="0 0 0 0 0" />
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_c584c0041c38" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_2_internal_6e876804bf3b" polycoef="0 0 0 0 0" />
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_e37e2aa68661" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage2_ring_planet_3_internal_6da2bf6ebf71" polycoef="0 0 0 0 0" />
+    <tendon name="equality_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external__df420176f189" tendon1="coupling_joint_compact_two_stage_planetary_reducer_stage2_sun_planet_1_external__43613578c371" polycoef="0 0 0 0 0" />
+  </equality>
+</mujoco>

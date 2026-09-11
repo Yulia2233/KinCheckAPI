@@ -1,0 +1,391 @@
+{
+  "closures": [],
+  "collision_exclusions": [],
+  "default_density_count": 0,
+  "equalities": [],
+  "grounded_group_id": "cmp.pg3.s01.ring.01",
+  "groups": [
+    {
+      "body_name": "body_cmp_pg3_s00_input_shaft_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s00.input_shaft.01",
+      "members": [
+        "cmp.pg3.s00.input_shaft.01"
+      ],
+      "parent_group": "cmp.pg3.s01.sun.01",
+      "representative": "cmp.pg3.s00.input_shaft.01",
+      "tree_joint": "joint_cst_pg3_s01_fixed_input"
+    },
+    {
+      "body_name": "body_cmp_pg3_s04_output_shaft_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s04.output_shaft.01",
+      "members": [
+        "cmp.pg3.s04.output_shaft.01"
+      ],
+      "parent_group": "cmp.pg3.s01.ring.01",
+      "representative": "cmp.pg3.s04.output_shaft.01",
+      "tree_joint": "joint_fixed_cmp_pg3_s04_output_shaft_01"
+    },
+    {
+      "body_name": "body_cmp_pg3_s01_sun_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s01.sun.01",
+      "members": [
+        "cmp.pg3.s01.sun.01"
+      ],
+      "parent_group": "cmp.pg3.s01.ring.01",
+      "representative": "cmp.pg3.s01.sun.01",
+      "tree_joint": "joint_cst_pg3_s01_revolute_sun"
+    },
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "cmp.pg3.s01.ring.01",
+      "members": [
+        "cmp.pg3.s01.ring.01"
+      ],
+      "parent_group": null,
+      "representative": "cmp.pg3.s01.ring.01",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_cmp_pg3_s01_carrier_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s01.carrier.01",
+      "members": [
+        "cmp.pg3.s01.carrier.01"
+      ],
+      "parent_group": "cmp.pg3.s01.ring.01",
+      "representative": "cmp.pg3.s01.carrier.01",
+      "tree_joint": "joint_cst_pg3_s01_revolute_carrier"
+    },
+    {
+      "body_name": "body_cmp_pg3_s01_planet_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s01.planet.01",
+      "members": [
+        "cmp.pg3.s01.planet.01"
+      ],
+      "parent_group": "cmp.pg3.s01.carrier.01",
+      "representative": "cmp.pg3.s01.planet.01",
+      "tree_joint": "joint_cst_pg3_s01_revolute_planet01"
+    },
+    {
+      "body_name": "body_cmp_pg3_s01_planet_02",
+      "grounded": false,
+      "group_id": "cmp.pg3.s01.planet.02",
+      "members": [
+        "cmp.pg3.s01.planet.02"
+      ],
+      "parent_group": "cmp.pg3.s01.carrier.01",
+      "representative": "cmp.pg3.s01.planet.02",
+      "tree_joint": "joint_cst_pg3_s01_revolute_planet02"
+    },
+    {
+      "body_name": "body_cmp_pg3_s01_planet_03",
+      "grounded": false,
+      "group_id": "cmp.pg3.s01.planet.03",
+      "members": [
+        "cmp.pg3.s01.planet.03"
+      ],
+      "parent_group": "cmp.pg3.s01.carrier.01",
+      "representative": "cmp.pg3.s01.planet.03",
+      "tree_joint": "joint_cst_pg3_s01_revolute_planet03"
+    },
+    {
+      "body_name": "body_cmp_pg3_s02_sun_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s02.sun.01",
+      "members": [
+        "cmp.pg3.s02.sun.01"
+      ],
+      "parent_group": "cmp.pg3.s01.carrier.01",
+      "representative": "cmp.pg3.s02.sun.01",
+      "tree_joint": "joint_cst_pg3_s01_fixed_to_s02_sun"
+    },
+    {
+      "body_name": "body_cmp_pg3_s02_ring_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s02.ring.01",
+      "members": [
+        "cmp.pg3.s02.ring.01"
+      ],
+      "parent_group": "cmp.pg3.s02.carrier.01",
+      "representative": "cmp.pg3.s02.ring.01",
+      "tree_joint": "joint_cst_pg3_s02_revolute_carrier"
+    },
+    {
+      "body_name": "body_cmp_pg3_s02_carrier_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s02.carrier.01",
+      "members": [
+        "cmp.pg3.s02.carrier.01"
+      ],
+      "parent_group": "cmp.pg3.s02.planet.03",
+      "representative": "cmp.pg3.s02.carrier.01",
+      "tree_joint": "joint_cst_pg3_s02_revolute_planet03"
+    },
+    {
+      "body_name": "body_cmp_pg3_s02_planet_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s02.planet.01",
+      "members": [
+        "cmp.pg3.s02.planet.01"
+      ],
+      "parent_group": "cmp.pg3.s02.carrier.01",
+      "representative": "cmp.pg3.s02.planet.01",
+      "tree_joint": "joint_cst_pg3_s02_revolute_planet01"
+    },
+    {
+      "body_name": "body_cmp_pg3_s02_planet_02",
+      "grounded": false,
+      "group_id": "cmp.pg3.s02.planet.02",
+      "members": [
+        "cmp.pg3.s02.planet.02"
+      ],
+      "parent_group": "cmp.pg3.s02.carrier.01",
+      "representative": "cmp.pg3.s02.planet.02",
+      "tree_joint": "joint_cst_pg3_s02_revolute_planet02"
+    },
+    {
+      "body_name": "body_cmp_pg3_s02_planet_03",
+      "grounded": false,
+      "group_id": "cmp.pg3.s02.planet.03",
+      "members": [
+        "cmp.pg3.s02.planet.03"
+      ],
+      "parent_group": "cmp.pg3.s01.ring.01",
+      "representative": "cmp.pg3.s02.planet.03",
+      "tree_joint": "joint_fixed_cmp_pg3_s02_planet_03"
+    },
+    {
+      "body_name": "body_cmp_pg3_s03_sun_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s03.sun.01",
+      "members": [
+        "cmp.pg3.s03.sun.01"
+      ],
+      "parent_group": "cmp.pg3.s02.carrier.01",
+      "representative": "cmp.pg3.s03.sun.01",
+      "tree_joint": "joint_cst_pg3_s02_fixed_to_s03_sun"
+    },
+    {
+      "body_name": "body_cmp_pg3_s03_ring_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s03.ring.01",
+      "members": [
+        "cmp.pg3.s03.ring.01"
+      ],
+      "parent_group": "cmp.pg3.s03.carrier.01",
+      "representative": "cmp.pg3.s03.ring.01",
+      "tree_joint": "joint_cst_pg3_s03_revolute_carrier"
+    },
+    {
+      "body_name": "body_cmp_pg3_s03_carrier_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s03.carrier.01",
+      "members": [
+        "cmp.pg3.s03.carrier.01"
+      ],
+      "parent_group": "cmp.pg3.s04.output_shaft.01",
+      "representative": "cmp.pg3.s03.carrier.01",
+      "tree_joint": "joint_cst_pg3_s03_fixed_output"
+    },
+    {
+      "body_name": "body_cmp_pg3_s03_planet_01",
+      "grounded": false,
+      "group_id": "cmp.pg3.s03.planet.01",
+      "members": [
+        "cmp.pg3.s03.planet.01"
+      ],
+      "parent_group": "cmp.pg3.s03.carrier.01",
+      "representative": "cmp.pg3.s03.planet.01",
+      "tree_joint": "joint_cst_pg3_s03_revolute_planet01"
+    },
+    {
+      "body_name": "body_cmp_pg3_s03_planet_02",
+      "grounded": false,
+      "group_id": "cmp.pg3.s03.planet.02",
+      "members": [
+        "cmp.pg3.s03.planet.02"
+      ],
+      "parent_group": "cmp.pg3.s03.carrier.01",
+      "representative": "cmp.pg3.s03.planet.02",
+      "tree_joint": "joint_cst_pg3_s03_revolute_planet02"
+    },
+    {
+      "body_name": "body_cmp_pg3_s03_planet_03",
+      "grounded": false,
+      "group_id": "cmp.pg3.s03.planet.03",
+      "members": [
+        "cmp.pg3.s03.planet.03"
+      ],
+      "parent_group": "cmp.pg3.s03.carrier.01",
+      "representative": "cmp.pg3.s03.planet.03",
+      "tree_joint": "joint_cst_pg3_s03_revolute_planet03"
+    }
+  ],
+  "meshes": {
+    "mesh/part.pg3.carrier.s01": "mesh_part_pg3_carrier_s01",
+    "mesh/part.pg3.carrier.s02": "mesh_part_pg3_carrier_s02",
+    "mesh/part.pg3.carrier.s03": "mesh_part_pg3_carrier_s03",
+    "mesh/part.pg3.input_shaft": "mesh_part_pg3_input_shaft",
+    "mesh/part.pg3.output_shaft": "mesh_part_pg3_output_shaft",
+    "mesh/part.pg3.planet.s01": "mesh_part_pg3_planet_s01",
+    "mesh/part.pg3.planet.s02": "mesh_part_pg3_planet_s02",
+    "mesh/part.pg3.planet.s03": "mesh_part_pg3_planet_s03",
+    "mesh/part.pg3.ring.s01": "mesh_part_pg3_ring_s01",
+    "mesh/part.pg3.ring.s02": "mesh_part_pg3_ring_s02",
+    "mesh/part.pg3.ring.s03": "mesh_part_pg3_ring_s03",
+    "mesh/part.pg3.sun.s01": "mesh_part_pg3_sun_s01",
+    "mesh/part.pg3.sun.s02": "mesh_part_pg3_sun_s02",
+    "mesh/part.pg3.sun.s03": "mesh_part_pg3_sun_s03"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [],
+  "rigid_edges": [],
+  "root_definition_id": "asm.pg3",
+  "schema_version": "1.0",
+  "sites": [],
+  "tree_joints": [
+    {
+      "group": "cmp.pg3.s01.sun.01",
+      "joint_id": "cst.pg3.s01.revolute.sun",
+      "joint_name": "joint_cst_pg3_s01_revolute_sun",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s01.ring.01"
+    },
+    {
+      "group": "cmp.pg3.s01.carrier.01",
+      "joint_id": "cst.pg3.s01.revolute.carrier",
+      "joint_name": "joint_cst_pg3_s01_revolute_carrier",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s01.ring.01"
+    },
+    {
+      "group": "cmp.pg3.s01.planet.01",
+      "joint_id": "cst.pg3.s01.revolute.planet01",
+      "joint_name": "joint_cst_pg3_s01_revolute_planet01",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s01.planet.02",
+      "joint_id": "cst.pg3.s01.revolute.planet02",
+      "joint_name": "joint_cst_pg3_s01_revolute_planet02",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s01.planet.03",
+      "joint_id": "cst.pg3.s01.revolute.planet03",
+      "joint_name": "joint_cst_pg3_s01_revolute_planet03",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s00.input_shaft.01",
+      "joint_id": "cst.pg3.s01.fixed.input",
+      "joint_name": "joint_cst_pg3_s01_fixed_input",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg3.s01.sun.01"
+    },
+    {
+      "group": "cmp.pg3.s02.sun.01",
+      "joint_id": "cst.pg3.s01.fixed.to_s02_sun",
+      "joint_name": "joint_cst_pg3_s01_fixed_to_s02_sun",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg3.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s04.output_shaft.01",
+      "joint_id": "__fixed__/cmp.pg3.s04.output_shaft.01",
+      "joint_name": "joint_fixed_cmp_pg3_s04_output_shaft_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg3.s01.ring.01"
+    },
+    {
+      "group": "cmp.pg3.s03.carrier.01",
+      "joint_id": "cst.pg3.s03.fixed.output",
+      "joint_name": "joint_cst_pg3_s03_fixed_output",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg3.s04.output_shaft.01"
+    },
+    {
+      "group": "cmp.pg3.s03.ring.01",
+      "joint_id": "cst.pg3.s03.revolute.carrier",
+      "joint_name": "joint_cst_pg3_s03_revolute_carrier",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s03.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s03.planet.01",
+      "joint_id": "cst.pg3.s03.revolute.planet01",
+      "joint_name": "joint_cst_pg3_s03_revolute_planet01",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s03.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s03.planet.02",
+      "joint_id": "cst.pg3.s03.revolute.planet02",
+      "joint_name": "joint_cst_pg3_s03_revolute_planet02",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s03.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s03.planet.03",
+      "joint_id": "cst.pg3.s03.revolute.planet03",
+      "joint_name": "joint_cst_pg3_s03_revolute_planet03",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s03.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s02.planet.03",
+      "joint_id": "__fixed__/cmp.pg3.s02.planet.03",
+      "joint_name": "joint_fixed_cmp_pg3_s02_planet_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg3.s01.ring.01"
+    },
+    {
+      "group": "cmp.pg3.s02.carrier.01",
+      "joint_id": "cst.pg3.s02.revolute.planet03",
+      "joint_name": "joint_cst_pg3_s02_revolute_planet03",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s02.planet.03"
+    },
+    {
+      "group": "cmp.pg3.s02.ring.01",
+      "joint_id": "cst.pg3.s02.revolute.carrier",
+      "joint_name": "joint_cst_pg3_s02_revolute_carrier",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s02.planet.01",
+      "joint_id": "cst.pg3.s02.revolute.planet01",
+      "joint_name": "joint_cst_pg3_s02_revolute_planet01",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s02.planet.02",
+      "joint_id": "cst.pg3.s02.revolute.planet02",
+      "joint_name": "joint_cst_pg3_s02_revolute_planet02",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg3.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg3.s03.sun.01",
+      "joint_id": "cst.pg3.s02.fixed.to_s03_sun",
+      "joint_name": "joint_cst_pg3_s02_fixed_to_s03_sun",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg3.s02.carrier.01"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

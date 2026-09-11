@@ -1,0 +1,6 @@
+include sca-addon.toml
+include LICENSE
+include README_zh.md
+recursive-include skill *.md
+recursive-include skill_zh *.md
+include scripts/package_addon.py

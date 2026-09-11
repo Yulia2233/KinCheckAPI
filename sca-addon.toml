@@ -1,0 +1,13 @@
+[addon]
+name = "kincheckapi"
+version = "0.5.3"
+license = "Apache-2.0"
+skill_path = "skill"
+
+[compat]
+sca = ">=2.1.3b3,<2.1.4"
+
+[runtime]
+kind = "python-env"
+platforms = ["macos-arm64"]
+check_cmd = "kincheck doctor --addon --format json"

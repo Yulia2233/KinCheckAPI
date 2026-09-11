@@ -1,0 +1,2103 @@
+{
+  "closures": [
+    {
+      "joint_id": "input_bearing_inner_to_shaft__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_input_bearing_inner_to_shaft__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.input_shaft.01",
+          "name": "site_input_bearing_inner_to_shaft__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.input_bearing/inner_ring",
+          "name": "site_input_bearing_inner_to_shaft__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "input_bearing_inner_to_shaft"
+    },
+    {
+      "joint_id": "intermediate_bearing_inner_to_stage1_carrier__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_intermediate_bearing_inner_to_stage1_carrier__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s01.carrier.01",
+          "name": "site_intermediate_bearing_inner_to_stage1_carrier__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.intermediate_bearing/inner_ring",
+          "name": "site_intermediate_bearing_inner_to_stage1_carrier__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "intermediate_bearing_inner_to_stage1_carrier"
+    },
+    {
+      "joint_id": "output_bearing_inner_to_stage2_carrier__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_output_bearing_inner_to_stage2_carrier__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s02.carrier.01",
+          "name": "site_output_bearing_inner_to_stage2_carrier__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.output_bearing/inner_ring",
+          "name": "site_output_bearing_inner_to_stage2_carrier__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "output_bearing_inner_to_stage2_carrier"
+    },
+    {
+      "joint_id": "stage1_planet_bearing_1_outer_to_planet__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_stage1_planet_bearing_1_outer_to_planet__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s01.planet.01",
+          "name": "site_stage1_planet_bearing_1_outer_to_planet__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.stage1_planet_bearing_1",
+          "name": "site_stage1_planet_bearing_1_outer_to_planet__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "stage1_planet_bearing_1_outer_to_planet"
+    },
+    {
+      "joint_id": "stage1_planet_bearing_2_outer_to_planet__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_stage1_planet_bearing_2_outer_to_planet__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s01.planet.02",
+          "name": "site_stage1_planet_bearing_2_outer_to_planet__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.stage1_planet_bearing_2",
+          "name": "site_stage1_planet_bearing_2_outer_to_planet__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "stage1_planet_bearing_2_outer_to_planet"
+    },
+    {
+      "joint_id": "stage1_planet_bearing_3_outer_to_planet__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_stage1_planet_bearing_3_outer_to_planet__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s01.planet.03",
+          "name": "site_stage1_planet_bearing_3_outer_to_planet__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.stage1_planet_bearing_3",
+          "name": "site_stage1_planet_bearing_3_outer_to_planet__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "stage1_planet_bearing_3_outer_to_planet"
+    },
+    {
+      "joint_id": "stage2_planet_bearing_1_outer_to_planet__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_stage2_planet_bearing_1_outer_to_planet__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s02.planet.01",
+          "name": "site_stage2_planet_bearing_1_outer_to_planet__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.stage2_planet_bearing_1",
+          "name": "site_stage2_planet_bearing_1_outer_to_planet__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "stage2_planet_bearing_1_outer_to_planet"
+    },
+    {
+      "joint_id": "stage2_planet_bearing_2_outer_to_planet__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_stage2_planet_bearing_2_outer_to_planet__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s02.planet.02",
+          "name": "site_stage2_planet_bearing_2_outer_to_planet__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.stage2_planet_bearing_2",
+          "name": "site_stage2_planet_bearing_2_outer_to_planet__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "stage2_planet_bearing_2_outer_to_planet"
+    },
+    {
+      "joint_id": "stage2_planet_bearing_3_outer_to_planet__adapter_closure",
+      "joint_type": "revolute",
+      "name": "eq_stage2_planet_bearing_3_outer_to_planet__adapter_closure",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.pg2.s02.planet.03",
+          "name": "site_stage2_planet_bearing_3_outer_to_planet__adapter_closure_0"
+        },
+        {
+          "group": "cmp.pg2.aux.stage2_planet_bearing_3",
+          "name": "site_stage2_planet_bearing_3_outer_to_planet__adapter_closure_1"
+        }
+      ],
+      "source_joint_id": "stage2_planet_bearing_3_outer_to_planet"
+    }
+  ],
+  "collision_exclusions": [],
+  "default_density_count": 0,
+  "equalities": [],
+  "grounded_group_id": "cmp.pg2.housing.01",
+  "groups": [
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "cmp.pg2.housing.01",
+      "members": [
+        "cmp.pg2.housing.01"
+      ],
+      "parent_group": null,
+      "representative": "cmp.pg2.housing.01",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_cmp_pg2_input_flange_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.input_flange.01",
+      "members": [
+        "cmp.pg2.input_flange.01"
+      ],
+      "parent_group": "cmp.pg2.input_shaft.01",
+      "representative": "cmp.pg2.input_flange.01",
+      "tree_joint": "joint_input_flange_to_shaft"
+    },
+    {
+      "body_name": "body_cmp_pg2_output_flange_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.output_flange.01",
+      "members": [
+        "cmp.pg2.output_flange.01"
+      ],
+      "parent_group": "cmp.pg2.s02.carrier.01",
+      "representative": "cmp.pg2.output_flange.01",
+      "tree_joint": "joint_output_flange_to_stage2_carrier"
+    },
+    {
+      "body_name": "body_cmp_pg2_input_shaft_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.input_shaft.01",
+      "members": [
+        "cmp.pg2.input_shaft.01"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.input_shaft.01",
+      "tree_joint": "joint_input_shaft_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s01_carrier_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s01.carrier.01",
+      "members": [
+        "cmp.pg2.s01.carrier.01"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.s01.carrier.01",
+      "tree_joint": "joint_stage1_carrier_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s02_carrier_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s02.carrier.01",
+      "members": [
+        "cmp.pg2.s02.carrier.01"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.s02.carrier.01",
+      "tree_joint": "joint_stage2_carrier_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s01_ring_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s01.ring.01",
+      "members": [
+        "cmp.pg2.s01.ring.01"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.s01.ring.01",
+      "tree_joint": "joint_stage1_ring_fixed"
+    },
+    {
+      "body_name": "body_cmp_pg2_s01_sun_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s01.sun.01",
+      "members": [
+        "cmp.pg2.s01.sun.01"
+      ],
+      "parent_group": "cmp.pg2.input_shaft.01",
+      "representative": "cmp.pg2.s01.sun.01",
+      "tree_joint": "joint_stage1_sun_to_input_shaft"
+    },
+    {
+      "body_name": "body_cmp_pg2_s02_ring_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s02.ring.01",
+      "members": [
+        "cmp.pg2.s02.ring.01"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.s02.ring.01",
+      "tree_joint": "joint_stage2_ring_fixed"
+    },
+    {
+      "body_name": "body_cmp_pg2_s02_sun_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s02.sun.01",
+      "members": [
+        "cmp.pg2.s02.sun.01"
+      ],
+      "parent_group": "cmp.pg2.s01.carrier.01",
+      "representative": "cmp.pg2.s02.sun.01",
+      "tree_joint": "joint_stage2_sun_to_stage1_carrier"
+    },
+    {
+      "body_name": "body_cmp_pg2_s01_planet_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s01.planet.01",
+      "members": [
+        "cmp.pg2.s01.planet.01"
+      ],
+      "parent_group": "cmp.pg2.s01.carrier.01",
+      "representative": "cmp.pg2.s01.planet.01",
+      "tree_joint": "joint_stage1_planet_1_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s02_planet_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.s02.planet.01",
+      "members": [
+        "cmp.pg2.s02.planet.01"
+      ],
+      "parent_group": "cmp.pg2.s02.carrier.01",
+      "representative": "cmp.pg2.s02.planet.01",
+      "tree_joint": "joint_stage2_planet_1_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s01_planet_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.s01.planet.02",
+      "members": [
+        "cmp.pg2.s01.planet.02"
+      ],
+      "parent_group": "cmp.pg2.s01.carrier.01",
+      "representative": "cmp.pg2.s01.planet.02",
+      "tree_joint": "joint_stage1_planet_2_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s02_planet_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.s02.planet.02",
+      "members": [
+        "cmp.pg2.s02.planet.02"
+      ],
+      "parent_group": "cmp.pg2.s02.carrier.01",
+      "representative": "cmp.pg2.s02.planet.02",
+      "tree_joint": "joint_stage2_planet_2_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s01_planet_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.s01.planet.03",
+      "members": [
+        "cmp.pg2.s01.planet.03"
+      ],
+      "parent_group": "cmp.pg2.s01.carrier.01",
+      "representative": "cmp.pg2.s01.planet.03",
+      "tree_joint": "joint_stage1_planet_3_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_s02_planet_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.s02.planet.03",
+      "members": [
+        "cmp.pg2.s02.planet.03"
+      ],
+      "parent_group": "cmp.pg2.s02.carrier.01",
+      "representative": "cmp.pg2.s02.planet.03",
+      "tree_joint": "joint_stage2_planet_3_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing",
+      "members": [
+        "cmp.pg2.aux.input_bearing"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.aux.input_bearing",
+      "tree_joint": "joint_input_bearing_outer_to_housing"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/inner_ring",
+      "members": [
+        "cmp.pg2.aux.input_bearing/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/inner_ring",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_00",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_01",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_02",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_03",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_04",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_05",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_06",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_input_bearing_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.input_bearing/ball_07",
+      "members": [
+        "cmp.pg2.aux.input_bearing/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.input_bearing",
+      "representative": "cmp.pg2.aux.input_bearing/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_input_bearing___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.aux.intermediate_bearing",
+      "tree_joint": "joint_intermediate_bearing_outer_to_housing"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/inner_ring",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/inner_ring",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_00",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_01",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_02",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_03",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_04",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_05",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_06",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_intermediate_bearing_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.intermediate_bearing/ball_07",
+      "members": [
+        "cmp.pg2.aux.intermediate_bearing/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.intermediate_bearing",
+      "representative": "cmp.pg2.aux.intermediate_bearing/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing",
+      "members": [
+        "cmp.pg2.aux.output_bearing"
+      ],
+      "parent_group": "cmp.pg2.housing.01",
+      "representative": "cmp.pg2.aux.output_bearing",
+      "tree_joint": "joint_output_bearing_outer_to_housing"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/inner_ring",
+      "members": [
+        "cmp.pg2.aux.output_bearing/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/inner_ring",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_00",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_01",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_02",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_03",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_04",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_05",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_06",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_output_bearing_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.output_bearing/ball_07",
+      "members": [
+        "cmp.pg2.aux.output_bearing/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.output_bearing",
+      "representative": "cmp.pg2.aux.output_bearing/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_output_bearing___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1/inner_ring",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/inner_ring",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.s01.carrier.01",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/inner_ring",
+      "tree_joint": "joint_stage1_planet_bearing_1_inner_to_carrier_pin"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_00",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_01",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_02",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_03",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_04",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_05",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_06",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_1_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_1/ball_07",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_1/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_1/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2/inner_ring",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/inner_ring",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.s01.carrier.01",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/inner_ring",
+      "tree_joint": "joint_stage1_planet_bearing_2_inner_to_carrier_pin"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_00",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_01",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_02",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_03",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_04",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_05",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_06",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_2_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_2/ball_07",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_2/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_2/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3/inner_ring",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/inner_ring",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.s01.carrier.01",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/inner_ring",
+      "tree_joint": "joint_stage1_planet_bearing_3_inner_to_carrier_pin"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_00",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_01",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_02",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_03",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_04",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_05",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_06",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage1_planet_bearing_3_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage1_planet_bearing_3/ball_07",
+      "members": [
+        "cmp.pg2.aux.stage1_planet_bearing_3/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage1_planet_bearing_3/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1/inner_ring",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/inner_ring",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.s02.carrier.01",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/inner_ring",
+      "tree_joint": "joint_stage2_planet_bearing_1_inner_to_carrier_pin"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_00",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_01",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_02",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_03",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_04",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_05",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_06",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_1_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_1/ball_07",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_1/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_1/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2/inner_ring",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/inner_ring",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.s02.carrier.01",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/inner_ring",
+      "tree_joint": "joint_stage2_planet_bearing_2_inner_to_carrier_pin"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_00",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_01",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_02",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_03",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_04",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_05",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_06",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_2_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_2/ball_07",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_2/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_2/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_07"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3/inner_ring",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3_inner_outer_revolute"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_inner_ring",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/inner_ring",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/inner_ring"
+      ],
+      "parent_group": "cmp.pg2.s02.carrier.01",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/inner_ring",
+      "tree_joint": "joint_stage2_planet_bearing_3_inner_to_carrier_pin"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_00",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_00",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_00"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_00",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_00"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_01",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_01",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_01"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_01",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_01"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_02",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_02",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_02"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_02",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_02"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_03",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_03",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_03"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_03",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_03"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_04",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_04",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_04"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_04",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_04"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_05",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_05",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_05"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_05",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_05"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_06",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_06",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_06"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_06",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_06"
+    },
+    {
+      "body_name": "body_cmp_pg2_aux_stage2_planet_bearing_3_ball_07",
+      "grounded": false,
+      "group_id": "cmp.pg2.aux.stage2_planet_bearing_3/ball_07",
+      "members": [
+        "cmp.pg2.aux.stage2_planet_bearing_3/ball_07"
+      ],
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "representative": "cmp.pg2.aux.stage2_planet_bearing_3/ball_07",
+      "tree_joint": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_07"
+    }
+  ],
+  "meshes": {
+    "mesh/input_flange": "mesh_input_flange",
+    "mesh/input_shaft": "mesh_input_shaft",
+    "mesh/micro_radial_ball_bearing_ball": "mesh_micro_radial_ball_bearing_ball",
+    "mesh/micro_radial_ball_bearing_inner_ring": "mesh_micro_radial_ball_bearing_inner_ring",
+    "mesh/micro_radial_ball_bearing_outer_ring": "mesh_micro_radial_ball_bearing_outer_ring",
+    "mesh/output_flange": "mesh_output_flange",
+    "mesh/reducer_housing": "mesh_reducer_housing",
+    "mesh/stage1_carrier": "mesh_stage1_carrier",
+    "mesh/stage1_planet_gear": "mesh_stage1_planet_gear",
+    "mesh/stage1_ring_gear": "mesh_stage1_ring_gear",
+    "mesh/stage1_sun_gear": "mesh_stage1_sun_gear",
+    "mesh/stage2_carrier": "mesh_stage2_carrier",
+    "mesh/stage2_planet_gear": "mesh_stage2_planet_gear",
+    "mesh/stage2_ring_gear": "mesh_stage2_ring_gear",
+    "mesh/stage2_sun_gear": "mesh_stage2_sun_gear"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [],
+  "rigid_edges": [],
+  "root_definition_id": "compact_two_stage_planetary_reducer",
+  "schema_version": "1.0",
+  "sites": [],
+  "tree_joints": [
+    {
+      "group": "cmp.pg2.s01.ring.01",
+      "joint_id": "stage1_ring_fixed",
+      "joint_name": "joint_stage1_ring_fixed",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.s02.ring.01",
+      "joint_id": "stage2_ring_fixed",
+      "joint_name": "joint_stage2_ring_fixed",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.input_shaft.01",
+      "joint_id": "input_shaft_revolute",
+      "joint_name": "joint_input_shaft_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.input_flange.01",
+      "joint_id": "input_flange_to_shaft",
+      "joint_name": "joint_input_flange_to_shaft",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.input_shaft.01"
+    },
+    {
+      "group": "cmp.pg2.s01.sun.01",
+      "joint_id": "stage1_sun_to_input_shaft",
+      "joint_name": "joint_stage1_sun_to_input_shaft",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.input_shaft.01"
+    },
+    {
+      "group": "cmp.pg2.s01.carrier.01",
+      "joint_id": "stage1_carrier_revolute",
+      "joint_name": "joint_stage1_carrier_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.s02.sun.01",
+      "joint_id": "stage2_sun_to_stage1_carrier",
+      "joint_name": "joint_stage2_sun_to_stage1_carrier",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.s02.carrier.01",
+      "joint_id": "stage2_carrier_revolute",
+      "joint_name": "joint_stage2_carrier_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.output_flange.01",
+      "joint_id": "output_flange_to_stage2_carrier",
+      "joint_name": "joint_output_flange_to_stage2_carrier",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.s01.planet.01",
+      "joint_id": "stage1_planet_1_revolute",
+      "joint_name": "joint_stage1_planet_1_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.s01.planet.02",
+      "joint_id": "stage1_planet_2_revolute",
+      "joint_name": "joint_stage1_planet_2_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.s01.planet.03",
+      "joint_id": "stage1_planet_3_revolute",
+      "joint_name": "joint_stage1_planet_3_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.s02.planet.01",
+      "joint_id": "stage2_planet_1_revolute",
+      "joint_name": "joint_stage2_planet_1_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.s02.planet.02",
+      "joint_id": "stage2_planet_2_revolute",
+      "joint_name": "joint_stage2_planet_2_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.s02.planet.03",
+      "joint_id": "stage2_planet_3_revolute",
+      "joint_name": "joint_stage2_planet_3_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing",
+      "joint_id": "input_bearing_outer_to_housing",
+      "joint_name": "joint_input_bearing_outer_to_housing",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/inner_ring",
+      "joint_id": "cmp.pg2.aux.input_bearing/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_00",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_01",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_02",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_03",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_04",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_05",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_06",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.input_bearing/ball_07",
+      "joint_id": "cmp.pg2.aux.input_bearing/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_input_bearing___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.input_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing",
+      "joint_id": "intermediate_bearing_outer_to_housing",
+      "joint_name": "joint_intermediate_bearing_outer_to_housing",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/inner_ring",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_00",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_01",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_02",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_03",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_04",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_05",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_06",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.intermediate_bearing/ball_07",
+      "joint_id": "cmp.pg2.aux.intermediate_bearing/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_intermediate_bearing___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.intermediate_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing",
+      "joint_id": "output_bearing_outer_to_housing",
+      "joint_name": "joint_output_bearing_outer_to_housing",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.housing.01"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/inner_ring",
+      "joint_id": "cmp.pg2.aux.output_bearing/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_00",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_01",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_02",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_03",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_04",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_05",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_06",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.output_bearing/ball_07",
+      "joint_id": "cmp.pg2.aux.output_bearing/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_output_bearing___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.output_bearing"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/inner_ring",
+      "joint_id": "stage1_planet_bearing_1_inner_to_carrier_pin",
+      "joint_name": "joint_stage1_planet_bearing_1_inner_to_carrier_pin",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1/inner_ring"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_00",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_01",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_02",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_03",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_04",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_05",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_06",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_1/ball_07",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_1/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_1___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/inner_ring",
+      "joint_id": "stage1_planet_bearing_2_inner_to_carrier_pin",
+      "joint_name": "joint_stage1_planet_bearing_2_inner_to_carrier_pin",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2/inner_ring"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_00",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_01",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_02",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_03",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_04",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_05",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_06",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_2/ball_07",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_2/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_2___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/inner_ring",
+      "joint_id": "stage1_planet_bearing_3_inner_to_carrier_pin",
+      "joint_name": "joint_stage1_planet_bearing_3_inner_to_carrier_pin",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s01.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3/inner_ring"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_00",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_01",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_02",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_03",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_04",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_05",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_06",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage1_planet_bearing_3/ball_07",
+      "joint_id": "cmp.pg2.aux.stage1_planet_bearing_3/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_stage1_planet_bearing_3___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage1_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/inner_ring",
+      "joint_id": "stage2_planet_bearing_1_inner_to_carrier_pin",
+      "joint_name": "joint_stage2_planet_bearing_1_inner_to_carrier_pin",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1/inner_ring"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_00",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_01",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_02",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_03",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_04",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_05",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_06",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_1/ball_07",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_1/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_1___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_1"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/inner_ring",
+      "joint_id": "stage2_planet_bearing_2_inner_to_carrier_pin",
+      "joint_name": "joint_stage2_planet_bearing_2_inner_to_carrier_pin",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2/inner_ring"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_00",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_01",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_02",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_03",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_04",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_05",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_06",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_2/ball_07",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_2/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_2___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_2"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/inner_ring",
+      "joint_id": "stage2_planet_bearing_3_inner_to_carrier_pin",
+      "joint_name": "joint_stage2_planet_bearing_3_inner_to_carrier_pin",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.s02.carrier.01"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/inner_outer_revolute",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3_inner_outer_revolute",
+      "joint_type": "revolute",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3/inner_ring"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_00",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_00",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_00",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_01",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_01",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_01",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_02",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_02",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_02",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_03",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_03",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_03",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_04",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_04",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_04",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_05",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_05",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_05",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_06",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_06",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_06",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    },
+    {
+      "group": "cmp.pg2.aux.stage2_planet_bearing_3/ball_07",
+      "joint_id": "cmp.pg2.aux.stage2_planet_bearing_3/__fixed__ball_07",
+      "joint_name": "joint_cmp_pg2_aux_stage2_planet_bearing_3___fixed__ball_07",
+      "joint_type": "fixed",
+      "parent_group": "cmp.pg2.aux.stage2_planet_bearing_3"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

@@ -1,0 +1,403 @@
+{
+  "closures": [
+    {
+      "joint_id": "closure.ex3.coupler_rocker",
+      "joint_type": "revolute",
+      "name": "eq_closure_ex3_coupler_rocker",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.ex3.coupler",
+          "name": "site_closure_ex3_coupler_rocker_0"
+        },
+        {
+          "group": "cmp.ex3.rocker",
+          "name": "site_closure_ex3_coupler_rocker_1"
+        }
+      ],
+      "source_joint_id": "joint.ex3.coupler_rocker"
+    }
+  ],
+  "collision_exclusions": [],
+  "default_density_count": 0,
+  "equalities": [],
+  "grounded_group_id": "cmp.ex3.base",
+  "groups": [
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "cmp.ex3.base",
+      "members": [
+        "cmp.ex3.base"
+      ],
+      "parent_group": null,
+      "representative": "cmp.ex3.base",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_cmp_ex3_crank",
+      "grounded": false,
+      "group_id": "cmp.ex3.crank",
+      "members": [
+        "cmp.ex3.crank"
+      ],
+      "parent_group": "cmp.ex3.base",
+      "representative": "cmp.ex3.crank",
+      "tree_joint": "joint_joint_ex3_ground_crank"
+    },
+    {
+      "body_name": "body_cmp_ex3_coupler",
+      "grounded": false,
+      "group_id": "cmp.ex3.coupler",
+      "members": [
+        "cmp.ex3.coupler"
+      ],
+      "parent_group": "cmp.ex3.crank",
+      "representative": "cmp.ex3.coupler",
+      "tree_joint": "joint_joint_ex3_crank_coupler"
+    },
+    {
+      "body_name": "body_cmp_ex3_rocker",
+      "grounded": false,
+      "group_id": "cmp.ex3.rocker",
+      "members": [
+        "cmp.ex3.rocker"
+      ],
+      "parent_group": "cmp.ex3.base",
+      "representative": "cmp.ex3.rocker",
+      "tree_joint": "joint_joint_ex3_ground_rocker"
+    },
+    {
+      "body_name": "body_cmp_ex3_pin_ground_left",
+      "grounded": false,
+      "group_id": "cmp.ex3.pin.ground_left",
+      "members": [
+        "cmp.ex3.pin.ground_left"
+      ],
+      "parent_group": "cmp.ex3.crank",
+      "representative": "cmp.ex3.pin.ground_left",
+      "tree_joint": "joint_joint_ex3_hardware_pin_ground_left"
+    },
+    {
+      "body_name": "body_cmp_ex3_pin_crank_coupler",
+      "grounded": false,
+      "group_id": "cmp.ex3.pin.crank_coupler",
+      "members": [
+        "cmp.ex3.pin.crank_coupler"
+      ],
+      "parent_group": "cmp.ex3.crank",
+      "representative": "cmp.ex3.pin.crank_coupler",
+      "tree_joint": "joint_joint_ex3_hardware_pin_crank_coupler"
+    },
+    {
+      "body_name": "body_cmp_ex3_pin_coupler_rocker",
+      "grounded": false,
+      "group_id": "cmp.ex3.pin.coupler_rocker",
+      "members": [
+        "cmp.ex3.pin.coupler_rocker"
+      ],
+      "parent_group": "cmp.ex3.rocker",
+      "representative": "cmp.ex3.pin.coupler_rocker",
+      "tree_joint": "joint_joint_ex3_hardware_pin_coupler_rocker"
+    },
+    {
+      "body_name": "body_cmp_ex3_pin_ground_right",
+      "grounded": false,
+      "group_id": "cmp.ex3.pin.ground_right",
+      "members": [
+        "cmp.ex3.pin.ground_right"
+      ],
+      "parent_group": "cmp.ex3.rocker",
+      "representative": "cmp.ex3.pin.ground_right",
+      "tree_joint": "joint_joint_ex3_hardware_pin_ground_right"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_base_left",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.base.left",
+      "members": [
+        "cmp.ex3.bushing.base.left"
+      ],
+      "parent_group": "cmp.ex3.base",
+      "representative": "cmp.ex3.bushing.base.left",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_base_left"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_base_right",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.base.right",
+      "members": [
+        "cmp.ex3.bushing.base.right"
+      ],
+      "parent_group": "cmp.ex3.base",
+      "representative": "cmp.ex3.bushing.base.right",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_base_right"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_crank_input",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.crank.input",
+      "members": [
+        "cmp.ex3.bushing.crank.input"
+      ],
+      "parent_group": "cmp.ex3.crank",
+      "representative": "cmp.ex3.bushing.crank.input",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_crank_input"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_crank_output",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.crank.output",
+      "members": [
+        "cmp.ex3.bushing.crank.output"
+      ],
+      "parent_group": "cmp.ex3.crank",
+      "representative": "cmp.ex3.bushing.crank.output",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_crank_output"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_coupler_input",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.coupler.input",
+      "members": [
+        "cmp.ex3.bushing.coupler.input"
+      ],
+      "parent_group": "cmp.ex3.coupler",
+      "representative": "cmp.ex3.bushing.coupler.input",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_coupler_input"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_coupler_output",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.coupler.output",
+      "members": [
+        "cmp.ex3.bushing.coupler.output"
+      ],
+      "parent_group": "cmp.ex3.coupler",
+      "representative": "cmp.ex3.bushing.coupler.output",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_coupler_output"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_rocker_ground",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.rocker.ground",
+      "members": [
+        "cmp.ex3.bushing.rocker.ground"
+      ],
+      "parent_group": "cmp.ex3.rocker",
+      "representative": "cmp.ex3.bushing.rocker.ground",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_rocker_ground"
+    },
+    {
+      "body_name": "body_cmp_ex3_bushing_rocker_output",
+      "grounded": false,
+      "group_id": "cmp.ex3.bushing.rocker.output",
+      "members": [
+        "cmp.ex3.bushing.rocker.output"
+      ],
+      "parent_group": "cmp.ex3.rocker",
+      "representative": "cmp.ex3.bushing.rocker.output",
+      "tree_joint": "joint_joint_ex3_hardware_bushing_rocker_output"
+    },
+    {
+      "body_name": "body_cmp_ex3_spacer_ground_left",
+      "grounded": false,
+      "group_id": "cmp.ex3.spacer.ground_left",
+      "members": [
+        "cmp.ex3.spacer.ground_left"
+      ],
+      "parent_group": "cmp.ex3.base",
+      "representative": "cmp.ex3.spacer.ground_left",
+      "tree_joint": "joint_joint_ex3_hardware_spacer_ground_left"
+    },
+    {
+      "body_name": "body_cmp_ex3_spacer_ground_right",
+      "grounded": false,
+      "group_id": "cmp.ex3.spacer.ground_right",
+      "members": [
+        "cmp.ex3.spacer.ground_right"
+      ],
+      "parent_group": "cmp.ex3.base",
+      "representative": "cmp.ex3.spacer.ground_right",
+      "tree_joint": "joint_joint_ex3_hardware_spacer_ground_right"
+    },
+    {
+      "body_name": "body_cmp_ex3_spacer_crank_coupler",
+      "grounded": false,
+      "group_id": "cmp.ex3.spacer.crank_coupler",
+      "members": [
+        "cmp.ex3.spacer.crank_coupler"
+      ],
+      "parent_group": "cmp.ex3.crank",
+      "representative": "cmp.ex3.spacer.crank_coupler",
+      "tree_joint": "joint_joint_ex3_hardware_spacer_crank_coupler"
+    },
+    {
+      "body_name": "body_cmp_ex3_spacer_coupler_rocker",
+      "grounded": false,
+      "group_id": "cmp.ex3.spacer.coupler_rocker",
+      "members": [
+        "cmp.ex3.spacer.coupler_rocker"
+      ],
+      "parent_group": "cmp.ex3.rocker",
+      "representative": "cmp.ex3.spacer.coupler_rocker",
+      "tree_joint": "joint_joint_ex3_hardware_spacer_coupler_rocker"
+    }
+  ],
+  "meshes": {
+    "mesh/part.ex3.base": "mesh_part_ex3_base",
+    "mesh/part.ex3.bushing": "mesh_part_ex3_bushing",
+    "mesh/part.ex3.coupler": "mesh_part_ex3_coupler",
+    "mesh/part.ex3.crank": "mesh_part_ex3_crank",
+    "mesh/part.ex3.pin": "mesh_part_ex3_pin",
+    "mesh/part.ex3.rocker": "mesh_part_ex3_rocker",
+    "mesh/part.ex3.spacer": "mesh_part_ex3_spacer"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [],
+  "rigid_edges": [],
+  "root_definition_id": "asm.ex3.four_bar",
+  "schema_version": "1.0",
+  "sites": [],
+  "tree_joints": [
+    {
+      "group": "cmp.ex3.crank",
+      "joint_id": "joint.ex3.ground_crank",
+      "joint_name": "joint_joint_ex3_ground_crank",
+      "joint_type": "revolute",
+      "parent_group": "cmp.ex3.base"
+    },
+    {
+      "group": "cmp.ex3.coupler",
+      "joint_id": "joint.ex3.crank_coupler",
+      "joint_name": "joint_joint_ex3_crank_coupler",
+      "joint_type": "revolute",
+      "parent_group": "cmp.ex3.crank"
+    },
+    {
+      "group": "cmp.ex3.rocker",
+      "joint_id": "joint.ex3.ground_rocker",
+      "joint_name": "joint_joint_ex3_ground_rocker",
+      "joint_type": "revolute",
+      "parent_group": "cmp.ex3.base"
+    },
+    {
+      "group": "cmp.ex3.pin.ground_left",
+      "joint_id": "joint.ex3.hardware.pin.ground_left",
+      "joint_name": "joint_joint_ex3_hardware_pin_ground_left",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.crank"
+    },
+    {
+      "group": "cmp.ex3.pin.crank_coupler",
+      "joint_id": "joint.ex3.hardware.pin.crank_coupler",
+      "joint_name": "joint_joint_ex3_hardware_pin_crank_coupler",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.crank"
+    },
+    {
+      "group": "cmp.ex3.pin.coupler_rocker",
+      "joint_id": "joint.ex3.hardware.pin.coupler_rocker",
+      "joint_name": "joint_joint_ex3_hardware_pin_coupler_rocker",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.rocker"
+    },
+    {
+      "group": "cmp.ex3.pin.ground_right",
+      "joint_id": "joint.ex3.hardware.pin.ground_right",
+      "joint_name": "joint_joint_ex3_hardware_pin_ground_right",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.rocker"
+    },
+    {
+      "group": "cmp.ex3.bushing.base.left",
+      "joint_id": "joint.ex3.hardware.bushing.base.left",
+      "joint_name": "joint_joint_ex3_hardware_bushing_base_left",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.base"
+    },
+    {
+      "group": "cmp.ex3.bushing.base.right",
+      "joint_id": "joint.ex3.hardware.bushing.base.right",
+      "joint_name": "joint_joint_ex3_hardware_bushing_base_right",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.base"
+    },
+    {
+      "group": "cmp.ex3.bushing.crank.input",
+      "joint_id": "joint.ex3.hardware.bushing.crank.input",
+      "joint_name": "joint_joint_ex3_hardware_bushing_crank_input",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.crank"
+    },
+    {
+      "group": "cmp.ex3.bushing.crank.output",
+      "joint_id": "joint.ex3.hardware.bushing.crank.output",
+      "joint_name": "joint_joint_ex3_hardware_bushing_crank_output",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.crank"
+    },
+    {
+      "group": "cmp.ex3.bushing.coupler.input",
+      "joint_id": "joint.ex3.hardware.bushing.coupler.input",
+      "joint_name": "joint_joint_ex3_hardware_bushing_coupler_input",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.coupler"
+    },
+    {
+      "group": "cmp.ex3.bushing.coupler.output",
+      "joint_id": "joint.ex3.hardware.bushing.coupler.output",
+      "joint_name": "joint_joint_ex3_hardware_bushing_coupler_output",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.coupler"
+    },
+    {
+      "group": "cmp.ex3.bushing.rocker.ground",
+      "joint_id": "joint.ex3.hardware.bushing.rocker.ground",
+      "joint_name": "joint_joint_ex3_hardware_bushing_rocker_ground",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.rocker"
+    },
+    {
+      "group": "cmp.ex3.bushing.rocker.output",
+      "joint_id": "joint.ex3.hardware.bushing.rocker.output",
+      "joint_name": "joint_joint_ex3_hardware_bushing_rocker_output",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.rocker"
+    },
+    {
+      "group": "cmp.ex3.spacer.ground_left",
+      "joint_id": "joint.ex3.hardware.spacer.ground_left",
+      "joint_name": "joint_joint_ex3_hardware_spacer_ground_left",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.base"
+    },
+    {
+      "group": "cmp.ex3.spacer.ground_right",
+      "joint_id": "joint.ex3.hardware.spacer.ground_right",
+      "joint_name": "joint_joint_ex3_hardware_spacer_ground_right",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.base"
+    },
+    {
+      "group": "cmp.ex3.spacer.crank_coupler",
+      "joint_id": "joint.ex3.hardware.spacer.crank_coupler",
+      "joint_name": "joint_joint_ex3_hardware_spacer_crank_coupler",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.crank"
+    },
+    {
+      "group": "cmp.ex3.spacer.coupler_rocker",
+      "joint_id": "joint.ex3.hardware.spacer.coupler_rocker",
+      "joint_name": "joint_joint_ex3_hardware_spacer_coupler_rocker",
+      "joint_type": "fixed",
+      "parent_group": "cmp.ex3.rocker"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

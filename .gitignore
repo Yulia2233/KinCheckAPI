@@ -1,0 +1,59 @@
+.DS_Store
+.pytest_cache/
+.venv/
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+viewer_output/
+package_output/
+viewer/runtime/
+MUJOCO_LOG.TXT
+.kincheckapi-stl/
+
+# Generated example packages and Viewer assets are reproducible outputs.
+examples/*/out/
+examples/*/view_output/
+examples/*/view_assets/
+examples/simplecadapi_clearance_error_demo/model/
+examples/simplecadapi_clearance_error_demo/output/
+examples/simplecadapi_clearance_error_demo/.work/
+*.kincheck
+*.scadpkg
+
+# The ex12 case intentionally ships its verified .kincheck and source package
+# so it can be inspected and run without rebuilding CADIR first.
+!examples/ex12_cadir_four_bar_linkage/output/
+!examples/ex12_cadir_four_bar_linkage/output/*.kincheck
+!examples/ex12_cadir_four_bar_linkage/output/*.scadpkg
+!examples/ex12_cadir_four_bar_linkage/output/before_optimization/
+!examples/ex12_cadir_four_bar_linkage/output/before_optimization/*.kincheck
+!examples/ex12_cadir_four_bar_linkage/output/before_optimization/*.scadpkg
+
+# Generated caches and outputs inside the kept examples are reproducible.
+examples/*/model/.kincheckapi-stl/
+examples/*/simplecadapi/.cache/
+examples/*/simplecadapi/state/
+examples/four_bar_linkage/output/before/
+examples/four_bar_linkage/output/after/
+examples/four_bar_linkage/model_*/source/.cache/
+examples/four_bar_linkage/model_*/source/state/
+!examples/four_bar_linkage/model_before/*.scadpkg
+!examples/four_bar_linkage/model_after/*.scadpkg
+
+# Local development environments and generated diagnostics.
+.venv*/
+.cadsimapi-stl/
+.simplecad/
+/output/
+examples/*/output/package-work/
+examples/*/output/before/
+examples/*/output/after/
+examples/*/output/*.log
+examples/*/model_*/source/.cache/
+examples/*/model_*/source/state/
+
+# Preserve the reducer packages used by the before/after examples.
+!examples/compact_two_stage_planetary_reducer/model_before/*.scadpkg
+!examples/compact_two_stage_planetary_reducer/model_after/*.scadpkg

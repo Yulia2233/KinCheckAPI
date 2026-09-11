@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="four_bar_linkage">
+  <compiler angle="radian" coordinate="local" />
+  <option gravity="0 0 -9.81" />
+  <asset>
+    <mesh name="mesh_coupler" file="four_bar_linkage_meshes/mesh_coupler.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_crank" file="four_bar_linkage_meshes/mesh_crank.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_ground_pivot_bolt" file="four_bar_linkage_meshes/mesh_ground_pivot_bolt.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_ground_span" file="four_bar_linkage_meshes/mesh_ground_span.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_pivot_bolt" file="four_bar_linkage_meshes/mesh_pivot_bolt.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_rocker" file="four_bar_linkage_meshes/mesh_rocker.obj" scale="0.001 0.001 0.001" />
+  </asset>
+  <worldbody>
+    <geom name="bolt_a" type="mesh" mesh="mesh_ground_pivot_bolt" density="7850" contype="1" conaffinity="1" pos="0 0 0.005" quat="1 0 0 0" />
+    <geom name="bolt_d" type="mesh" mesh="mesh_ground_pivot_bolt" density="7850" contype="1" conaffinity="1" pos="0.04 0 0.005" quat="1 0 0 0" />
+    <geom name="ground" type="mesh" mesh="mesh_ground_span" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <body name="body_crank" pos="0.02 0 0" quat="1 0 0 0">
+      <joint name="joint_joint_four_bar_linkage_crank_to_ground_e0a5b0c656ec" type="hinge" pos="-0.02 0 0" axis="0 0 1" />
+      <geom name="bolt_b" type="mesh" mesh="mesh_pivot_bolt" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="crank" type="mesh" mesh="mesh_crank" density="7850" contype="1" conaffinity="1" pos="-0.02 0 0" quat="1 0 0 0" />
+      <body name="body_coupler" pos="0 0 0" quat="0.958514475634 0 0 0.285043856275">
+        <joint name="joint_joint_four_bar_linkage_coupler_to_crank_4124f57674a4" type="hinge" pos="0 0 0" axis="0 0 1" />
+        <geom name="coupler" type="mesh" mesh="mesh_coupler" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+        <site name="closure_b_joint_four_bar_linkage_coupler_to_rocker_51066f5bc660" size="0.0012" type="sphere" pos="0.05 -3.5527136788e-18 0" quat="1 0 0 0" />
+      </body>
+      <site name="crank_input_axis" size="0.0012" type="sphere" pos="-0.02 0 0" quat="1 0 0 0" />
+    </body>
+    <body name="body_rocker" pos="0.061875 0.027321866243 0" quat="1 0 0 0">
+      <joint name="joint_joint_four_bar_linkage_rocker_to_ground_b8d24aab50f4" type="hinge" pos="-0.021875 -0.027321866243 0" axis="0 0 1" />
+      <geom name="bolt_c" type="mesh" mesh="mesh_pivot_bolt" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="rocker" type="mesh" mesh="mesh_rocker" density="7850" contype="1" conaffinity="1" pos="-0.021875 -0.027321866243 0" quat="0.901387818866 0 0 0.433012701892" />
+      <site name="closure_a_joint_four_bar_linkage_coupler_to_rocker_3179291fc4a4" size="0.0012" type="sphere" pos="0 0 0" quat="0.901387818866 0 0 0.433012701892" />
+    </body>
+  </worldbody>
+  <tendon />
+  <equality>
+    <connect name="closure_joint_four_bar_linkage_coupler_to_rocker_9692ef4610db" site1="closure_a_joint_four_bar_linkage_coupler_to_rocker_3179291fc4a4" site2="closure_b_joint_four_bar_linkage_coupler_to_rocker_51066f5bc660" />
+  </equality>
+</mujoco>

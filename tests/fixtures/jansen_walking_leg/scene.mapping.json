@@ -1,0 +1,678 @@
+{
+  "closures": [
+    {
+      "joint_id": "closure.jansen.closure.upper_triangle_to_frame",
+      "joint_type": "revolute",
+      "name": "eq_closure_jansen_closure_upper_triangle_to_frame",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.jansen.upper_triangle.01",
+          "name": "site_closure_jansen_closure_upper_triangle_to_frame_0"
+        },
+        {
+          "group": "cmp.jansen.frame.01",
+          "name": "site_closure_jansen_closure_upper_triangle_to_frame_1"
+        }
+      ],
+      "source_joint_id": "joint.jansen.closure.upper_triangle_to_frame"
+    },
+    {
+      "joint_id": "closure.jansen.closure.lower_coupler_to_crank",
+      "joint_type": "revolute",
+      "name": "eq_closure_jansen_closure_lower_coupler_to_crank",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.jansen.lower_coupler.01",
+          "name": "site_closure_jansen_closure_lower_coupler_to_crank_0"
+        },
+        {
+          "group": "cmp.jansen.drive_crank.01",
+          "name": "site_closure_jansen_closure_lower_coupler_to_crank_1"
+        }
+      ],
+      "source_joint_id": "joint.jansen.closure.lower_coupler_to_crank"
+    },
+    {
+      "joint_id": "closure.jansen.closure.foot_triangle_to_lower_rocker",
+      "joint_type": "revolute",
+      "name": "eq_closure_jansen_closure_foot_triangle_to_lower_rocker",
+      "orientation_tolerance_rad": 1e-06,
+      "position_tolerance_m": 1e-06,
+      "sites": [
+        {
+          "group": "cmp.jansen.foot_triangle.01",
+          "name": "site_closure_jansen_closure_foot_triangle_to_lower_rocker_0"
+        },
+        {
+          "group": "cmp.jansen.lower_rocker.01",
+          "name": "site_closure_jansen_closure_foot_triangle_to_lower_rocker_1"
+        }
+      ],
+      "source_joint_id": "joint.jansen.closure.foot_triangle_to_lower_rocker"
+    }
+  ],
+  "collision_exclusions": [],
+  "default_density_count": 0,
+  "equalities": [],
+  "grounded_group_id": "cmp.jansen.frame.01",
+  "groups": [
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "cmp.jansen.frame.01",
+      "members": [
+        "cmp.jansen.frame.01"
+      ],
+      "parent_group": null,
+      "representative": "cmp.jansen.frame.01",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_cmp_jansen_drive_crank_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.drive_crank.01",
+      "members": [
+        "cmp.jansen.drive_crank.01"
+      ],
+      "parent_group": "cmp.jansen.frame.01",
+      "representative": "cmp.jansen.drive_crank.01",
+      "tree_joint": "joint_joint_jansen_frame_to_crank"
+    },
+    {
+      "body_name": "body_cmp_jansen_upper_coupler_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.upper_coupler.01",
+      "members": [
+        "cmp.jansen.upper_coupler.01"
+      ],
+      "parent_group": "cmp.jansen.drive_crank.01",
+      "representative": "cmp.jansen.upper_coupler.01",
+      "tree_joint": "joint_joint_jansen_crank_to_upper_coupler"
+    },
+    {
+      "body_name": "body_cmp_jansen_upper_triangle_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.upper_triangle.01",
+      "members": [
+        "cmp.jansen.upper_triangle.01"
+      ],
+      "parent_group": "cmp.jansen.upper_coupler.01",
+      "representative": "cmp.jansen.upper_triangle.01",
+      "tree_joint": "joint_joint_jansen_upper_coupler_to_upper_triangle"
+    },
+    {
+      "body_name": "body_cmp_jansen_lower_rocker_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.lower_rocker.01",
+      "members": [
+        "cmp.jansen.lower_rocker.01"
+      ],
+      "parent_group": "cmp.jansen.frame.01",
+      "representative": "cmp.jansen.lower_rocker.01",
+      "tree_joint": "joint_joint_jansen_frame_to_lower_rocker"
+    },
+    {
+      "body_name": "body_cmp_jansen_lower_coupler_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.lower_coupler.01",
+      "members": [
+        "cmp.jansen.lower_coupler.01"
+      ],
+      "parent_group": "cmp.jansen.lower_rocker.01",
+      "representative": "cmp.jansen.lower_coupler.01",
+      "tree_joint": "joint_joint_jansen_lower_rocker_to_lower_coupler"
+    },
+    {
+      "body_name": "body_cmp_jansen_trailing_link_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.trailing_link.01",
+      "members": [
+        "cmp.jansen.trailing_link.01"
+      ],
+      "parent_group": "cmp.jansen.upper_triangle.01",
+      "representative": "cmp.jansen.trailing_link.01",
+      "tree_joint": "joint_joint_jansen_upper_triangle_to_trailing"
+    },
+    {
+      "body_name": "body_cmp_jansen_foot_triangle_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.foot_triangle.01",
+      "members": [
+        "cmp.jansen.foot_triangle.01"
+      ],
+      "parent_group": "cmp.jansen.trailing_link.01",
+      "representative": "cmp.jansen.foot_triangle.01",
+      "tree_joint": "joint_joint_jansen_trailing_to_foot_triangle"
+    },
+    {
+      "body_name": "body_cmp_jansen_foot_01",
+      "grounded": false,
+      "group_id": "cmp.jansen.foot.01",
+      "members": [
+        "cmp.jansen.foot.01"
+      ],
+      "parent_group": "cmp.jansen.foot_triangle.01",
+      "representative": "cmp.jansen.foot.01",
+      "tree_joint": "joint_joint_jansen_foot_triangle_to_foot"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_left_frame",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.left_frame",
+      "members": [
+        "cmp.jansen.hardware.pin.left_frame"
+      ],
+      "parent_group": "cmp.jansen.frame.01",
+      "representative": "cmp.jansen.hardware.pin.left_frame",
+      "tree_joint": "joint_cst_jansen_hardware_pin_left_frame"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_left_frame",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.left_frame",
+      "members": [
+        "cmp.jansen.hardware.bushing.left_frame"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.left_frame",
+      "representative": "cmp.jansen.hardware.bushing.left_frame",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_left_frame"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_left_frame",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.left_frame",
+      "members": [
+        "cmp.jansen.hardware.spacer.left_frame"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.left_frame",
+      "representative": "cmp.jansen.hardware.spacer.left_frame",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_left_frame"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_drive_frame",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.drive_frame",
+      "members": [
+        "cmp.jansen.hardware.pin.drive_frame"
+      ],
+      "parent_group": "cmp.jansen.frame.01",
+      "representative": "cmp.jansen.hardware.pin.drive_frame",
+      "tree_joint": "joint_cst_jansen_hardware_pin_drive_frame"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_drive_frame",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.drive_frame",
+      "members": [
+        "cmp.jansen.hardware.bushing.drive_frame"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.drive_frame",
+      "representative": "cmp.jansen.hardware.bushing.drive_frame",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_drive_frame"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_drive_frame",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.drive_frame",
+      "members": [
+        "cmp.jansen.hardware.spacer.drive_frame"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.drive_frame",
+      "representative": "cmp.jansen.hardware.spacer.drive_frame",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_drive_frame"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_crank_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.crank_node",
+      "members": [
+        "cmp.jansen.hardware.pin.crank_node"
+      ],
+      "parent_group": "cmp.jansen.drive_crank.01",
+      "representative": "cmp.jansen.hardware.pin.crank_node",
+      "tree_joint": "joint_cst_jansen_hardware_pin_crank_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_crank_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.crank_node",
+      "members": [
+        "cmp.jansen.hardware.bushing.crank_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.crank_node",
+      "representative": "cmp.jansen.hardware.bushing.crank_node",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_crank_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_crank_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.crank_node",
+      "members": [
+        "cmp.jansen.hardware.spacer.crank_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.crank_node",
+      "representative": "cmp.jansen.hardware.spacer.crank_node",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_crank_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_upper_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.upper_node",
+      "members": [
+        "cmp.jansen.hardware.pin.upper_node"
+      ],
+      "parent_group": "cmp.jansen.upper_coupler.01",
+      "representative": "cmp.jansen.hardware.pin.upper_node",
+      "tree_joint": "joint_cst_jansen_hardware_pin_upper_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_upper_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.upper_node",
+      "members": [
+        "cmp.jansen.hardware.bushing.upper_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.upper_node",
+      "representative": "cmp.jansen.hardware.bushing.upper_node",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_upper_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_upper_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.upper_node",
+      "members": [
+        "cmp.jansen.hardware.spacer.upper_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.upper_node",
+      "representative": "cmp.jansen.hardware.spacer.upper_node",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_upper_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_rear_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.rear_node",
+      "members": [
+        "cmp.jansen.hardware.pin.rear_node"
+      ],
+      "parent_group": "cmp.jansen.upper_triangle.01",
+      "representative": "cmp.jansen.hardware.pin.rear_node",
+      "tree_joint": "joint_cst_jansen_hardware_pin_rear_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_rear_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.rear_node",
+      "members": [
+        "cmp.jansen.hardware.bushing.rear_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.rear_node",
+      "representative": "cmp.jansen.hardware.bushing.rear_node",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_rear_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_rear_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.rear_node",
+      "members": [
+        "cmp.jansen.hardware.spacer.rear_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.rear_node",
+      "representative": "cmp.jansen.hardware.spacer.rear_node",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_rear_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_lower_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.lower_node",
+      "members": [
+        "cmp.jansen.hardware.pin.lower_node"
+      ],
+      "parent_group": "cmp.jansen.lower_rocker.01",
+      "representative": "cmp.jansen.hardware.pin.lower_node",
+      "tree_joint": "joint_cst_jansen_hardware_pin_lower_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_lower_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.lower_node",
+      "members": [
+        "cmp.jansen.hardware.bushing.lower_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.lower_node",
+      "representative": "cmp.jansen.hardware.bushing.lower_node",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_lower_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_lower_node",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.lower_node",
+      "members": [
+        "cmp.jansen.hardware.spacer.lower_node"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.lower_node",
+      "representative": "cmp.jansen.hardware.spacer.lower_node",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_lower_node"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_foot_rear",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.foot_rear",
+      "members": [
+        "cmp.jansen.hardware.pin.foot_rear"
+      ],
+      "parent_group": "cmp.jansen.trailing_link.01",
+      "representative": "cmp.jansen.hardware.pin.foot_rear",
+      "tree_joint": "joint_cst_jansen_hardware_pin_foot_rear"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_foot_rear",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.foot_rear",
+      "members": [
+        "cmp.jansen.hardware.bushing.foot_rear"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.foot_rear",
+      "representative": "cmp.jansen.hardware.bushing.foot_rear",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_foot_rear"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_foot_rear",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.foot_rear",
+      "members": [
+        "cmp.jansen.hardware.spacer.foot_rear"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.foot_rear",
+      "representative": "cmp.jansen.hardware.spacer.foot_rear",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_foot_rear"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_pin_foot_tip",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.pin.foot_tip",
+      "members": [
+        "cmp.jansen.hardware.pin.foot_tip"
+      ],
+      "parent_group": "cmp.jansen.foot_triangle.01",
+      "representative": "cmp.jansen.hardware.pin.foot_tip",
+      "tree_joint": "joint_cst_jansen_hardware_pin_foot_tip"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_bushing_foot_tip",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.bushing.foot_tip",
+      "members": [
+        "cmp.jansen.hardware.bushing.foot_tip"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.foot_tip",
+      "representative": "cmp.jansen.hardware.bushing.foot_tip",
+      "tree_joint": "joint_cst_jansen_hardware_bushing_foot_tip"
+    },
+    {
+      "body_name": "body_cmp_jansen_hardware_spacer_foot_tip",
+      "grounded": false,
+      "group_id": "cmp.jansen.hardware.spacer.foot_tip",
+      "members": [
+        "cmp.jansen.hardware.spacer.foot_tip"
+      ],
+      "parent_group": "cmp.jansen.hardware.pin.foot_tip",
+      "representative": "cmp.jansen.hardware.spacer.foot_tip",
+      "tree_joint": "joint_cst_jansen_hardware_spacer_foot_tip"
+    }
+  ],
+  "meshes": {
+    "mesh/part.jansen.bushing": "mesh_part_jansen_bushing",
+    "mesh/part.jansen.drive_crank": "mesh_part_jansen_drive_crank",
+    "mesh/part.jansen.foot": "mesh_part_jansen_foot",
+    "mesh/part.jansen.foot_triangle": "mesh_part_jansen_foot_triangle",
+    "mesh/part.jansen.frame": "mesh_part_jansen_frame",
+    "mesh/part.jansen.lower_coupler": "mesh_part_jansen_lower_coupler",
+    "mesh/part.jansen.lower_rocker": "mesh_part_jansen_lower_rocker",
+    "mesh/part.jansen.pin": "mesh_part_jansen_pin",
+    "mesh/part.jansen.spacer": "mesh_part_jansen_spacer",
+    "mesh/part.jansen.trailing_link": "mesh_part_jansen_trailing_link",
+    "mesh/part.jansen.upper_coupler": "mesh_part_jansen_upper_coupler",
+    "mesh/part.jansen.upper_triangle": "mesh_part_jansen_upper_triangle"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [],
+  "rigid_edges": [],
+  "root_definition_id": "asm.jansen.ex4",
+  "schema_version": "1.0",
+  "sites": [],
+  "tree_joints": [
+    {
+      "group": "cmp.jansen.drive_crank.01",
+      "joint_id": "joint.jansen.frame_to_crank",
+      "joint_name": "joint_joint_jansen_frame_to_crank",
+      "joint_type": "revolute",
+      "parent_group": "cmp.jansen.frame.01"
+    },
+    {
+      "group": "cmp.jansen.upper_coupler.01",
+      "joint_id": "joint.jansen.crank_to_upper_coupler",
+      "joint_name": "joint_joint_jansen_crank_to_upper_coupler",
+      "joint_type": "revolute",
+      "parent_group": "cmp.jansen.drive_crank.01"
+    },
+    {
+      "group": "cmp.jansen.upper_triangle.01",
+      "joint_id": "joint.jansen.upper_coupler_to_upper_triangle",
+      "joint_name": "joint_joint_jansen_upper_coupler_to_upper_triangle",
+      "joint_type": "revolute",
+      "parent_group": "cmp.jansen.upper_coupler.01"
+    },
+    {
+      "group": "cmp.jansen.lower_rocker.01",
+      "joint_id": "joint.jansen.frame_to_lower_rocker",
+      "joint_name": "joint_joint_jansen_frame_to_lower_rocker",
+      "joint_type": "revolute",
+      "parent_group": "cmp.jansen.frame.01"
+    },
+    {
+      "group": "cmp.jansen.lower_coupler.01",
+      "joint_id": "joint.jansen.lower_rocker_to_lower_coupler",
+      "joint_name": "joint_joint_jansen_lower_rocker_to_lower_coupler",
+      "joint_type": "revolute",
+      "parent_group": "cmp.jansen.lower_rocker.01"
+    },
+    {
+      "group": "cmp.jansen.trailing_link.01",
+      "joint_id": "joint.jansen.upper_triangle_to_trailing",
+      "joint_name": "joint_joint_jansen_upper_triangle_to_trailing",
+      "joint_type": "revolute",
+      "parent_group": "cmp.jansen.upper_triangle.01"
+    },
+    {
+      "group": "cmp.jansen.foot_triangle.01",
+      "joint_id": "joint.jansen.trailing_to_foot_triangle",
+      "joint_name": "joint_joint_jansen_trailing_to_foot_triangle",
+      "joint_type": "revolute",
+      "parent_group": "cmp.jansen.trailing_link.01"
+    },
+    {
+      "group": "cmp.jansen.foot.01",
+      "joint_id": "joint.jansen.foot_triangle_to_foot",
+      "joint_name": "joint_joint_jansen_foot_triangle_to_foot",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.foot_triangle.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.left_frame",
+      "joint_id": "cst.jansen.hardware.pin.left_frame",
+      "joint_name": "joint_cst_jansen_hardware_pin_left_frame",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.frame.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.left_frame",
+      "joint_id": "cst.jansen.hardware.bushing.left_frame",
+      "joint_name": "joint_cst_jansen_hardware_bushing_left_frame",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.left_frame"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.left_frame",
+      "joint_id": "cst.jansen.hardware.spacer.left_frame",
+      "joint_name": "joint_cst_jansen_hardware_spacer_left_frame",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.left_frame"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.drive_frame",
+      "joint_id": "cst.jansen.hardware.pin.drive_frame",
+      "joint_name": "joint_cst_jansen_hardware_pin_drive_frame",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.frame.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.drive_frame",
+      "joint_id": "cst.jansen.hardware.bushing.drive_frame",
+      "joint_name": "joint_cst_jansen_hardware_bushing_drive_frame",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.drive_frame"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.drive_frame",
+      "joint_id": "cst.jansen.hardware.spacer.drive_frame",
+      "joint_name": "joint_cst_jansen_hardware_spacer_drive_frame",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.drive_frame"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.crank_node",
+      "joint_id": "cst.jansen.hardware.pin.crank_node",
+      "joint_name": "joint_cst_jansen_hardware_pin_crank_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.drive_crank.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.crank_node",
+      "joint_id": "cst.jansen.hardware.bushing.crank_node",
+      "joint_name": "joint_cst_jansen_hardware_bushing_crank_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.crank_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.crank_node",
+      "joint_id": "cst.jansen.hardware.spacer.crank_node",
+      "joint_name": "joint_cst_jansen_hardware_spacer_crank_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.crank_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.upper_node",
+      "joint_id": "cst.jansen.hardware.pin.upper_node",
+      "joint_name": "joint_cst_jansen_hardware_pin_upper_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.upper_coupler.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.upper_node",
+      "joint_id": "cst.jansen.hardware.bushing.upper_node",
+      "joint_name": "joint_cst_jansen_hardware_bushing_upper_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.upper_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.upper_node",
+      "joint_id": "cst.jansen.hardware.spacer.upper_node",
+      "joint_name": "joint_cst_jansen_hardware_spacer_upper_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.upper_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.rear_node",
+      "joint_id": "cst.jansen.hardware.pin.rear_node",
+      "joint_name": "joint_cst_jansen_hardware_pin_rear_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.upper_triangle.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.rear_node",
+      "joint_id": "cst.jansen.hardware.bushing.rear_node",
+      "joint_name": "joint_cst_jansen_hardware_bushing_rear_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.rear_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.rear_node",
+      "joint_id": "cst.jansen.hardware.spacer.rear_node",
+      "joint_name": "joint_cst_jansen_hardware_spacer_rear_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.rear_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.lower_node",
+      "joint_id": "cst.jansen.hardware.pin.lower_node",
+      "joint_name": "joint_cst_jansen_hardware_pin_lower_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.lower_rocker.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.lower_node",
+      "joint_id": "cst.jansen.hardware.bushing.lower_node",
+      "joint_name": "joint_cst_jansen_hardware_bushing_lower_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.lower_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.lower_node",
+      "joint_id": "cst.jansen.hardware.spacer.lower_node",
+      "joint_name": "joint_cst_jansen_hardware_spacer_lower_node",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.lower_node"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.foot_rear",
+      "joint_id": "cst.jansen.hardware.pin.foot_rear",
+      "joint_name": "joint_cst_jansen_hardware_pin_foot_rear",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.trailing_link.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.foot_rear",
+      "joint_id": "cst.jansen.hardware.bushing.foot_rear",
+      "joint_name": "joint_cst_jansen_hardware_bushing_foot_rear",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.foot_rear"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.foot_rear",
+      "joint_id": "cst.jansen.hardware.spacer.foot_rear",
+      "joint_name": "joint_cst_jansen_hardware_spacer_foot_rear",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.foot_rear"
+    },
+    {
+      "group": "cmp.jansen.hardware.pin.foot_tip",
+      "joint_id": "cst.jansen.hardware.pin.foot_tip",
+      "joint_name": "joint_cst_jansen_hardware_pin_foot_tip",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.foot_triangle.01"
+    },
+    {
+      "group": "cmp.jansen.hardware.bushing.foot_tip",
+      "joint_id": "cst.jansen.hardware.bushing.foot_tip",
+      "joint_name": "joint_cst_jansen_hardware_bushing_foot_tip",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.foot_tip"
+    },
+    {
+      "group": "cmp.jansen.hardware.spacer.foot_tip",
+      "joint_id": "cst.jansen.hardware.spacer.foot_tip",
+      "joint_name": "joint_cst_jansen_hardware_spacer_foot_tip",
+      "joint_type": "fixed",
+      "parent_group": "cmp.jansen.hardware.pin.foot_tip"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

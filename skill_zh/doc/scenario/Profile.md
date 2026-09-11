@@ -1,0 +1,34 @@
+# `Profile`
+
+## API 定义
+
+```python
+Profile = MotionProfile
+```
+
+源码：`src/kincheckapi/scenario.py`。
+
+## 导入
+
+```python
+from kincheckapi.scenario import Profile
+```
+
+## 用途
+
+定义 `Profile` 使用的公开类型约定。
+
+## 返回与失败
+
+这是类型约定，不是可调用函数。
+
+## 模块约束
+
+- Scenario 不可变；所有设置函数都返回新对象。
+- 转动量使用 rad/rad/s，平移量使用 m/m/s，时间使用 s；输入必须有限。
+- 求解前运行 `validate_scenario()`；冲突驱动、无效时间窗或未知 ID 不得继续。
+
+## 相关文档
+
+- [`Scenario 与驱动`](README.md)
+- [`统一证据与通过规则`](../guides/evidence-and-pass-rules.md)
