@@ -22,6 +22,8 @@ class Scenario:
     component_result_scope: ComponentResultScope | str
     capture_integration_steps: bool
     integration_component_ids: tuple[str, ...] | None
+    initial_state_source: str
+    profile_boundary: ProfileBoundary | str
 ```
 
 源码：`src/kincheckapi/scenario.py`。
@@ -57,6 +59,8 @@ from kincheckapi.scenario import Scenario
 | `component_result_scope` | `ComponentResultScope | str` | `<ComponentResultScope.REQUESTED: 'requested'>` | `component_result_scope` 的公开输入或数据字段。 |
 | `capture_integration_steps` | `bool` | `False` | `capture_integration_steps` 的公开输入或数据字段。 |
 | `integration_component_ids` | `tuple[str, ...] | None` | `None` | 显式指定的 `integration_component_ids` 集合。 |
+| `initial_state_source` | `str` | `'explicit'` | `initial_state_source` 的公开输入或数据字段。 |
+| `profile_boundary` | `ProfileBoundary | str` | `<ProfileBoundary.HOLD: 'hold'>` | `profile_boundary` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

@@ -9,6 +9,7 @@ Turn user claims into structured, reviewable kinematic acceptance checks.
 | [`CheckReport`](CheckReport.md) | Type | One deterministic, machine-readable verification outcome. |
 | [`CheckSpec`](CheckSpec.md) | Type | Explicit instruction consumed by :func:`run_checks`. |
 | [`CheckSuiteReport`](CheckSuiteReport.md) | Type | Ordered aggregate returned by :func:`run_checks`. |
+| [`DriverTrackingReport`](DriverTrackingReport.md) | Type | Acceptance evidence comparing declared driver targets with actual samples. |
 | [`CheckType`](CheckType.md) | Type alias | Define the public type contract used by `CheckType`. |
 | [`Direction`](Direction.md) | Type alias | Define the public type contract used by `Direction`. |
 | [`RatioMeasurement`](RatioMeasurement.md) | Type alias | Define the public type contract used by `RatioMeasurement`. |
@@ -18,6 +19,7 @@ Turn user claims into structured, reviewable kinematic acceptance checks.
 | [`check_assembly_integrity`](check_assembly_integrity.md) | Function | Check that Components remain one connected assembly at every static or MotionResult sample and report disconnection, detachment, or escape. |
 | [`check_constraint_equation_residuals`](check_constraint_equation_residuals.md) | Function | Check signed gear, belt, rack-pinion, and coupling residual samples. |
 | [`check_constraint_residuals`](check_constraint_residuals.md) | Function | Check sampled constraint and, by default, closure residuals. |
+| [`check_driver_tracking`](check_driver_tracking.md) | Function | Compare one declared position/speed driver to the recorded trajectory. |
 | [`check_joint_limits`](check_joint_limits.md) | Function | Verify sampled joint positions against authored assembly limits. |
 | [`check_interference`](check_interference.md) | Function | Check specified component pairs for mesh penetration at discrete motion samples. |
 | [`check_minimum_clearance`](check_minimum_clearance.md) | Function | Run the strict signed minimum-clearance check as a CheckReport. |

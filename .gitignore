@@ -57,3 +57,7 @@ examples/*/model_*/source/state/
 # Preserve the reducer packages used by the before/after examples.
 !examples/compact_two_stage_planetary_reducer/model_before/*.scadpkg
 !examples/compact_two_stage_planetary_reducer/model_after/*.scadpkg
+
+# Preserve the slider-crank package used by the standalone viewer example.
+!examples/slider_crank/output/
+!examples/slider_crank/output/*.kincheck

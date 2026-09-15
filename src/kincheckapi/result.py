@@ -288,6 +288,78 @@ class Trajectory:
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
+class IntegrationSample:
+    """Typed snapshot captured at an internal solver integration step."""
+    time_s: float
+    component_poses: Mapping[str, Pose]
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "time_s", _finite(self.time_s, "time_s"))
+        if self.time_s < 0:
+            raise ValueError("time_s must be non-negative")
+        if any(not isinstance(pose, Pose) for pose in self.component_poses.values()):
+            raise TypeError("component_poses must contain Pose values")
+        object.__setattr__(self, "component_poses", MappingProxyType(dict(self.component_poses)))
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "time_s": self.time_s,
+            "component_poses": {
+                k: {
+                    "position_m": list(v.position_m),
+                    "orientation_xyzw": list(v.orientation_xyzw),
+                }
+                for k, v in self.component_poses.items()
+            },
+        }
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class DriverTarget:
+    """One declared driver target and the corresponding measured joint value."""
+    joint_id: str
+    time_s: float
+    mode: Literal["position", "speed"]
+    target: float
+    actual: float
+    error: float
+
+    def __post_init__(self) -> None:
+        _require_id(self.joint_id, "joint_id")
+        if self.mode not in {"position", "speed"}:
+            raise ValueError("mode must be position or speed")
+        object.__setattr__(self, "time_s", _finite(self.time_s, "time_s"))
+        object.__setattr__(self, "target", _finite(self.target, "target"))
+        object.__setattr__(self, "actual", _finite(self.actual, "actual"))
+        object.__setattr__(self, "error", _finite(self.error, "error"))
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class DriverTrajectory:
+    """Time ordered target/actual records for one joint driver."""
+    joint_id: str
+    mode: Literal["position", "speed"]
+    samples: tuple[DriverTarget, ...]
+
+    def __post_init__(self) -> None:
+        _require_id(self.joint_id, "joint_id")
+        if self.mode not in {"position", "speed"}:
+            raise ValueError("mode must be position or speed")
+        samples = tuple(self.samples)
+        if any(item.joint_id != self.joint_id or item.mode != self.mode for item in samples):
+            raise ValueError("driver samples must match joint_id and mode")
+        if any(right.time_s <= left.time_s for left, right in zip(samples, samples[1:])):
+            raise ValueError("driver samples must be strictly increasing")
+        object.__setattr__(self, "samples", samples)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"joint_id": self.joint_id, "mode": self.mode, "samples": [item.to_dict() for item in self.samples]}
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class ConstraintResidual:
     constraint_id: str
     time_s: float
@@ -478,6 +550,8 @@ class MotionResult(AgentReadableResult):
     backend_id: str | None = None
     backend_version: str | None = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    integration_samples: tuple[IntegrationSample, ...] = ()
+    driver_trajectories: tuple[DriverTrajectory, ...] = ()
 
     @property
     def passed(self) -> bool:
@@ -552,6 +626,16 @@ class MotionResult(AgentReadableResult):
         object.__setattr__(self, "limit_events", events)
         object.__setattr__(self, "issues", issues)
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
+        integration_samples = tuple(self.integration_samples)
+        if any(not isinstance(item, IntegrationSample) for item in integration_samples):
+            raise TypeError("integration_samples must contain IntegrationSample values")
+        if any(right.time_s <= left.time_s for left, right in zip(integration_samples, integration_samples[1:])):
+            raise ValueError("integration_samples times must be strictly increasing")
+        object.__setattr__(self, "integration_samples", integration_samples)
+        driver_trajectories = tuple(self.driver_trajectories)
+        if any(not isinstance(item, DriverTrajectory) for item in driver_trajectories):
+            raise TypeError("driver_trajectories must contain DriverTrajectory values")
+        object.__setattr__(self, "driver_trajectories", driver_trajectories)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -576,6 +660,8 @@ class MotionResult(AgentReadableResult):
             "backend_id": self.backend_id,
             "backend_version": self.backend_version,
             "metadata": _json_value(self.metadata),
+            "integration_samples": [item.to_dict() for item in self.integration_samples],
+            "driver_trajectories": [item.to_dict() for item in self.driver_trajectories],
         }
 
     def get_joint_trajectory(self, *, joint_id: str) -> JointTrajectory | None:
@@ -1088,6 +1174,9 @@ __all__ = [
     "Direction",
     "InterferenceEvent",
     "InterferenceResult",
+    "IntegrationSample",
+    "DriverTarget",
+    "DriverTrajectory",
     "JointExtrema",
     "JointState",
     "JointTrajectory",

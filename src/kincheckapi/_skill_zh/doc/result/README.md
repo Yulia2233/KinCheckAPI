@@ -15,6 +15,9 @@
 | [`Direction`](Direction.md) | 类型别名 | 定义 `Direction` 使用的公开类型约定。 |
 | [`InterferenceEvent`](InterferenceEvent.md) | 类型 | 表示 `InterferenceEvent` 的公开、可序列化数据结构。 |
 | [`InterferenceResult`](InterferenceResult.md) | 类型 | 表示 `InterferenceResult` 的公开、可序列化数据结构。 |
+| [`IntegrationSample`](IntegrationSample.md) | 类型 | 表示 `IntegrationSample` 的公开、可序列化数据结构。 |
+| [`DriverTarget`](DriverTarget.md) | 类型 | 表示 `DriverTarget` 的公开、可序列化数据结构。 |
+| [`DriverTrajectory`](DriverTrajectory.md) | 类型 | 表示 `DriverTrajectory` 的公开、可序列化数据结构。 |
 | [`JointExtrema`](JointExtrema.md) | 类型 | 表示 `JointExtrema` 的公开、可序列化数据结构。 |
 | [`JointState`](JointState.md) | 类型 | 表示 `JointState` 的公开、可序列化数据结构。 |
 | [`JointTrajectory`](JointTrajectory.md) | 类型 | 表示 `JointTrajectory` 的公开、可序列化数据结构。 |

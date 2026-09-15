@@ -18,7 +18,7 @@ uv venv .venv
 uv pip install --python .venv/bin/python .
 ```
 
-## 插件开发版本：v0.5.3
+## 插件开发版本：v0.5.4
 
 新增可选 SimpleCADAPI addon，将经过校验的 `.scadpkg` 准备为原有 MJCF 输入。
 `convert_mjcf()`、`verify(model_dir)`、装配、工况、求解和检查 API 保持不变。
@@ -39,9 +39,9 @@ kincheck doctor --addon --format json
 SDK 兼容范围为 `>=2.1.3b3,<2.1.4`。
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.3
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.4
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.3
+sca addon add ./dist/sca-kincheckapi-0.5.4
 sca addon list
 kincheck verify-package product.scadpkg --work-dir analysis-work --script verification/verify.py --format json
 ```
@@ -76,7 +76,7 @@ v0.5.1 新增全状态装配体整体性检查：在静态初始姿态或完整 
 - 基于真实 STL 网格检查干涉、有符号最小间隙和运动包络；
 - 通过 `run_checks()` 统一执行干涉、间隙、包络、传动、限位和轨迹验收；
 - 导出、验证和读取包含轨迹与网格的 `.kincheck` 结果包；
-- 提供紧凑二级行星减速器和四连杆两个示例。
+- 提供紧凑二级行星减速器、四连杆和曲柄滑块三个示例。
 
 ## 当前边界
 
@@ -125,6 +125,17 @@ uv run python examples/compact_two_stage_planetary_reducer/verification/simulate
 ```bash
 uv run python examples/four_bar_linkage/verification/simulate_and_record.py
 uv run python examples/four_bar_linkage/verification/simulate_before_optimization.py
+```
+
+[曲柄滑块示例](examples/slider_crank/verification/verify.py) 是一个完整的四零件 CADIR 机构：带轴孔的曲柄座、带偏心销的轴和飞轮、两端镗孔的胶囊形连杆，以及在双导轨之间运行的滑块。验证脚本逐采样检查分段曲柄跟踪、闭环残差、关节限位、轨迹边界、网格干涉、所有零件对至少 0.5 mm 的最小间隙，以及滑块导轨包络：
+
+仿真结果可以导出为 `.kincheck` 包，再由独立查看器回放：
+
+```bash
+uv run --extra addon python examples/slider_crank/model/source/slider_crank.cadir.py
+uv run python examples/slider_crank/verification/verify.py examples/slider_crank/model
+uv run python examples/slider_crank/verification/export_motion_package.py
+python viewer/kincheck_viewer.py examples/slider_crank/output/slider_crank.kincheck --serve
 ```
 
 独立查看器可直接回放导出的 `.kincheck` 包，无需重新运行求解器：

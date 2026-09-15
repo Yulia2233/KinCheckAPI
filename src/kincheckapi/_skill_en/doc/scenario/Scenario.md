@@ -22,6 +22,8 @@ class Scenario:
     component_result_scope: ComponentResultScope | str
     capture_integration_steps: bool
     integration_component_ids: tuple[str, ...] | None
+    initial_state_source: str
+    profile_boundary: ProfileBoundary | str
 ```
 
 Source: `src/kincheckapi/scenario.py`.
@@ -57,6 +59,8 @@ A reusable kinematic condition bound to exactly one assembly definition.
 | `component_result_scope` | `ComponentResultScope | str` | `<ComponentResultScope.REQUESTED: 'requested'>` | Public input or data field `component_result_scope`. |
 | `capture_integration_steps` | `bool` | `False` | Public input or data field `capture_integration_steps`. |
 | `integration_component_ids` | `tuple[str, ...] | None` | `None` | Explicitly specified `integration_component_ids` collection. |
+| `initial_state_source` | `str` | `'explicit'` | Public input or data field `initial_state_source`. |
+| `profile_boundary` | `ProfileBoundary | str` | `<ProfileBoundary.HOLD: 'hold'>` | Public input or data field `profile_boundary`. |
 
 ## Returns and Failures
 

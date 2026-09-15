@@ -1,0 +1,113 @@
+{
+  "closures": [
+    {
+      "joint_id": "joint/slider_crank/joint.slider_pin",
+      "joint_type": "revolute",
+      "name": "closure_joint_slider_crank_joint_slider_pin_d385004c577d",
+      "sites": [
+        {
+          "group": "node/slider_crank/connecting_rod",
+          "name": "closure_a_joint_slider_crank_joint_slider_pin_98a34b3d38c8"
+        },
+        {
+          "group": "node/slider_crank/slider",
+          "name": "closure_b_joint_slider_crank_joint_slider_pin_d66d7f22cd25"
+        }
+      ]
+    }
+  ],
+  "default_density_count": 4,
+  "equalities": [],
+  "grounded_group_id": "node/slider_crank",
+  "groups": [
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "node/slider_crank",
+      "members": [
+        "node/slider_crank",
+        "node/slider_crank/ground.base"
+      ],
+      "parent_group": null,
+      "representative": "node/slider_crank/ground.base",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_connecting_rod",
+      "grounded": false,
+      "group_id": "node/slider_crank/connecting_rod",
+      "members": [
+        "node/slider_crank/connecting_rod"
+      ],
+      "parent_group": "node/slider_crank/crank",
+      "representative": "node/slider_crank/connecting_rod",
+      "tree_joint": "joint_joint_slider_crank_joint_rod_a1fde0b4cfbb"
+    },
+    {
+      "body_name": "body_crank",
+      "grounded": false,
+      "group_id": "node/slider_crank/crank",
+      "members": [
+        "node/slider_crank/crank"
+      ],
+      "parent_group": "node/slider_crank",
+      "representative": "node/slider_crank/crank",
+      "tree_joint": "joint_joint_slider_crank_joint_crank_ddb0843d64f3"
+    },
+    {
+      "body_name": "body_slider",
+      "grounded": false,
+      "group_id": "node/slider_crank/slider",
+      "members": [
+        "node/slider_crank/slider"
+      ],
+      "parent_group": "node/slider_crank",
+      "representative": "node/slider_crank/slider",
+      "tree_joint": "joint_joint_slider_crank_joint_slider_951378ed43f7"
+    }
+  ],
+  "mesh_constraints": [],
+  "meshes": {
+    "part.connecting_rod": "mesh_part_connecting_rod_0c5d39419c04",
+    "part.crank": "mesh_part_crank_549dc4304079",
+    "part.ground": "mesh_part_ground_0757f7823ec5",
+    "part.slider": "mesh_part_slider_a8d32eeed5af"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [],
+  "rigid_edges": [
+    {
+      "a": "node/slider_crank",
+      "b": "node/slider_crank/ground.base",
+      "kind": "ground"
+    }
+  ],
+  "root_definition_id": "slider_crank",
+  "schema_version": "1.0",
+  "sites": [],
+  "tree_joints": [
+    {
+      "group": "node/slider_crank/connecting_rod",
+      "joint_id": "joint/slider_crank/joint.rod",
+      "joint_name": "joint_joint_slider_crank_joint_rod_a1fde0b4cfbb",
+      "parent_group": "node/slider_crank/crank"
+    },
+    {
+      "group": "node/slider_crank/crank",
+      "joint_id": "joint/slider_crank/joint.crank",
+      "joint_name": "joint_joint_slider_crank_joint_crank_ddb0843d64f3",
+      "parent_group": "node/slider_crank"
+    },
+    {
+      "group": "node/slider_crank/slider",
+      "joint_id": "joint/slider_crank/joint.slider",
+      "joint_name": "joint_joint_slider_crank_joint_slider_951378ed43f7",
+      "parent_group": "node/slider_crank"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

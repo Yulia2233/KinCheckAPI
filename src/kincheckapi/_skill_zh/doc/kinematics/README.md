@@ -6,6 +6,8 @@
 
 | 符号 | 类型 | 用途 |
 | --- | --- | --- |
+| [`KinematicSolveOptions`](KinematicSolveOptions.md) | 类型 | 表示 `KinematicSolveOptions` 的公开、可序列化数据结构。 |
+| [`KinematicCapabilities`](KinematicCapabilities.md) | 类型 | 表示 `KinematicCapabilities` 的公开、可序列化数据结构。 |
 | [`ClosureReport`](ClosureReport.md) | 类型 | 表示 `ClosureReport` 的公开、可序列化数据结构。 |
 | [`ConnectorPathResult`](ConnectorPathResult.md) | 类型 | 表示 `ConnectorPathResult` 的公开、可序列化数据结构。 |
 | [`DofReport`](DofReport.md) | 类型 | 表示 `DofReport` 的公开、可序列化数据结构。 |
@@ -26,6 +28,7 @@
 | [`WorkspaceResult`](WorkspaceResult.md) | 类型 | 表示 `WorkspaceResult` 的公开、可序列化数据结构。 |
 | [`WorkspaceSample`](WorkspaceSample.md) | 类型 | 表示 `WorkspaceSample` 的公开、可序列化数据结构。 |
 | [`analyze_dofs`](analyze_dofs.md) | 函数 | 分析机构或结果的运动学性质：`analyze_dofs`。 |
+| [`backend_capabilities`](backend_capabilities.md) | 函数 | 执行公开操作 `backend_capabilities`。 |
 | [`analyze_mobility`](analyze_mobility.md) | 函数 | 根据名义关节自由度和约束 Jacobian 秩分析机构的有效自由度。 |
 | [`check_reachability`](check_reachability.md) | 函数 | 执行结构化检查：`check_reachability`。 |
 | [`compute_workspace`](compute_workspace.md) | 函数 | 计算后端无关的运动学量：`compute_workspace`。 |

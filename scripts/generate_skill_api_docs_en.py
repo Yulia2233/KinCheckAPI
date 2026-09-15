@@ -38,7 +38,7 @@ MODULES: dict[str, dict[str, str]] = {
     "checks": {
         "title": "Acceptance Checks",
         "summary": "Turn user claims into structured, reviewable kinematic acceptance checks.",
-        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_trajectory", "check_transmission_ratio", "run_checks"),
+        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "DriverTrackingReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_driver_tracking", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_trajectory", "check_transmission_ratio", "run_checks"),
     },
     "clearance": {
         "title": "Geometric Safety",
@@ -346,6 +346,10 @@ def clean_default(value: Any) -> str:
 def purpose(name: str, value: Any, kind: str) -> str:
     if name in PURPOSE_OVERRIDES:
         return PURPOSE_OVERRIDES[name]
+    if kind == "enum":
+        return f"Define the stable enum values accepted by `{name}`."
+    if kind == "constant":
+        return f"Expose the public constant `{name}`."
     doc = inspect.getdoc(value)
     if doc:
         return " ".join(doc.split())
@@ -370,12 +374,8 @@ def purpose(name: str, value: Any, kind: str) -> str:
             if name.startswith(prefix):
                 return f"{description}: `{name}`."
         return f"Execute the public operation `{name}`."
-    if kind == "enum":
-        return f"Define the stable enum values accepted by `{name}`."
     if kind == "alias":
         return f"Define the public type contract used by `{name}`."
-    if kind == "constant":
-        return f"Expose the public constant `{name}`."
     return f"Represent the public, serializable `{name}` data structure."
 
 

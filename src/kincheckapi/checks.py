@@ -43,6 +43,7 @@ CheckType = Literal[
     "interference",
     "minimum_clearance",
     "motion_envelope",
+    "driver_tracking",
 ]
 RatioMeasurement = Literal[
     "angular_velocity",
@@ -198,6 +199,27 @@ class CheckSuiteReport(AgentReadableResult):
         }
 
 
+@dataclass(frozen=True, slots=True, kw_only=True)
+class DriverTrackingReport(AgentReadableResult):
+    """Acceptance evidence comparing declared driver targets with actual samples."""
+    passed: bool
+    joint_id: str
+    mode: str
+    maximum_absolute_error: float
+    mean_absolute_error: float
+    rms_error: float
+    overshoot: float
+    undertracking: float = 0.0
+    settling_time_s: float | None
+    valid_sample_count: int
+    first_failure_time_s: float | None
+    tolerance: float
+    issues: tuple[SimIssue, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"operation": "check_driver_tracking", "status": "passed" if self.passed else "failed", "passed": self.passed, "joint_id": self.joint_id, "mode": self.mode, "maximum_absolute_error": self.maximum_absolute_error, "mean_absolute_error": self.mean_absolute_error, "rms_error": self.rms_error, "overshoot": self.overshoot, "undertracking": self.undertracking, "settling_time_s": self.settling_time_s, "valid_sample_count": self.valid_sample_count, "first_failure_time_s": self.first_failure_time_s, "tolerance": self.tolerance, "issues": [i.to_dict() for i in self.issues]}
+
+
 def _issue(
     *,
     code: str,
@@ -319,6 +341,65 @@ def _in_window(
     return (start_time_s is None or time_s >= start_time_s) and (
         end_time_s is None or time_s <= end_time_s
     )
+
+
+def check_driver_tracking(
+    *, motion_result: MotionResult, scenario: "Scenario", joint_id: str,
+    tolerance: float = 1e-3, start_time_s: float | None = None,
+    end_time_s: float | None = None, check_id: str = "driver_tracking",
+) -> DriverTrackingReport:
+    """Compare one declared position/speed driver to the recorded trajectory."""
+    issues: list[SimIssue] = list(_motion_result_issues(motion_result))
+    if not math.isfinite(tolerance) or tolerance < 0:
+        issues.append(_issue(code="KINCHECK-CHECK-DRIVER-TOLERANCE-INVALID", stage="checks.driver_tracking", message="Driver tolerance must be finite and non-negative.", object_ids=(joint_id,)))
+    drivers = [d for d in (*scenario.position_drivers, *scenario.speed_drivers) if d.joint_id == joint_id]
+    trajectory = motion_result.get_joint_trajectory(joint_id=joint_id)
+    if len(drivers) != 1 or trajectory is None:
+        issues.append(_issue(code="KINCHECK-CHECK-DRIVER-NOT-FOUND", stage="checks.driver_tracking", message="Exactly one declared driver and one recorded trajectory are required.", object_ids=(joint_id,)))
+        return DriverTrackingReport(passed=False, joint_id=joint_id, mode="unknown", maximum_absolute_error=float("inf"), mean_absolute_error=float("inf"), rms_error=float("inf"), overshoot=float("inf"), undertracking=float("inf"), settling_time_s=None, valid_sample_count=0, first_failure_time_s=None, tolerance=tolerance, issues=tuple(issues))
+    driver = drivers[0]
+    mode = "position" if hasattr(driver, "profile") and driver in scenario.position_drivers else "speed"
+    def target(time: float) -> float:
+        pts = driver.profile.points
+        interval = getattr(driver, "active_interval_s", None)
+        if interval is not None and (time < interval[0] or time > interval[1]):
+            return 0.0
+        boundary = getattr(getattr(scenario, "profile_boundary", "hold"), "value", getattr(scenario, "profile_boundary", "hold"))
+        if time < pts[0].time_s:
+            return 0.0 if boundary == "zero" else pts[0].value
+        if time == pts[0].time_s:
+            return pts[0].value
+        if time >= pts[-1].time_s: return 0.0 if boundary == "zero" else pts[-1].value
+        for left, right in zip(pts, pts[1:]):
+            if left.time_s <= time <= right.time_s:
+                if driver.profile.interpolation.value == "step": return left.value
+                f = (time-left.time_s)/(right.time_s-left.time_s)
+                return left.value + f*(right.value-left.value)
+        return pts[-1].value
+    actuals = trajectory.positions if mode == "position" else trajectory.velocities
+    pairs = [(t, target(t), a) for t, a in zip(trajectory.times_s, actuals) if _in_window(t, start_time_s=start_time_s, end_time_s=end_time_s)]
+    errors = [a - b for _, b, a in pairs]
+    abs_errors = [abs(e) for e in errors]
+    first_failure = next((t for (t, _, _), e in zip(pairs, abs_errors) if e > tolerance), None)
+    settling = None
+    for index, ((t, _, _), e) in enumerate(zip(pairs, abs_errors)):
+        if e <= tolerance and all(later <= tolerance for later in abs_errors[index:]): settling = t; break
+    maximum = max(abs_errors, default=float("inf")); mean = sum(abs_errors)/len(abs_errors) if abs_errors else float("inf")
+    rms = math.sqrt(sum(e*e for e in errors)/len(errors)) if errors else float("inf")
+    overshoot_values = [
+        (max(0.0, a - b) if b >= 0.0 else max(0.0, b - a))
+        if b != 0.0 else abs(a)
+        for _, b, a in pairs
+    ]
+    undertracking_values = [
+        (max(0.0, b - a) if b >= 0.0 else max(0.0, a - b))
+        for _, b, a in pairs
+    ]
+    overshoot = max(overshoot_values, default=float("inf"))
+    undertracking = max(undertracking_values, default=float("inf"))
+    if not pairs: issues.append(_issue(code="KINCHECK-CHECK-DRIVER-INSUFFICIENT-SAMPLES", stage="checks.driver_tracking", message="No samples exist in the requested interval.", object_ids=(joint_id,)))
+    elif first_failure is not None: issues.append(_issue(code="KINCHECK-CHECK-DRIVER-TRACKING-FAILED", stage="checks.driver_tracking", message="Driver tracking error exceeds tolerance.", object_ids=(joint_id,), failure_time_s=first_failure, evidence=(Evidence(key="maximum_absolute_error", actual=maximum, expected=f"<= {tolerance}"),)))
+    return DriverTrackingReport(passed=not issues, joint_id=joint_id, mode=mode, maximum_absolute_error=maximum, mean_absolute_error=mean, rms_error=rms, overshoot=overshoot, undertracking=undertracking, settling_time_s=settling, valid_sample_count=len(pairs), first_failure_time_s=first_failure, tolerance=tolerance, issues=tuple(issues))
 
 
 def check_constraint_residuals(
@@ -1407,6 +1488,12 @@ def run_checks(
                 )
             else:
                 report = check_trajectory(motion_result=motion_result, **parameters)
+        elif spec.check_type == "driver_tracking":
+            if motion_result is None or scenario is None:
+                report = _run_failure(spec=spec, code="KINCHECK-CHECK-SCENARIO-REQUIRED", message="Driver tracking requires Scenario and MotionResult.")
+            else:
+                tracking = check_driver_tracking(motion_result=motion_result, scenario=scenario, **parameters)
+                report = CheckReport(check_id=spec.check_id, check_type=spec.check_type, passed=tracking.passed, severity="info" if tracking.passed else "error", evidence=(Evidence(key="maximum_absolute_error", actual=tracking.maximum_absolute_error, expected=f"<= {tracking.tolerance}"), Evidence(key="mean_absolute_error", actual=tracking.mean_absolute_error), Evidence(key="rms_error", actual=tracking.rms_error), Evidence(key="overshoot", actual=tracking.overshoot), Evidence(key="undertracking", actual=tracking.undertracking), Evidence(key="valid_sample_count", actual=tracking.valid_sample_count), Evidence(key="first_failure_time_s", actual=tracking.first_failure_time_s)), issues=tracking.issues, metadata=tracking.to_dict())
         elif spec.check_type in {"interference", "minimum_clearance", "motion_envelope"}:
             if motion_result is None:
                 report = _run_failure(
@@ -1824,6 +1911,8 @@ __all__ = [
     "check_assembly_integrity",
     "check_minimum_clearance",
     "check_motion_envelope",
+    "DriverTrackingReport",
+    "check_driver_tracking",
     "check_pose_target",
     "check_trajectory",
     "check_transmission_ratio",

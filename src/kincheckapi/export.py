@@ -32,6 +32,9 @@ from .result import (
     ConstraintEquationResidual,
     ConstraintResidual,
     JointTrajectory,
+    IntegrationSample,
+    DriverTarget,
+    DriverTrajectory,
     LimitEvent,
     MotionResult,
     Trajectory,
@@ -855,6 +858,28 @@ def _motion_from_dict(value: Mapping[str, Any]) -> MotionResult:
         backend_id=value.get("backend_id"),
         backend_version=value.get("backend_version"),
         metadata=value.get("metadata", {}),
+        integration_samples=tuple(
+            IntegrationSample(
+                time_s=float(item["time_s"]),
+                component_poses={
+                    str(component_id): _pose_from_dict(pose)
+                    for component_id, pose in item.get("component_poses", {}).items()
+                },
+            )
+            for item in value.get("integration_samples", ())
+        ),
+        driver_trajectories=tuple(
+            DriverTrajectory(
+                joint_id=str(item["joint_id"]), mode=item["mode"],
+                samples=tuple(
+                    DriverTarget(
+                        joint_id=str(sample["joint_id"]), time_s=float(sample["time_s"]),
+                        mode=sample["mode"], target=float(sample["target"]),
+                        actual=float(sample["actual"]), error=float(sample["error"]),
+                    ) for sample in item.get("samples", ())
+                ),
+            ) for item in value.get("driver_trajectories", ())
+        ),
     )
 
 
