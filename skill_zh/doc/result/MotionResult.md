@@ -22,6 +22,8 @@ class MotionResult:
     backend_id: str | None
     backend_version: str | None
     metadata: Mapping[str, Any]
+    integration_samples: tuple[IntegrationSample, ...]
+    driver_trajectories: tuple[DriverTrajectory, ...]
 ```
 
 源码：`src/kincheckapi/result.py`。
@@ -57,6 +59,8 @@ from kincheckapi.result import MotionResult
 | `backend_id` | `str | None` | `None` | 稳定且可解析的 `backend_id`。 |
 | `backend_version` | `str | None` | `None` | `backend_version` 的公开输入或数据字段。 |
 | `metadata` | `Mapping[str, Any]` | default_factory | 附加的只读结构化元数据。 |
+| `integration_samples` | `tuple[IntegrationSample, ...]` | `()` | `integration_samples` 的公开输入或数据字段。 |
+| `driver_trajectories` | `tuple[DriverTrajectory, ...]` | `()` | `driver_trajectories` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

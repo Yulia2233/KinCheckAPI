@@ -42,7 +42,7 @@ MODULES: dict[str, dict[str, Any]] = {
     "checks": {
         "title": "验收检查",
         "summary": "把用户命题转换成结构化、可复核的运动学检查。",
-        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_trajectory", "check_transmission_ratio", "run_checks"),
+        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "DriverTrackingReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_driver_tracking", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_trajectory", "check_transmission_ratio", "run_checks"),
     },
     "clearance": {
         "title": "几何安全",

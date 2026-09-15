@@ -31,12 +31,15 @@ from .result import (
     Direction,
     JointTrajectory,
     MotionResult,
+    IntegrationSample,
+    DriverTarget,
+    DriverTrajectory,
     _PlanetaryStageEvidence,
     Trajectory,
     TransmissionRatioCheck,
 )
 from .pose import compose_pose, orientation_error_rad, relative_pose, rotate_vector
-from .scenario import Scenario, validate_scenario
+from .scenario import Scenario, validate_scenario, PositionDriver, SpeedDriver
 from .kinematics_geometry import (
     JacobianOptions,
     JacobianResult,
@@ -61,6 +64,57 @@ from .kinematics_limits import detect_limit_events
 
 
 Member = Literal["sun", "ring", "carrier"]
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class KinematicSolveOptions:
+    """Deterministic controls for backend integration and constraint solving."""
+    max_integration_step_s: float | None = None
+    max_integration_substeps: int = 1000000
+    max_constraint_iterations: int = 100
+    position_residual_tolerance_m: float = 1e-6
+    orientation_residual_tolerance_rad: float = 1e-6
+    non_finite_state_policy: Literal["fail", "warn"] = "fail"
+    adaptive_sampling: bool = False
+
+    def __post_init__(self) -> None:
+        if self.max_integration_step_s is not None and (not math.isfinite(float(self.max_integration_step_s)) or float(self.max_integration_step_s) <= 0):
+            raise ValueError("max_integration_step_s must be positive and finite")
+        if int(self.max_integration_substeps) <= 0 or int(self.max_constraint_iterations) <= 0:
+            raise ValueError("solver iteration limits must be positive")
+        if not math.isfinite(float(self.position_residual_tolerance_m)) or float(self.position_residual_tolerance_m) < 0:
+            raise ValueError("position_residual_tolerance_m must be finite and non-negative")
+        if not math.isfinite(float(self.orientation_residual_tolerance_rad)) or float(self.orientation_residual_tolerance_rad) < 0:
+            raise ValueError("orientation_residual_tolerance_rad must be finite and non-negative")
+        if self.non_finite_state_policy not in {"fail", "warn"}:
+            raise ValueError("non_finite_state_policy must be 'fail' or 'warn'")
+        if not isinstance(self.adaptive_sampling, bool):
+            raise TypeError("adaptive_sampling must be a boolean")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "max_integration_step_s": self.max_integration_step_s,
+            "max_integration_substeps": int(self.max_integration_substeps),
+            "max_constraint_iterations": int(self.max_constraint_iterations),
+            "position_residual_tolerance_m": float(self.position_residual_tolerance_m),
+            "orientation_residual_tolerance_rad": float(self.orientation_residual_tolerance_rad),
+            "non_finite_state_policy": self.non_finite_state_policy,
+            "adaptive_sampling": self.adaptive_sampling,
+        }
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class KinematicCapabilities:
+    joint_types: Mapping[str, bool]
+    driver_modes: tuple[str, ...] = ("position", "speed")
+    output_channels: tuple[str, ...] = ("joint", "component", "connector", "residuals")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"joint_types": dict(self.joint_types), "driver_modes": list(self.driver_modes), "output_channels": list(self.output_channels)}
+
+
+def backend_capabilities() -> KinematicCapabilities:
+    return KinematicCapabilities(joint_types={"fixed": True, "revolute": True, "prismatic": True, "cylindrical": False, "spherical": False, "planar": False, "free": False})
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -1058,7 +1112,7 @@ def _backend_failure(*, scenario: Scenario, cause: BaseException, operation: str
     )
 
 
-def _motion_from_backend(*, scenario: Scenario, backend_result: Any) -> MotionResult:
+def _motion_from_backend(*, scenario: Scenario, backend_result: Any, options: KinematicSolveOptions | None = None) -> MotionResult:
     samples = tuple(backend_result.samples)
     if not samples:
         raise MotionSolveError(
@@ -1270,10 +1324,10 @@ def _motion_from_backend(*, scenario: Scenario, backend_result: Any) -> MotionRe
                 )
             )
     solve_tolerances = {
-        "position_residual_m": 1e-6,
-        "orientation_residual_rad": 1e-6,
-        "linear_equation_residual_m": 1e-6,
-        "angular_equation_residual_rad": 1e-6,
+        "position_residual_m": float(options.position_residual_tolerance_m) if options is not None else 1e-6,
+        "orientation_residual_rad": float(options.orientation_residual_tolerance_rad) if options is not None else 1e-6,
+        "linear_equation_residual_m": float(options.position_residual_tolerance_m) if options is not None else 1e-6,
+        "angular_equation_residual_rad": float(options.orientation_residual_tolerance_rad) if options is not None else 1e-6,
     }
     ordinary_constraint_ids = {
         item.constraint_id for item in scenario.assembly.constraints
@@ -1369,6 +1423,14 @@ def _motion_from_backend(*, scenario: Scenario, backend_result: Any) -> MotionRe
         )
         for warning in backend_result.warnings
     )
+    if bool(getattr(backend_result, "metadata", {}).get("partial_due_nonfinite", False)):
+        warning_issues = (*warning_issues, SimIssue(
+            code="KINCHECK-KIN-NONFINITE-STATE-WARNED",
+            severity="warning",
+            stage="kinematics.solve",
+            message="A non-finite backend state was detected; the last finite state was retained.",
+            object_ids=(scenario.scenario_id,),
+        ))
     tree = build_kinematic_tree(assembly=scenario.assembly)
     tree_payload = {
         "root_group_ids": list(tree.root_group_ids),
@@ -1400,6 +1462,58 @@ def _motion_from_backend(*, scenario: Scenario, backend_result: Any) -> MotionRe
         }
         for item in integration_samples
     )
+    typed_integration_samples = tuple(
+        IntegrationSample(
+            time_s=item["time_s"],
+            component_poses={
+                cid: Pose(position_m=payload["position_m"], orientation_xyzw=payload["orientation_xyzw"])
+                for cid, payload in item["component_poses"].items()
+            },
+        )
+        for item in integration_payload
+    )
+
+    requested_joint_ids = {item.joint_id for item in scenario.joint_result_requests}
+    if requested_joint_ids:
+        joint_trajectories = [item for item in joint_trajectories if item.joint_id in requested_joint_ids]
+    requested_components = scenario.component_result_requests
+    if requested_components and scenario.component_result_scope.value == "requested":
+        allowed_components = {(item.component_id, item.connector_id) for item in requested_components}
+        # A connector request also makes its owning component pose available.
+        allowed_components |= {(item.component_id, None) for item in requested_components}
+        trajectories = [item for item in trajectories if (item.component_id, item.connector_id) in allowed_components]
+
+    def driver_target(driver: PositionDriver | SpeedDriver, time_s: float) -> float:
+        interval = getattr(driver, "active_interval_s", None)
+        if interval is not None and (time_s < interval[0] or time_s > interval[1]):
+            return 0.0
+        points = driver.profile.points
+        boundary = getattr(getattr(scenario, "profile_boundary", "hold"), "value", getattr(scenario, "profile_boundary", "hold"))
+        if time_s <= points[0].time_s:
+            return 0.0 if boundary == "zero" and time_s < points[0].time_s else points[0].value
+        if time_s >= points[-1].time_s:
+            return 0.0 if boundary == "zero" and time_s > points[-1].time_s else points[-1].value
+        for left, right in zip(points, points[1:]):
+            if left.time_s <= time_s <= right.time_s:
+                if driver.profile.interpolation.value == "step":
+                    return left.value
+                fraction = (time_s - left.time_s) / (right.time_s - left.time_s)
+                return left.value + fraction * (right.value - left.value)
+        return points[-1].value
+
+    driver_trajectories: list[DriverTrajectory] = []
+    trajectories_by_joint = {item.joint_id: item for item in joint_trajectories}
+    for driver in (*scenario.position_drivers, *scenario.speed_drivers):
+        trajectory = trajectories_by_joint.get(driver.joint_id)
+        if trajectory is None:
+            continue
+        mode = "position" if isinstance(driver, PositionDriver) else "speed"
+        actuals = trajectory.positions if mode == "position" else trajectory.velocities
+        records = tuple(
+            DriverTarget(joint_id=driver.joint_id, time_s=time_s, mode=mode, target=driver_target(driver, time_s), actual=actual, error=actual-driver_target(driver, time_s))
+            for time_s, actual in zip(times, actuals)
+        )
+        driver_trajectories.append(DriverTrajectory(joint_id=driver.joint_id, mode=mode, samples=records))
 
     component_local_poses: dict[str, dict[str, list[float]]] = {}
     component_world_poses: dict[str, dict[str, list[float]]] = {}
@@ -1416,7 +1530,7 @@ def _motion_from_backend(*, scenario: Scenario, backend_result: Any) -> MotionRe
     issues = (*warning_issues, *closure_issues, *constraint_issues)
     status = (
         "partial"
-        if closure_issues or constraint_issues
+        if closure_issues or constraint_issues or bool(getattr(backend_result, "metadata", {}).get("partial_due_nonfinite", False))
         else "completed_with_warnings"
         if warning_issues
         else "completed"
@@ -1451,19 +1565,36 @@ def _motion_from_backend(*, scenario: Scenario, backend_result: Any) -> MotionRe
             "integration_component_ids": scenario.integration_component_ids,
             "solve_tolerances": solve_tolerances,
         },
+        integration_samples=typed_integration_samples,
+        driver_trajectories=tuple(driver_trajectories),
     )
 
 
 def solve_motion(*, scenario: Scenario, options: Any = None) -> MotionResult:
     """Validate and solve a Scenario through the configured private backend."""
 
-    if options is not None:
-        raise BackendCapabilityError(
-            code="KINCHECK-KIN-OPTIONS-UNSUPPORTED",
-            message="This milestone accepts no backend-specific solve options.",
-            object_ids=(scenario.scenario_id,),
-            missing_capabilities=("backend-specific options",),
-        )
+    if options is not None and not isinstance(options, KinematicSolveOptions):
+        if not isinstance(options, Mapping):
+            issue = SimIssue(
+                code="KINCHECK-KIN-OPTIONS-INVALID",
+                severity="error",
+                stage="kinematics.solve",
+                message="options must be a KinematicSolveOptions instance or a mapping of its fields.",
+                object_ids=(scenario.scenario_id,),
+                evidence=(Evidence(key="options_type", actual=type(options).__name__, expected="KinematicSolveOptions or Mapping"),),
+                suggested_actions=("Pass KinematicSolveOptions(...) or a mapping with documented fields.",),
+            )
+            raise BackendCapabilityError(
+                code="KINCHECK-KIN-OPTIONS-INVALID",
+                message="Invalid kinematic solve options.",
+                report=DiagnosticReport(issues=(issue,)),
+                object_ids=(scenario.scenario_id,),
+                missing_capabilities=("valid options object",),
+            )
+        try:
+            options = KinematicSolveOptions(**dict(options))
+        except (TypeError, ValueError) as cause:
+            raise BackendCapabilityError(code="KINCHECK-KIN-OPTIONS-UNSUPPORTED", message="Invalid or unsupported kinematic solve options.", object_ids=(scenario.scenario_id,), missing_capabilities=("typed KinematicSolveOptions",)) from cause
     assembly_validation = validate_assembly(assembly=scenario.assembly)
     topology_validation = validate_topology(assembly=scenario.assembly)
     validation_items: list[SimIssue] = []
@@ -1512,7 +1643,7 @@ def solve_motion(*, scenario: Scenario, options: Any = None) -> MotionResult:
             solve_scenario,
         )
         try:
-            backend_result = solve_scenario(scenario=scenario)
+            backend_result = solve_scenario(scenario=scenario, **({"options": options} if options is not None else {}))
         except BackendInitialStateFailure as cause:
             details = dict(getattr(cause, "details", {}))
             message = "Initial Joint states are inconsistent with the model constraints."
@@ -1626,7 +1757,7 @@ def solve_motion(*, scenario: Scenario, options: Any = None) -> MotionResult:
                 failure_time_s=getattr(cause, "time_s", None),
                 backend_failure=failure,
             ) from cause
-        return _motion_from_backend(scenario=scenario, backend_result=backend_result)
+        return _motion_from_backend(scenario=scenario, backend_result=backend_result, options=options)
     except KinCheckError:
         raise
     except Exception as cause:
@@ -1728,6 +1859,8 @@ def write_motion_result(*, motion_result: MotionResult, path: str | Path) -> Non
 
 
 __all__ = [
+    "KinematicSolveOptions",
+    "KinematicCapabilities",
     "ClosureReport",
     "ConnectorPathResult",
     "DofReport",
@@ -1748,6 +1881,7 @@ __all__ = [
     "WorkspaceResult",
     "WorkspaceSample",
     "analyze_dofs",
+    "backend_capabilities",
     "analyze_mobility",
     "check_reachability",
     "compute_workspace",

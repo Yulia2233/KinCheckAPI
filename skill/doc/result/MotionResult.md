@@ -22,6 +22,8 @@ class MotionResult:
     backend_id: str | None
     backend_version: str | None
     metadata: Mapping[str, Any]
+    integration_samples: tuple[IntegrationSample, ...]
+    driver_trajectories: tuple[DriverTrajectory, ...]
 ```
 
 Source: `src/kincheckapi/result.py`.
@@ -57,6 +59,8 @@ Stable output of any KinCheckAPI motion backend.
 | `backend_id` | `str | None` | `None` | Stable, resolvable `backend_id`. |
 | `backend_version` | `str | None` | `None` | Public input or data field `backend_version`. |
 | `metadata` | `Mapping[str, Any]` | default_factory | Additional read-only structured metadata. |
+| `integration_samples` | `tuple[IntegrationSample, ...]` | `()` | Public input or data field `integration_samples`. |
+| `driver_trajectories` | `tuple[DriverTrajectory, ...]` | `()` | Public input or data field `driver_trajectories`. |
 
 ## Returns and Failures
 

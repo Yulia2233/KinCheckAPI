@@ -15,6 +15,9 @@ Read status, trajectories, residuals, and event evidence from MotionResult objec
 | [`Direction`](Direction.md) | Type alias | Define the public type contract used by `Direction`. |
 | [`InterferenceEvent`](InterferenceEvent.md) | Type | InterferenceEvent(*, component_a_id: 'str', component_b_id: 'str', time_s: 'float', penetration_depth_m: 'float', position_m: 'Vector3 | None' = None) |
 | [`InterferenceResult`](InterferenceResult.md) | Type | InterferenceResult(*, events: 'tuple[InterferenceEvent, ...]' = ()) |
+| [`IntegrationSample`](IntegrationSample.md) | Type | Typed snapshot captured at an internal solver integration step. |
+| [`DriverTarget`](DriverTarget.md) | Type | One declared driver target and the corresponding measured joint value. |
+| [`DriverTrajectory`](DriverTrajectory.md) | Type | Time ordered target/actual records for one joint driver. |
 | [`JointExtrema`](JointExtrema.md) | Type | JointExtrema(*, joint_id: 'str', minimum_position: 'float', maximum_position: 'float', maximum_absolute_velocity: 'float', maximum_absolute_acceleration: 'float') |
 | [`JointState`](JointState.md) | Type | One scalar joint sample in SI units (radians or metres). |
 | [`JointTrajectory`](JointTrajectory.md) | Type | Complete sampled state of one revolute or prismatic joint. |

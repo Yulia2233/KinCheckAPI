@@ -59,10 +59,13 @@ from .diagnostics import (
 )
 from .pose import Pose
 from .scenario import ComponentResultScope
+from .scenario import MotionSegment, ProfileBoundary, add_joint_motion_segments, set_initial_state_from_home, reset_to_home, set_profile_boundary
+from .kinematics import KinematicSolveOptions, KinematicCapabilities, backend_capabilities
+from .result import IntegrationSample
 from .clearance import ClearanceReport, EnvelopeSample, MinimumClearance, MotionEnvelope, SamplingScope
 from .checks import AssemblyIntegrityReport, ContainmentRelation, IntegrityRelationResult, check_assembly_integrity
 
-__version__ = "0.5.3"
+__version__ = "0.5.4"
 
 __all__ = [
     "AssemblyModel",
@@ -79,6 +82,16 @@ __all__ = [
     "MJCFAdapterError",
     "Component",
     "ComponentResultScope",
+    "MotionSegment",
+    "ProfileBoundary",
+    "add_joint_motion_segments",
+    "set_initial_state_from_home",
+    "reset_to_home",
+    "set_profile_boundary",
+    "KinematicSolveOptions",
+    "KinematicCapabilities",
+    "backend_capabilities",
+    "IntegrationSample",
     "ClearanceReport",
     "EnvelopeSample",
     "ConnectorPathResult",

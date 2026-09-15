@@ -36,8 +36,8 @@ def evaluate(model_dir):
     condition = scenario.add_joint_speed_driver(scenario=condition, joint_id=input_id, speed_rad_s_or_m_s=8.0, start_time_s=0.0, end_time_s=1.0)
     condition = scenario.set_run_duration(scenario=condition, duration_s=1.0)
     condition = scenario.set_sample_period(scenario=condition, period_s=0.02)
-    condition = scenario.request_joint_result(scenario=condition, joint_id=input_id)
-    condition = scenario.request_joint_result(scenario=condition, joint_id=output_id)
+    # Leave the request list empty so the independent equation audit can inspect
+    # every joint trajectory emitted by the model.
     motion = kinematics.solve_motion(scenario=condition)
     available = {item.constraint_id for item in assembly.constraints}
     required_meshes = tuple(name if name in available else f"joint/{ROOT_ID}/{name}" for name in MESH_IDS)

@@ -18,7 +18,7 @@ uv venv .venv
 uv pip install --python .venv/bin/python .
 ```
 
-## Addon development: v0.5.3
+## Addon development: v0.5.4
 
 The optional SimpleCADAPI addon adds validated `.scadpkg` preparation while
 preserving `convert_mjcf()`, `verify(model_dir)`, and all assembly, scenario,
@@ -40,9 +40,9 @@ Stop on a failed probe and repair the named dependency in this environment.
 The addon currently declares macOS arm64 and SDK `>=2.1.3b3,<2.1.4`.
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.3
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.4
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.3
+sca addon add ./dist/sca-kincheckapi-0.5.4
 sca addon list
 kincheck verify-package product.scadpkg --work-dir analysis-work --script verification/verify.py --format json
 ```
@@ -80,7 +80,7 @@ The compact two-stage reducer and [four-bar example](examples/four_bar_linkage/v
 - Check interference, signed minimum clearance, and motion envelopes against real STL meshes;
 - Run interference, clearance, envelope, transmission, limit, and trajectory acceptance uniformly through `run_checks()`;
 - Export, validate, and read `.kincheck` result packages containing trajectories and meshes;
-- Ship two examples: a compact two-stage planetary reducer and a four-bar linkage.
+- Ship three examples: a compact two-stage planetary reducer, a four-bar linkage, and a slider-crank mechanism.
 
 ## Current boundaries
 
@@ -129,6 +129,17 @@ The [four-bar example](examples/four_bar_linkage/verification/README.md) include
 ```bash
 uv run python examples/four_bar_linkage/verification/simulate_and_record.py
 uv run python examples/four_bar_linkage/verification/simulate_before_optimization.py
+```
+
+The [slider-crank example](examples/slider_crank/verification/verify.py) is a detailed four-part CADIR mechanism: a bored crank pedestal, shaft and flywheel with eccentric pin, bored capsule connecting rod, and guided slider carriage. Its verifier checks segmented crank tracking, closure residuals, joint limits, trajectory bounds, mesh interference, a 0.5 mm minimum clearance over all component pairs, and guide containment at every sample:
+
+The simulation can be exported as a `.kincheck` package and replayed by the standalone viewer:
+
+```bash
+uv run --extra addon python examples/slider_crank/model/source/slider_crank.cadir.py
+uv run python examples/slider_crank/verification/verify.py examples/slider_crank/model
+uv run python examples/slider_crank/verification/export_motion_package.py
+python viewer/kincheck_viewer.py examples/slider_crank/output/slider_crank.kincheck --serve
 ```
 
 The standalone viewer replays any exported `.kincheck` package without re-running the solver:

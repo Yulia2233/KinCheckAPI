@@ -16,7 +16,7 @@ from kincheckapi.scenario import ComponentResultScope
 
 ## Purpose
 
-Which component world-pose trajectories a scenario records.
+Define the stable enum values accepted by `ComponentResultScope`.
 
 ## Enum Values
 

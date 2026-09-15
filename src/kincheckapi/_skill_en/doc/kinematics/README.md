@@ -6,6 +6,8 @@ Solve positions and continuous motion and analyze degrees of freedom, Jacobians,
 
 | Symbol | Type | Purpose |
 | --- | --- | --- |
+| [`KinematicSolveOptions`](KinematicSolveOptions.md) | Type | Deterministic controls for backend integration and constraint solving. |
+| [`KinematicCapabilities`](KinematicCapabilities.md) | Type | KinematicCapabilities(*, joint_types: 'Mapping[str, bool]', driver_modes: 'tuple[str, ...]' = ('position', 'speed'), output_channels: 'tuple[str, ...]' = ('joint', 'component', 'connector', 'residuals')) |
 | [`ClosureReport`](ClosureReport.md) | Type | ClosureReport(*, passed: 'bool', residuals: 'tuple[Any, ...]' = (), issues: 'tuple[SimIssue, ...]' = ()) |
 | [`ConnectorPathResult`](ConnectorPathResult.md) | Type | Path statistics read from one recorded Connector trajectory. |
 | [`DofReport`](DofReport.md) | Type | DofReport(*, total_dofs: 'int', joint_dofs: 'Mapping[str, int]', component_dofs: 'Mapping[str, int]', issues: 'tuple[SimIssue, ...]' = ()) |
@@ -26,6 +28,7 @@ Solve positions and continuous motion and analyze degrees of freedom, Jacobians,
 | [`WorkspaceResult`](WorkspaceResult.md) | Type | WorkspaceResult(*, target: 'TargetReference', samples: 'tuple[WorkspaceSample, ...]', reachable_points: 'tuple[Pose, ...]', bounds_m: 'Mapping[str, tuple[float, float]]', reachable_fraction: 'float', issues: 'tuple[SimIssue, ...]' = ()) |
 | [`WorkspaceSample`](WorkspaceSample.md) | Type | WorkspaceSample(*, joint_positions: 'Mapping[str, float]', reachable: 'bool', pose: 'Pose | None' = None, residual_m: 'float | None' = None, orientation_residual_rad: 'float | None' = None, singularity_status: 'str | None' = None, jacobian_rank: 'int | None' = None, minimum_singular_value: 'float | None' = None, condition_number: 'float | None' = None, issues: 'tuple[SimIssue, ...]' = ()) |
 | [`analyze_dofs`](analyze_dofs.md) | Function | Analyze a kinematic property of a mechanism or result: `analyze_dofs`. |
+| [`backend_capabilities`](backend_capabilities.md) | Function | Execute the public operation `backend_capabilities`. |
 | [`analyze_mobility`](analyze_mobility.md) | Function | Analyze effective mechanism degrees of freedom from nominal joint DOFs and constraint Jacobian rank. |
 | [`check_reachability`](check_reachability.md) | Function | Check whether one requested Pose can be satisfied by the assembly. |
 | [`compute_workspace`](compute_workspace.md) | Function | Enumerate a finite deterministic set of joint configurations. |

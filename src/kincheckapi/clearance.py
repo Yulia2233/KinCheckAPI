@@ -224,6 +224,8 @@ def _motion_samples(
             samples.append((time, poses))
         return tuple(samples)
     raw = motion_result.metadata.get("integration_samples")
+    if not raw and getattr(motion_result, "integration_samples", ()):
+        raw = tuple(item.to_dict() for item in motion_result.integration_samples)
     if not isinstance(raw, (tuple, list)) or not raw:
         raise ValueError("KINCHECK-CLEARANCE-INTEGRATION-SAMPLES-MISSING: MotionResult does not contain physics backend integration-step samples")
     result: list[tuple[float, Mapping[str, Pose]]] = []

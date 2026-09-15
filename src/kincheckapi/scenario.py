@@ -19,6 +19,11 @@ class Interpolation(str, Enum):
     LINEAR = "linear"
 
 
+class ProfileBoundary(str, Enum):
+    HOLD = "hold"
+    ZERO = "zero"
+
+
 class ComponentResultScope(str, Enum):
     """Which component world-pose trajectories a scenario records."""
 
@@ -83,6 +88,32 @@ class SpeedDriver:
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
+class MotionSegment:
+    """One non-overlapping interval in a joint motion contract."""
+    start_time_s: float
+    end_time_s: float
+    mode: str
+    value: float
+    interpolation: Interpolation | str = Interpolation.STEP
+
+    def __post_init__(self) -> None:
+        start, end = float(self.start_time_s), float(self.end_time_s)
+        if not (math.isfinite(start) and math.isfinite(end) and 0.0 <= start < end):
+            raise ValueError("MotionSegment requires 0 <= start_time_s < end_time_s")
+        mode = str(self.mode).lower()
+        if mode not in {"position", "speed"}:
+            raise ValueError("MotionSegment.mode must be 'position' or 'speed'")
+        value = float(self.value)
+        if not math.isfinite(value):
+            raise ValueError("MotionSegment.value must be finite")
+        object.__setattr__(self, "start_time_s", start)
+        object.__setattr__(self, "end_time_s", end)
+        object.__setattr__(self, "mode", mode)
+        object.__setattr__(self, "value", value)
+        object.__setattr__(self, "interpolation", Interpolation(self.interpolation))
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class JointResultRequest:
     joint_id: str
 
@@ -114,6 +145,8 @@ class Scenario:
     component_result_scope: ComponentResultScope | str = ComponentResultScope.REQUESTED
     capture_integration_steps: bool = False
     integration_component_ids: tuple[str, ...] | None = None
+    initial_state_source: str = "explicit"
+    profile_boundary: ProfileBoundary | str = ProfileBoundary.HOLD
 
     def __post_init__(self) -> None:
         if not isinstance(self.scenario_id, str) or not self.scenario_id.strip():
@@ -123,6 +156,9 @@ class Scenario:
         if self.assembly_id and self.assembly_id != self.assembly.assembly_id:
             raise ValueError("assembly_id must match the bound assembly")
         object.__setattr__(self, "assembly_id", self.assembly.assembly_id)
+        if self.initial_state_source not in {"explicit", "home", "default_zero"}:
+            raise ValueError("initial_state_source must be explicit, home, or default_zero")
+        object.__setattr__(self, "profile_boundary", ProfileBoundary(self.profile_boundary))
         if not isinstance(self.capture_integration_steps, bool):
             raise TypeError("capture_integration_steps must be a boolean")
         if self.integration_component_ids is not None:
@@ -216,6 +252,15 @@ def set_joint_home_position(
         joint_id=joint_id,
         value=position_rad_or_m,
     )
+
+
+def set_initial_state_from_home(*, scenario: Scenario) -> Scenario:
+    """Use declared home positions as the solver's initial state."""
+    return replace(scenario, initial_joint_positions=(), initial_state_source="home")
+
+
+def reset_to_home(*, scenario: Scenario) -> Scenario:
+    return set_initial_state_from_home(scenario=scenario)
 
 
 def lock_joint(
@@ -358,6 +403,60 @@ def add_joint_speed_profile(
     return replace(scenario, speed_drivers=(*scenario.speed_drivers, driver))
 
 
+def add_joint_motion_segments(
+    *, scenario: Scenario, joint_id: str, segments: Sequence[MotionSegment | Mapping[str, Any]]
+) -> Scenario:
+    """Add an ordered piecewise position or speed driver for one joint."""
+    try:
+        normalized = tuple(
+            item if isinstance(item, MotionSegment) else MotionSegment(**dict(item))
+            for item in segments
+        )
+        if not normalized:
+            raise ValueError("segments must contain at least one MotionSegment")
+        ordered = tuple(sorted(normalized, key=lambda item: item.start_time_s))
+        if any(a.end_time_s > b.start_time_s for a, b in zip(ordered, ordered[1:])):
+            raise ValueError("Motion segments for one joint must not overlap")
+        if any(abs(a.end_time_s - b.start_time_s) > 1e-12 for a, b in zip(ordered, ordered[1:])):
+            raise ValueError("Motion segments for one joint must be contiguous; use an explicit zero or hold segment for a gap")
+        if len({item.mode for item in ordered}) != 1:
+            raise ValueError("A joint motion segment list must use one driver mode")
+        if len({item.interpolation for item in ordered}) != 1:
+            raise ValueError("Motion segments for one joint must use one interpolation mode")
+        mode = ordered[0].mode
+        point_values: list[tuple[float, float]] = [(ordered[0].start_time_s, ordered[0].value)]
+        for segment in ordered:
+            if point_values[-1][0] == segment.start_time_s:
+                point_values[-1] = (segment.start_time_s, segment.value)
+            else:
+                point_values.append((segment.start_time_s, segment.value))
+            point_values.append((segment.end_time_s, segment.value))
+        points = tuple(ProfilePoint(time_s=t, value=v) for t, v in point_values)
+        profile = MotionProfile(points=points, interpolation=ordered[0].interpolation)
+        if mode == "position":
+            return replace(scenario, position_drivers=tuple(d for d in scenario.position_drivers if d.joint_id != joint_id) + (PositionDriver(joint_id=joint_id, profile=profile),))
+        return replace(scenario, speed_drivers=tuple(d for d in scenario.speed_drivers if d.joint_id != joint_id) + (SpeedDriver(joint_id=joint_id, profile=profile, active_interval_s=(ordered[0].start_time_s, ordered[-1].end_time_s)),))
+    except (TypeError, ValueError, KeyError) as cause:
+        _raise_validation(code="KINCHECK-SCENARIO-MOTION-SEGMENTS-INVALID", message="Joint motion segments are invalid.", object_ids=(scenario.scenario_id, joint_id), cause=cause)
+
+
+def replace_joint_driver(*, scenario: Scenario, joint_id: str, driver: PositionDriver | SpeedDriver) -> Scenario:
+    if driver.joint_id != joint_id:
+        raise ValueError("driver.joint_id must match joint_id")
+    scenario = clear_joint_drivers(scenario=scenario, joint_id=joint_id)
+    return replace(scenario, position_drivers=(*scenario.position_drivers, driver)) if isinstance(driver, PositionDriver) else replace(scenario, speed_drivers=(*scenario.speed_drivers, driver))
+
+
+def remove_joint_driver(*, scenario: Scenario, joint_id: str) -> Scenario:
+    return clear_joint_drivers(scenario=scenario, joint_id=joint_id)
+
+
+def clear_joint_drivers(*, scenario: Scenario, joint_id: str | None = None) -> Scenario:
+    if joint_id is None:
+        return replace(scenario, position_drivers=(), speed_drivers=())
+    return replace(scenario, position_drivers=tuple(d for d in scenario.position_drivers if d.joint_id != joint_id), speed_drivers=tuple(d for d in scenario.speed_drivers if d.joint_id != joint_id))
+
+
 def set_run_duration(*, scenario: Scenario, duration_s: float) -> Scenario:
     try:
         return replace(scenario, duration_s=float(duration_s))
@@ -380,6 +479,14 @@ def set_sample_period(*, scenario: Scenario, period_s: float) -> Scenario:
             object_ids=(scenario.scenario_id,),
             cause=cause,
         )
+
+
+def set_profile_boundary(*, scenario: Scenario, behavior: ProfileBoundary | str) -> Scenario:
+    try:
+        normalized = ProfileBoundary(behavior)
+    except (TypeError, ValueError) as cause:
+        _raise_validation(code="KINCHECK-SCENARIO-PROFILE-BOUNDARY-INVALID", message="Profile boundary must be 'hold' or 'zero'.", object_ids=(scenario.scenario_id,), cause=cause)
+    return replace(scenario, profile_boundary=normalized)
 
 
 def request_joint_result(*, scenario: Scenario, joint_id: str) -> Scenario:
@@ -643,6 +750,8 @@ def validate_scenario(*, scenario: Scenario) -> ValidationResult:
 
     positions = {item.joint_id: item.value for item in scenario.initial_joint_positions}
     homes = {item.joint_id: item.value for item in scenario.joint_home_positions}
+    if scenario.initial_state_source == "home" and not homes:
+        issues.append(_issue(code="KINCHECK-SCENARIO-HOME-EMPTY", message="Home initial state was requested but no home positions are declared.", object_ids=(scenario.scenario_id,), action="Declare at least one joint home position before selecting home initialization."))
     locks = {
         item.joint_id: item.position_rad_or_m
         for item in scenario.locked_joints
@@ -740,6 +849,8 @@ def scenario_to_dict(*, scenario: Scenario) -> dict[str, Any]:
             list(scenario.integration_component_ids)
             if scenario.integration_component_ids is not None else None
         ),
+        "initial_state_source": scenario.initial_state_source,
+        "profile_boundary": scenario.profile_boundary.value,
     }
 
 
@@ -810,6 +921,8 @@ def scenario_from_dict(*, assembly: AssemblyModel, data: Mapping[str, Any]) -> S
             None if data.get("integration_component_ids") is None
             else tuple(str(item) for item in data["integration_component_ids"])
         ),
+        initial_state_source=str(data.get("initial_state_source", "explicit")),
+        profile_boundary=data.get("profile_boundary", ProfileBoundary.HOLD.value),
     )
 
 
@@ -897,10 +1010,12 @@ __all__ = [
     "ComponentResultScope",
     "ComponentResultRequest",
     "Interpolation",
+    "ProfileBoundary",
     "JointLock",
     "JointResultRequest",
     "JointValue",
     "MotionProfile",
+    "MotionSegment",
     "PositionDriver",
     "Profile",
     "ProfilePoint",
@@ -909,8 +1024,12 @@ __all__ = [
     "add_joint_position_driver",
     "add_joint_speed_driver",
     "add_joint_speed_profile",
+    "add_joint_motion_segments",
     "create_scenario",
     "disable_constraint",
+    "replace_joint_driver",
+    "remove_joint_driver",
+    "clear_joint_drivers",
     "lock_joint",
     "read_scenario",
     "request_component_result",
@@ -919,11 +1038,14 @@ __all__ = [
     "scenario_to_dict",
     "set_initial_joint_position",
     "set_initial_joint_velocity",
+    "set_initial_state_from_home",
+    "reset_to_home",
     "set_component_result_scope",
     "set_capture_integration_steps",
     "set_joint_home_position",
     "set_run_duration",
     "set_sample_period",
+    "set_profile_boundary",
     "validate_scenario",
     "write_scenario",
 ]

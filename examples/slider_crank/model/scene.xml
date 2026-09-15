@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="slider_crank">
+  <compiler angle="radian" coordinate="local" />
+  <option gravity="0 0 -9.81" />
+  <asset>
+    <mesh name="mesh_part_connecting_rod_0c5d39419c04" file="meshes/mesh_part_connecting_rod_0c5d39419c04.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_part_crank_549dc4304079" file="meshes/mesh_part_crank_549dc4304079.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_part_ground_0757f7823ec5" file="meshes/mesh_part_ground_0757f7823ec5.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_part_slider_a8d32eeed5af" file="meshes/mesh_part_slider_a8d32eeed5af.obj" scale="0.001 0.001 0.001" />
+  </asset>
+  <worldbody>
+    <geom name="ground_base_cf79ea9c92e3" type="mesh" mesh="mesh_part_ground_0757f7823ec5" density="7800" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <body name="body_crank" pos="0.06 0.06 0.02" quat="1 0 0 0">
+      <joint name="joint_joint_slider_crank_joint_crank_ddb0843d64f3" type="hinge" pos="0 0 0" axis="0 0 1" />
+      <geom name="crank" type="mesh" mesh="mesh_part_crank_549dc4304079" density="7800" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <body name="body_connecting_rod" pos="0.02 0 0.027" quat="1 0 0 0">
+        <joint name="joint_joint_slider_crank_joint_rod_a1fde0b4cfbb" type="hinge" pos="0 0 0.005" axis="0 0 1" />
+        <geom name="connecting_rod" type="mesh" mesh="mesh_part_connecting_rod_0c5d39419c04" density="7800" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+        <site name="closure_a_joint_slider_crank_joint_slider_pin_98a34b3d38c8" size="0.0012" type="sphere" pos="0.1 0 0.005" quat="1 0 0 0" />
+      </body>
+    </body>
+    <body name="body_slider" pos="0.18 0.06 0.033" quat="1 0 0 0">
+      <joint name="joint_joint_slider_crank_joint_slider_951378ed43f7" type="slide" pos="0 0 -0.003" axis="1 0 0" />
+      <geom name="slider" type="mesh" mesh="mesh_part_slider_a8d32eeed5af" density="7800" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <site name="closure_b_joint_slider_crank_joint_slider_pin_d66d7f22cd25" size="0.0012" type="sphere" pos="0 0 0.019" quat="1 0 0 0" />
+    </body>
+  </worldbody>
+  <tendon />
+  <equality>
+    <connect name="closure_joint_slider_crank_joint_slider_pin_d385004c577d" site1="closure_a_joint_slider_crank_joint_slider_pin_98a34b3d38c8" site2="closure_b_joint_slider_crank_joint_slider_pin_d66d7f22cd25" />
+  </equality>
+</mujoco>

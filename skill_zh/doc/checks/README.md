@@ -9,6 +9,7 @@
 | [`CheckReport`](CheckReport.md) | 类型 | 表示 `CheckReport` 的公开、可序列化数据结构。 |
 | [`CheckSpec`](CheckSpec.md) | 类型 | 表示 `CheckSpec` 的公开、可序列化数据结构。 |
 | [`CheckSuiteReport`](CheckSuiteReport.md) | 类型 | 表示 `CheckSuiteReport` 的公开、可序列化数据结构。 |
+| [`DriverTrackingReport`](DriverTrackingReport.md) | 类型 | 表示 `DriverTrackingReport` 的公开、可序列化数据结构。 |
 | [`CheckType`](CheckType.md) | 类型别名 | 定义 `CheckType` 使用的公开类型约定。 |
 | [`Direction`](Direction.md) | 类型别名 | 定义 `Direction` 使用的公开类型约定。 |
 | [`RatioMeasurement`](RatioMeasurement.md) | 类型别名 | 定义 `RatioMeasurement` 使用的公开类型约定。 |
@@ -18,6 +19,7 @@
 | [`check_assembly_integrity`](check_assembly_integrity.md) | 函数 | 在静态或 MotionResult 的每个采样状态检查 Component 是否仍属于一个完整连接网络，并报告断开、脱离和越界。 |
 | [`check_constraint_equation_residuals`](check_constraint_equation_residuals.md) | 函数 | 执行结构化检查：`check_constraint_equation_residuals`。 |
 | [`check_constraint_residuals`](check_constraint_residuals.md) | 函数 | 执行结构化检查：`check_constraint_residuals`。 |
+| [`check_driver_tracking`](check_driver_tracking.md) | 函数 | 执行结构化检查：`check_driver_tracking`。 |
 | [`check_joint_limits`](check_joint_limits.md) | 函数 | 执行结构化检查：`check_joint_limits`。 |
 | [`check_interference`](check_interference.md) | 函数 | 检查离散运动样本中的指定组件对是否发生网格穿透。 |
 | [`check_minimum_clearance`](check_minimum_clearance.md) | 函数 | 执行结构化检查：`check_minimum_clearance`。 |

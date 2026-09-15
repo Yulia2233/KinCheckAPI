@@ -785,6 +785,8 @@ def _build_xml(
     group_joint_limits: Mapping[str, tuple[float, float]],
     joint_expressions: Mapping[str, _LinearExpression],
     constraint_expressions: tuple[_ConstraintExpression, ...],
+    solver_iterations: int | None = None,
+    solver_tolerance: float | None = None,
 ) -> tuple[str, Mapping[str, str], tuple[_ComponentSite, ...], tuple[_ConnectorSite, ...]]:
     root = ET.Element("mujoco", {"model": "kincheckapi"})
     ET.SubElement(root, "compiler", {"angle": "radian", "autolimits": "true"})
@@ -801,8 +803,8 @@ def _build_xml(
             "timestep": str(_CLOSURE_TIMESTEP_S if precise_constraints else _DEFAULT_TIMESTEP_S),
             "gravity": "0 0 0",
             "integrator": "implicitfast",
-            "iterations": str(_CLOSURE_SOLVER_ITERATIONS if precise_constraints else 100),
-            "tolerance": "1e-12",
+            "iterations": str(solver_iterations if solver_iterations is not None else (_CLOSURE_SOLVER_ITERATIONS if precise_constraints else 100)),
+            "tolerance": str(solver_tolerance if solver_tolerance is not None else 1e-12),
         },
     )
     ET.SubElement(root, "size", {"njmax": "10000", "nconmax": "1000"})
@@ -1071,7 +1073,8 @@ def _build_xml(
 
 
 def compile_assembly(
-    *, assembly: AssemblyModel, disabled_constraint_ids: Iterable[str] = ()
+    *, assembly: AssemblyModel, disabled_constraint_ids: Iterable[str] = (),
+    solver_iterations: int | None = None, solver_tolerance: float | None = None,
 ) -> _CompiledAssembly:
     """Compile an AssemblyModel into a private physics backend model.
 
@@ -1275,6 +1278,8 @@ def compile_assembly(
         group_joint_limits=group_joint_limits,
         joint_expressions=joint_expressions,
         constraint_expressions=tuple(expressions),
+        solver_iterations=solver_iterations,
+        solver_tolerance=solver_tolerance,
     )
     try:
         model = runtime.MjModel.from_xml_string(model_xml)
@@ -1303,12 +1308,13 @@ def compile_assembly(
     )
 
 
-def _profile_value(profile: MotionProfile, time_s: float) -> float:
+def _profile_value(profile: MotionProfile, time_s: float, boundary: str = "hold") -> float:
+    boundary = getattr(boundary, "value", boundary)
     points = profile.points
     if time_s <= points[0].time_s:
-        return float(points[0].value)
+        return 0.0 if boundary == "zero" and time_s < points[0].time_s else float(points[0].value)
     if time_s >= points[-1].time_s:
-        return float(points[-1].value)
+        return 0.0 if boundary == "zero" and time_s > points[-1].time_s else float(points[-1].value)
     for left, right in zip(points, points[1:]):
         if left.time_s <= time_s < right.time_s:
             if profile.interpolation == Interpolation.STEP:
@@ -1327,12 +1333,13 @@ def _profile_slope(profile: MotionProfile, time_s: float) -> float:
     return 0.0
 
 
-def _speed_driver_value(driver: Any, time_s: float) -> float:
+def _speed_driver_value(driver: Any, time_s: float, boundary: str = "hold") -> float:
+    boundary = getattr(boundary, "value", boundary)
     if driver.active_interval_s is not None:
         start_time_s, end_time_s = driver.active_interval_s
         if time_s < start_time_s or time_s > end_time_s:
             return 0.0
-    return _profile_value(driver.profile, time_s)
+    return _profile_value(driver.profile, time_s, boundary)
 
 
 def _group_values(compiled: _CompiledAssembly, data: Any) -> tuple[dict[str, float], dict[str, float]]:
@@ -1900,7 +1907,7 @@ def _add_scenario_controls(
     )
 
 
-def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
+def solve_scenario(*, scenario: Scenario, options: Any = None) -> BackendSolveResult:
     """Run a Scenario with physics backend and return backend-independent samples."""
 
     runtime = _require_backend()
@@ -1918,10 +1925,12 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
     compiled = compile_assembly(
         assembly=scenario.assembly,
         disabled_constraint_ids=scenario.disabled_constraint_ids,
+        solver_iterations=(int(options.max_constraint_iterations) if options is not None else None),
+        solver_tolerance=(min(float(options.position_residual_tolerance_m), float(options.orientation_residual_tolerance_rad)) if options is not None else None),
     )
-    initial_lock_values = {
-        item.joint_id: float(item.value) for item in scenario.initial_joint_positions
-    }
+    initial_source = getattr(scenario, "initial_state_source", "explicit")
+    source_positions = scenario.joint_home_positions if initial_source == "home" else scenario.initial_joint_positions
+    initial_lock_values = {item.joint_id: float(item.value) for item in source_positions}
     lock_values = {
         lock.joint_id: (
             initial_lock_values.get(lock.joint_id, 0.0)
@@ -1936,7 +1945,7 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
             (
                 {
                     item.joint_id: float(item.value)
-                    for item in scenario.initial_joint_positions
+                    for item in source_positions
                 }
                 | lock_values
             ).items()
@@ -1946,6 +1955,18 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
     # Save the configured cap before shortening individual steps to land on
     # output timestamps. A short remainder must not shrink subsequent steps.
     max_timestep_s = float(compiled.model.opt.timestep)
+    if options is not None and getattr(options, "max_integration_step_s", None) is not None:
+        max_timestep_s = min(max_timestep_s, float(options.max_integration_step_s))
+        compiled.model.opt.timestep = max_timestep_s
+    if options is not None and bool(getattr(options, "adaptive_sampling", False)):
+        # Adaptive mode refines the internal step cap relative to the requested
+        # output period while preserving the authored output timestamps.
+        max_timestep_s = min(max_timestep_s, sample_period_s / 4.0)
+        compiled.model.opt.timestep = max_timestep_s
+    max_substeps = int(getattr(options, "max_integration_substeps", 1000000))
+    integration_step_count = 0
+    runtime_warnings: list[str] = []
+    partial_due_nonfinite = False
     data = runtime.MjData(compiled.model)
 
     group_positions, position_diagnostics = _solve_initial_state_system(
@@ -2054,19 +2075,27 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
         sample_times.append(duration_s)
     for target_time in sample_times:
         while data.time < target_time - 1e-12:
+            integration_step_count += 1
+            if integration_step_count > max_substeps:
+                raise BackendSolveFailure(
+                    "maximum integration substeps exceeded",
+                    time_s=float(data.time),
+                )
             remaining = target_time - float(data.time)
             compiled.model.opt.timestep = min(max_timestep_s, remaining)
             for driver in scenario.position_drivers:
                 time_s = float(data.time)
                 data.ctrl[actuator_ids[f"position:{driver.joint_id}"]] = (
-                    _profile_value(driver.profile, time_s)
+                    _profile_value(driver.profile, time_s, getattr(scenario, "profile_boundary", "hold"))
                     + (_POSITION_KV / _POSITION_KP)
                     * _profile_slope(driver.profile, time_s)
                 )
             for driver in scenario.speed_drivers:
                 data.ctrl[actuator_ids[f"speed:{driver.joint_id}"]] = _speed_driver_value(
-                    driver, float(data.time)
+                    driver, float(data.time), getattr(scenario, "profile_boundary", "hold")
                 )
+            previous_qpos = data.qpos.copy()
+            previous_qvel = data.qvel.copy()
             try:
                 runtime.mj_step(compiled.model, data)
             except Exception as cause:
@@ -2076,6 +2105,15 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
                 ) from cause
             _write_lock_state(compiled=compiled, data=data, lock_values=lock_values)
             if not all(math.isfinite(float(value)) for value in (*data.qpos, *data.qvel)):
+                if options is not None and options.non_finite_state_policy == "warn":
+                    data.qpos[:] = previous_qpos
+                    data.qvel[:] = previous_qvel
+                    runtime.mj_forward(compiled.model, data)
+                    runtime_warnings.append(
+                        f"Non-finite state encountered at t={float(data.time):.12g}s; retained the last finite state."
+                    )
+                    partial_due_nonfinite = True
+                    break
                 raise BackendSolveFailure(
                     "physics backend produced non-finite joint state",
                     time_s=float(data.time),
@@ -2088,6 +2126,8 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
                         requested_component_ids=integration_component_ids,
                     )
                 )
+        if partial_due_nonfinite:
+            break
         samples.append(
             _sample(
                 compiled,
@@ -2113,7 +2153,7 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
         scenario_id=scenario.scenario_id,
         samples=tuple(samples),
         integration_samples=tuple(integration_samples),
-        warnings=(*compiled.warnings, *initial_state_warnings),
+        warnings=(*compiled.warnings, *runtime_warnings, *initial_state_warnings),
         model_summary={
             "components": len(scenario.assembly.components),
             "joints": len(scenario.assembly.joints),
@@ -2122,6 +2162,14 @@ def solve_scenario(*, scenario: Scenario) -> BackendSolveResult:
             "actuators": int(compiled.model.nu),
         },
         metadata={
+            "solve_options": (options.to_dict() if hasattr(options, "to_dict") else dict(options or {})),
+            "effective_integration_step_s": max_timestep_s,
+            "effective_max_integration_substeps": max_substeps,
+            "effective_constraint_iterations": int(options.max_constraint_iterations) if options is not None else int(_CLOSURE_SOLVER_ITERATIONS if scenario.assembly.closures else 100),
+            "effective_solver_tolerance": float(compiled.model.opt.tolerance),
+            "partial_due_nonfinite": partial_due_nonfinite,
+            "non_finite_state_policy": getattr(options, "non_finite_state_policy", "fail"),
+            "initial_state_source": initial_source,
             "initial_state": initial_state_diagnostics,
             "spatial_kinematics": {
                 "reference_frame": "world",
