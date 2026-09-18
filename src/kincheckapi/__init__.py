@@ -59,13 +59,21 @@ from .diagnostics import (
 )
 from .pose import Pose
 from .scenario import ComponentResultScope
-from .scenario import MotionSegment, ProfileBoundary, add_joint_motion_segments, set_initial_state_from_home, reset_to_home, set_profile_boundary
-from .kinematics import KinematicSolveOptions, KinematicCapabilities, backend_capabilities
-from .result import IntegrationSample
+from .scenario import (
+    MotionSegment, ProfileBoundary, add_joint_motion_segments,
+    add_periodic_joint_driver, add_coordinated_motion_profile,
+    add_pose_trajectory_target, add_component_pose_driver,
+    set_initial_state_from_home, reset_to_home, set_profile_boundary,
+)
+from .motion_contracts import PosePoint, PoseTrajectory, PlanarPose, PathTarget, CoordinatedMotionProfile, PeriodicProfile, MotionEvent
+from .checks import check_path_tracking, check_planar_tracking, check_pose_trajectory, check_start_stop_reversal, check_periodic_motion, check_synchronization, check_continuous_interference
+from .diagnostics import diagnostic_trace
+from .kinematics import KinematicSolveOptions, KinematicCapabilities, backend_capabilities, solve_inverse_kinematics
+from .result import IntegrationSample, record_verification_reports
 from .clearance import ClearanceReport, EnvelopeSample, MinimumClearance, MotionEnvelope, SamplingScope
 from .checks import AssemblyIntegrityReport, ContainmentRelation, IntegrityRelationResult, check_assembly_integrity
 
-__version__ = "0.5.4"
+__version__ = "0.5.5"
 
 __all__ = [
     "AssemblyModel",
@@ -84,6 +92,10 @@ __all__ = [
     "ComponentResultScope",
     "MotionSegment",
     "ProfileBoundary",
+    "PosePoint", "PoseTrajectory", "PlanarPose", "PathTarget", "CoordinatedMotionProfile", "PeriodicProfile", "MotionEvent", "diagnostic_trace",
+    "check_path_tracking", "check_planar_tracking", "check_pose_trajectory", "check_start_stop_reversal", "check_periodic_motion", "check_synchronization", "check_continuous_interference",
+    "add_periodic_joint_driver", "add_coordinated_motion_profile",
+    "add_pose_trajectory_target", "add_component_pose_driver",
     "add_joint_motion_segments",
     "set_initial_state_from_home",
     "reset_to_home",
@@ -91,7 +103,9 @@ __all__ = [
     "KinematicSolveOptions",
     "KinematicCapabilities",
     "backend_capabilities",
+    "solve_inverse_kinematics",
     "IntegrationSample",
+    "record_verification_reports",
     "ClearanceReport",
     "EnvelopeSample",
     "ConnectorPathResult",

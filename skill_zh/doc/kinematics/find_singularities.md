@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-find_singularities(**kwargs: Any) -> SingularityReport
+find_singularities(*, motion_result: Any, assembly: AssemblyModel, options: Any = None) -> SingularityReport
 ```
 
 源码：`src/kincheckapi/kinematics.py`。
@@ -22,7 +22,9 @@ from kincheckapi.kinematics import find_singularities
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `kwargs` | `Any` | 必填 | `kwargs` 的公开输入或数据字段。 |
+| `motion_result` | `Any` | 必填 | 待查询或检查的公开 `MotionResult`。 |
+| `assembly` | `AssemblyModel` | 必填 | 待构造、校验、求解或导出的 `AssemblyModel`。 |
+| `options` | `Any` | `None` | 对应求解或分析的公开配置对象；记录实际阈值。 |
 
 ## 返回与失败
 

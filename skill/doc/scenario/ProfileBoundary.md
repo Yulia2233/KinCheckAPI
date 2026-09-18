@@ -24,6 +24,7 @@ Define the stable enum values accepted by `ProfileBoundary`.
 | --- | --- |
 | `HOLD` | `hold` |
 | `ZERO` | `zero` |
+| `ERROR` | `error` |
 
 ## Returns and Failures
 

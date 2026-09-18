@@ -31,6 +31,10 @@ MODULES: dict[str, dict[str, str]] = {
         "title": "Scenarios and Drivers",
         "summary": "Define initial state, drivers, run duration, sampling, and result recording scope.",
     },
+    "motion_contracts": {
+        "title": "Motion Contract Targets",
+        "summary": "Define path, pose, periodic, and coordinated targets without claiming unsupported 6D solving.",
+    },
     "kinematics": {
         "title": "Kinematic Solving and Analysis",
         "summary": "Solve positions and continuous motion and analyze degrees of freedom, Jacobians, singularities, and workspaces.",
@@ -38,7 +42,7 @@ MODULES: dict[str, dict[str, str]] = {
     "checks": {
         "title": "Acceptance Checks",
         "summary": "Turn user claims into structured, reviewable kinematic acceptance checks.",
-        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "DriverTrackingReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_driver_tracking", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_trajectory", "check_transmission_ratio", "run_checks"),
+        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "DriverTrackingReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_driver_tracking", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_pose_trajectory", "check_path_tracking", "check_planar_tracking", "check_start_stop_reversal", "check_periodic_motion", "check_synchronization", "check_continuous_interference", "check_trajectory", "check_transmission_ratio", "run_checks"),
     },
     "clearance": {
         "title": "Geometric Safety",
@@ -92,6 +96,11 @@ MODULES: dict[str, dict[str, str]] = {
 
 
 MODULE_RULES: dict[str, tuple[str, ...]] = {
+    "motion_contracts": (
+        "Targets are immutable; time uses seconds and positions use metres.",
+        "PoseTrajectory is an acceptance target; Cartesian driving remains a capability boundary until a 6D backend exists.",
+        "Path and periodic contracts require explicit finite ranges and do not imply continuous-time guarantees.",
+    ),
     "cadir": (
         "The XML root `model` must be non-empty and equal the mapping `root_definition_id`.",
         "XML, mapping, and meshes must come from the same export batch; asset resolution must not escape `asset_root`.",

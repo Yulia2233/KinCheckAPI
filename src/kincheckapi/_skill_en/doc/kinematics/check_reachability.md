@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-check_reachability(**kwargs: Any) -> ReachabilityResult
+check_reachability(*, assembly: AssemblyModel, target: Any, options: Any = None, joint_positions: Optional[Mapping[str, float]] = None, solver_options: Any = None) -> ReachabilityResult
 ```
 
 Source: `src/kincheckapi/kinematics.py`.
@@ -22,7 +22,11 @@ Check whether one requested Pose can be satisfied by the assembly.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `kwargs` | `Any` | required | Public input or data field `kwargs`. |
+| `assembly` | `AssemblyModel` | required | The `AssemblyModel` to construct, validate, solve, or export. |
+| `target` | `Any` | required | Public input or data field `target`. |
+| `options` | `Any` | `None` | Public solve or analysis options; record the effective thresholds. |
+| `joint_positions` | `Optional[Mapping[str, float]]` | `None` | Joint positions keyed by stable ID; radians for rotation and metres for translation. |
+| `solver_options` | `Any` | `None` | Public input or data field `solver_options`. |
 
 ## Returns and Failures
 

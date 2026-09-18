@@ -41,6 +41,7 @@
 | [`validate_closures`](validate_closures.md) | 函数 | 聚合验证输入契约：`validate_closures`。 |
 | [`verify_transmission_ratio`](verify_transmission_ratio.md) | 函数 | 弃用的兼容入口；新代码使用 `kincheckapi.checks.check_transmission_ratio()`。 |
 | [`write_motion_result`](write_motion_result.md) | 函数 | 将完整公开运动结果写为确定性的 JSON。 |
+| [`solve_inverse_kinematics`](solve_inverse_kinematics.md) | 函数 | 求解指定运动学问题：`solve_inverse_kinematics`。 |
 
 ## 模块规则
 

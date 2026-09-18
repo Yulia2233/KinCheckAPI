@@ -1,5 +1,7 @@
 # KinCheckAPI
 
+当前开发版本：**0.5.5**。参见 [v0.5.5 更新说明](doc/updates/v0.5.5.md)，了解曲线、平面、启停换向、周期、多轴同步和结构化失败诊断。
+
 [English](README.md) | 简体中文
 
 ![四连杆优化前后对比](examples/four_bar_linkage/output/comparison.gif)
@@ -18,7 +20,7 @@ uv venv .venv
 uv pip install --python .venv/bin/python .
 ```
 
-## 插件开发版本：v0.5.4
+## 插件开发版本：v0.5.5
 
 新增可选 SimpleCADAPI addon，将经过校验的 `.scadpkg` 准备为原有 MJCF 输入。
 `convert_mjcf()`、`verify(model_dir)`、装配、工况、求解和检查 API 保持不变。
@@ -39,9 +41,9 @@ kincheck doctor --addon --format json
 SDK 兼容范围为 `>=2.1.3b3,<2.1.4`。
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.4
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.5
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.4
+sca addon add ./dist/sca-kincheckapi-0.5.5
 sca addon list
 kincheck verify-package product.scadpkg --work-dir analysis-work --script verification/verify.py --format json
 ```

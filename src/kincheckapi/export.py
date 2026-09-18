@@ -198,6 +198,13 @@ def motion_package(
             code="KINCHECK-PACKAGE-MOTION-INVALID",
             message="motion_result must be a MotionResult",
         )
+    if motion_result.status not in {"completed", "completed_with_warnings"}:
+        _fail(
+            code="KINCHECK-PACKAGE-MOTION-INCOMPLETE",
+            message="Only completed MotionResult values can be exported as an acceptance package.",
+            object_ids=(motion_result.scenario_id, motion_result.assembly_id),
+            details={"status": motion_result.status},
+        )
     if assembly.assembly_id != motion_result.assembly_id:
         _fail(
             code="KINCHECK-PACKAGE-ASSEMBLY-MISMATCH",
@@ -656,6 +663,17 @@ def validate_package(*, path: str | Path) -> ValidationResult:
             )
         else:
             raw_motion = motion_data["motion_result"]
+            raw_status = raw_motion.get("status")
+            if raw_status not in {"completed", "completed_with_warnings"}:
+                issues.append(
+                    _issue(
+                        code="KINCHECK-PACKAGE-MOTION-INCOMPLETE",
+                        message="A package containing a partial or failed MotionResult cannot validate as an acceptance package.",
+                        path=source,
+                        object_ids=(str(raw_motion.get("scenario_id", "")),),
+                        evidence={"status": raw_status, "expected": ("completed", "completed_with_warnings")},
+                    )
+                )
             if (
                 raw_motion.get("assembly_id") != manifest.get("assembly_id")
                 or raw_motion.get("scenario_id") != manifest.get("scenario_id")
@@ -880,6 +898,7 @@ def _motion_from_dict(value: Mapping[str, Any]) -> MotionResult:
                 ),
             ) for item in value.get("driver_trajectories", ())
         ),
+        traceback=value.get("traceback"),
     )
 
 

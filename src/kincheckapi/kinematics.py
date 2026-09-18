@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import math
 from pathlib import Path
 import statistics
@@ -108,9 +108,24 @@ class KinematicCapabilities:
     joint_types: Mapping[str, bool]
     driver_modes: tuple[str, ...] = ("position", "speed")
     output_channels: tuple[str, ...] = ("joint", "component", "connector", "residuals")
+    analysis_capabilities: Mapping[str, bool] = field(default_factory=lambda: {
+        "path_tracking": True,
+        "planar_tracking": True,
+        "periodic_motion": True,
+        "start_stop_reversal": True,
+        "synchronization": True,
+        "pose_trajectory_driver": False,
+        "general_inverse_kinematics": False,
+        "continuous_time_of_impact": False,
+    })
 
     def to_dict(self) -> dict[str, Any]:
-        return {"joint_types": dict(self.joint_types), "driver_modes": list(self.driver_modes), "output_channels": list(self.output_channels)}
+        return {
+            "joint_types": dict(self.joint_types),
+            "driver_modes": list(self.driver_modes),
+            "output_channels": list(self.output_channels),
+            "analysis_capabilities": dict(self.analysis_capabilities),
+        }
 
 
 def backend_capabilities() -> KinematicCapabilities:
@@ -168,6 +183,7 @@ class PositionResult(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "passed": self.passed,
             "operation": "solve_position",
             "status": "passed" if self.passed else "failed",
@@ -198,6 +214,7 @@ class ReachabilityResult(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "reachable": self.reachable,
             "passed": self.passed,
             "operation": "check_reachability",
@@ -225,6 +242,7 @@ class SingularityReport(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "passed": self.passed,
             "operation": "find_singularities",
             "status": "passed" if self.passed else "failed",
@@ -289,6 +307,7 @@ class SolveAttempt(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "operation": self.operation,
             "status": self.status,
             "passed": self.passed,
@@ -831,7 +850,7 @@ def _verify_transmission_ratio_v012(
     )
 
 
-def verify_transmission_ratio(**kwargs: Any) -> Any:
+def verify_transmission_ratio(*, motion_result: MotionResult, input_joint_id: str, output_joint_id: str, expected_ratio: float, expected_direction: Direction, measurement: str = "angular_velocity", start_time_s: float | None = None, end_time_s: float | None = None, relative_tolerance: float = 1e-3, minimum_sample_count: int = 3, minimum_valid_fraction: float = 0.8, minimum_input_magnitude: float = 1e-9, minimum_output_magnitude: float = 1e-12, check_id: str = "transmission_ratio") -> Any:
     """Deprecated compatibility wrapper for :mod:`kincheckapi.checks`."""
 
     import warnings
@@ -844,7 +863,7 @@ def verify_transmission_ratio(**kwargs: Any) -> Any:
     )
     from .checks import check_transmission_ratio
 
-    return check_transmission_ratio(**kwargs)
+    return check_transmission_ratio(motion_result=motion_result, input_joint_id=input_joint_id, output_joint_id=output_joint_id, expected_ratio=expected_ratio, expected_direction=expected_direction, measurement=measurement, start_time_s=start_time_s, end_time_s=end_time_s, relative_tolerance=relative_tolerance, minimum_sample_count=minimum_sample_count, minimum_valid_fraction=minimum_valid_fraction, minimum_input_magnitude=minimum_input_magnitude, minimum_output_magnitude=minimum_output_magnitude, check_id=check_id)
 
 
 def analyze_dofs(*, assembly: AssemblyModel) -> DofReport:
@@ -995,7 +1014,9 @@ def _axis_alignment_error(actual_a: Pose, actual_b: Pose) -> float:
     return math.acos(max(-1.0, min(1.0, dot)))
 
 
-def _raise_unimplemented(*, capability: str, object_ids: Sequence[str] = ()) -> NoReturn:
+def _raise_unimplemented(
+    *, capability: str, object_ids: Sequence[str] = (), operation: str = "kinematics.capability"
+) -> NoReturn:
     """Fail a declared public capability without returning an ambiguous ``None``."""
 
     message = "This kinematics capability is not implemented in the current release."
@@ -1008,14 +1029,18 @@ def _raise_unimplemented(*, capability: str, object_ids: Sequence[str] = ()) -> 
                 stage="kinematics.capability",
                 message=message,
                 object_ids=tuple(object_ids),
+                evidence=(Evidence(key="missing_capability", actual=capability),),
                 suggested_actions=(action,),
             ),
-        )
+        ),
+        operation=operation,
+        status="capability_failed",
     )
     raise BackendCapabilityError(
         code="KINCHECK-KIN-CAPABILITY-UNIMPLEMENTED",
         message=message,
         report=report,
+        operation=operation,
         missing_capabilities=(capability,),
     )
 
@@ -1628,6 +1653,15 @@ def solve_motion(*, scenario: Scenario, options: Any = None) -> MotionResult:
         )
     validation = validate_scenario(scenario=scenario)
     if not validation.passed:
+        capability_issues = tuple(item for item in validation.issues if item.code.endswith("CAPABILITY-UNSUPPORTED"))
+        if capability_issues:
+            raise BackendCapabilityError(
+                code="KINCHECK-KIN-BACKEND-CAPABILITY",
+                message="The requested Joint capability is not supported by the backend.",
+                report=DiagnosticReport(issues=capability_issues, status="capability_failed"),
+                object_ids=tuple(oid for item in capability_issues for oid in item.object_ids),
+                missing_capabilities=tuple(sorted({str(item.evidence[0].actual) for item in capability_issues if item.evidence})),
+            )
         raise ScenarioValidationError(
             code="KINCHECK-SCENARIO-VALIDATION-FAILED",
             message="Scenario validation failed before motion solving.",
@@ -1738,6 +1772,25 @@ def solve_motion(*, scenario: Scenario, options: Any = None) -> MotionResult:
             ) from cause
         except BackendSolveFailure as cause:
             failure = _backend_failure(scenario=scenario, cause=cause, operation="step")
+            last_valid = None
+            raw_samples = tuple(getattr(cause, "last_valid_samples", ()))
+            if raw_samples:
+                try:
+                    from dataclasses import replace
+                    partial_backend = type("_PartialBackend", (), {
+                        "samples": raw_samples,
+                        "integration_samples": (),
+                        "warnings": (),
+                        "metadata": {},
+                        "model_summary": {},
+                        "backend_name": "solver",
+                        "backend_version": "unknown",
+                    })()
+                    candidate = _motion_from_backend(scenario=scenario, backend_result=partial_backend, options=options)
+                    issue_for_partial = SimIssue(code="KINCHECK-KIN-SOLVE-FAILED", severity="error", stage="backend.solve", message="physics backend failed while stepping the Scenario.", object_ids=(scenario.scenario_id,), failure_time_s=getattr(cause, "time_s", None))
+                    last_valid = replace(candidate, status="partial", issues=(*candidate.issues, issue_for_partial))
+                except Exception:
+                    last_valid = None
             report = DiagnosticReport(
                 issues=(SimIssue(
                     code="KINCHECK-KIN-SOLVE-FAILED",
@@ -1748,6 +1801,7 @@ def solve_motion(*, scenario: Scenario, options: Any = None) -> MotionResult:
                     failure_time_s=getattr(cause, "time_s", None),
                 ),),
                 failure_time_s=getattr(cause, "time_s", None),
+                last_valid_result=last_valid,
                 backend_failure=failure,
             )
             raise MotionSolveError(
@@ -1755,6 +1809,7 @@ def solve_motion(*, scenario: Scenario, options: Any = None) -> MotionResult:
                 message="physics backend failed while stepping the Scenario.",
                 report=report,
                 failure_time_s=getattr(cause, "time_s", None),
+                last_valid_result=last_valid,
                 backend_failure=failure,
             ) from cause
         return _motion_from_backend(scenario=scenario, backend_result=backend_result, options=options)
@@ -1820,42 +1875,54 @@ def try_solve_motion(*, scenario: Scenario, options: Any = None) -> SolveAttempt
     return SolveAttempt(status=motion.status, succeeded=True, motion_result=motion, last_valid_result=None, report=report, failure=None)
 
 
-def check_reachability(**kwargs: Any) -> ReachabilityResult:
+def check_reachability(*, assembly: AssemblyModel, target: Any, options: Any = None, joint_positions: Mapping[str, float] | None = None, solver_options: Any = None) -> ReachabilityResult:
     """Check whether one requested Pose can be satisfied by the assembly."""
 
     from .kinematics_analysis import check_reachability as _check_reachability
 
-    return _check_reachability(**kwargs)
+    return _check_reachability(assembly=assembly, target=target, options=options, joint_positions=joint_positions, solver_options=solver_options)
 
 
-def find_singularities(**kwargs: Any) -> SingularityReport:
+def find_singularities(*, motion_result: Any, assembly: AssemblyModel, options: Any = None) -> SingularityReport:
     """Classify recorded motion samples by their Jacobian conditioning."""
 
     from .kinematics_analysis import find_singularities as _find_singularities
 
-    return _find_singularities(**kwargs)
+    return _find_singularities(motion_result=motion_result, assembly=assembly, options=options)
 
 
-def compute_workspace(**kwargs: Any) -> Any:
+def compute_workspace(*, assembly: AssemblyModel, target: Any, options: Any, solver_options: Any = None) -> Any:
     """Enumerate a finite deterministic set of joint configurations."""
 
     from .kinematics_analysis import compute_workspace as _compute_workspace
 
-    return _compute_workspace(**kwargs)
+    return _compute_workspace(assembly=assembly, target=target, options=options, solver_options=solver_options)
 
 
-def trace_connector_path(**kwargs: Any) -> Any:
+def trace_connector_path(*, motion_result: Any, component_id: str, connector_id: str) -> Any:
     """Summarize one Connector trajectory already stored in a MotionResult."""
 
     from .kinematics_analysis import trace_connector_path as _trace_connector_path
 
-    return _trace_connector_path(**kwargs)
+    return _trace_connector_path(motion_result=motion_result, component_id=component_id, connector_id=connector_id)
 
 
 def write_motion_result(*, motion_result: MotionResult, path: str | Path) -> None:
     from .result import write_motion_result as write_result
 
     write_result(motion_result=motion_result, path=path)
+
+
+def solve_inverse_kinematics(*, assembly: AssemblyModel, target: Any, initial_joint_positions: Mapping[str, float] | None = None, joint_limits: Mapping[str, Sequence[float]] | None = None, solution_selection: str = "first") -> Any:
+    """Explicit capability boundary for the not-yet-implemented general IK solver."""
+    target_id = getattr(target, "component_id", None)
+    if not target_id:
+        target_id = getattr(getattr(target, "target", None), "component_id", "")
+    _raise_unimplemented(
+        capability="general_inverse_kinematics",
+        object_ids=(str(target_id),) if target_id else (),
+        operation="solve_inverse_kinematics",
+    )
 
 
 __all__ = [
@@ -1894,4 +1961,5 @@ __all__ = [
     "validate_closures",
     "verify_transmission_ratio",
     "write_motion_result",
+    "solve_inverse_kinematics",
 ]

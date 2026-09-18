@@ -24,6 +24,7 @@ from kincheckapi.scenario import ProfileBoundary
 | --- | --- |
 | `HOLD` | `hold` |
 | `ZERO` | `zero` |
+| `ERROR` | `error` |
 
 ## 返回与失败
 

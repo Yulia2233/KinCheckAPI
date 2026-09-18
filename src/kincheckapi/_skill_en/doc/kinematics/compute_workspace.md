@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-compute_workspace(**kwargs: Any) -> Any
+compute_workspace(*, assembly: AssemblyModel, target: Any, options: Any, solver_options: Any = None) -> Any
 ```
 
 Source: `src/kincheckapi/kinematics.py`.
@@ -22,7 +22,10 @@ Enumerate a finite deterministic set of joint configurations.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `kwargs` | `Any` | required | Public input or data field `kwargs`. |
+| `assembly` | `AssemblyModel` | required | The `AssemblyModel` to construct, validate, solve, or export. |
+| `target` | `Any` | required | Public input or data field `target`. |
+| `options` | `Any` | required | Public solve or analysis options; record the effective thresholds. |
+| `solver_options` | `Any` | `None` | Public input or data field `solver_options`. |
 
 ## Returns and Failures
 

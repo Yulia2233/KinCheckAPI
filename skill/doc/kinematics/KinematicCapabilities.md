@@ -8,6 +8,7 @@ class KinematicCapabilities:
     joint_types: Mapping[str, bool]
     driver_modes: tuple[str, ...]
     output_channels: tuple[str, ...]
+    analysis_capabilities: Mapping[str, bool]
 ```
 
 Source: `src/kincheckapi/kinematics.py`.
@@ -20,7 +21,7 @@ from kincheckapi.kinematics import KinematicCapabilities
 
 ## Purpose
 
-KinematicCapabilities(*, joint_types: 'Mapping[str, bool]', driver_modes: 'tuple[str, ...]' = ('position', 'speed'), output_channels: 'tuple[str, ...]' = ('joint', 'component', 'connector', 'residuals'))
+KinematicCapabilities(*, joint_types: 'Mapping[str, bool]', driver_modes: 'tuple[str, ...]' = ('position', 'speed'), output_channels: 'tuple[str, ...]' = ('joint', 'component', 'connector', 'residuals'), analysis_capabilities: 'Mapping[str, bool]' = <factory>)
 
 ## Parameters and Fields
 
@@ -29,6 +30,7 @@ KinematicCapabilities(*, joint_types: 'Mapping[str, bool]', driver_modes: 'tuple
 | `joint_types` | `Mapping[str, bool]` | required | Public input or data field `joint_types`. |
 | `driver_modes` | `tuple[str, ...]` | `('position', 'speed')` | Public input or data field `driver_modes`. |
 | `output_channels` | `tuple[str, ...]` | `('joint', 'component', 'connector', 'residuals')` | Public input or data field `output_channels`. |
+| `analysis_capabilities` | `Mapping[str, bool]` | default_factory | Public input or data field `analysis_capabilities`. |
 
 ## Returns and Failures
 

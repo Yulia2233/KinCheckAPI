@@ -12,6 +12,7 @@ class DiagnosticReport:
     metadata: Mapping[str, Any]
     operation: str
     status: Optional[Literal['passed', 'failed', 'partial', 'capability_failed', 'validation_failed']]
+    traceback: str | None
 ```
 
 源码：`src/kincheckapi/diagnostics.py`。
@@ -37,6 +38,7 @@ from kincheckapi.diagnostics import DiagnosticReport
 | `metadata` | `Mapping[str, Any]` | default_factory | 附加的只读结构化元数据。 |
 | `operation` | `str` | `'diagnose'` | `operation` 的公开输入或数据字段。 |
 | `status` | `Optional[Literal['passed', 'failed', 'partial', 'capability_failed', 'validation_failed']]` | `None` | 结构化状态；按对应结果类型允许的稳定值解释。 |
+| `traceback` | `str | None` | `None` | `traceback` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

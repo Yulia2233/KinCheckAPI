@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-find_singularities(**kwargs: Any) -> SingularityReport
+find_singularities(*, motion_result: Any, assembly: AssemblyModel, options: Any = None) -> SingularityReport
 ```
 
 Source: `src/kincheckapi/kinematics.py`.
@@ -22,7 +22,9 @@ Compute Jacobian rank, minimum singular value, and condition number at actual Mo
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `kwargs` | `Any` | required | Public input or data field `kwargs`. |
+| `motion_result` | `Any` | required | The public `MotionResult` to query or check. |
+| `assembly` | `AssemblyModel` | required | The `AssemblyModel` to construct, validate, solve, or export. |
+| `options` | `Any` | `None` | Public solve or analysis options; record the effective thresholds. |
 
 ## Returns and Failures
 

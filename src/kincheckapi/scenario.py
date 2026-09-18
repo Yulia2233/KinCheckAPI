@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 from .assembly import AssemblyModel, JointType
-from .diagnostics import Evidence, SimIssue, ValidationResult
+from .diagnostics import DiagnosticReport, Evidence, SimIssue, ValidationResult
 from .errors import ScenarioValidationError
+from .motion_contracts import CoordinatedMotionProfile, PeriodicProfile, PoseTrajectory
 
 
 class Interpolation(str, Enum):
@@ -22,6 +23,7 @@ class Interpolation(str, Enum):
 class ProfileBoundary(str, Enum):
     HOLD = "hold"
     ZERO = "zero"
+    ERROR = "error"
 
 
 class ComponentResultScope(str, Enum):
@@ -147,6 +149,8 @@ class Scenario:
     integration_component_ids: tuple[str, ...] | None = None
     initial_state_source: str = "explicit"
     profile_boundary: ProfileBoundary | str = ProfileBoundary.HOLD
+    pose_trajectory_targets: tuple[PoseTrajectory, ...] = ()
+    coordinated_profiles: tuple[CoordinatedMotionProfile, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.scenario_id, str) or not self.scenario_id.strip():
@@ -184,6 +188,8 @@ class Scenario:
             "speed_drivers",
             "joint_result_requests",
             "component_result_requests",
+            "pose_trajectory_targets",
+            "coordinated_profiles",
         ):
             object.__setattr__(self, name, tuple(getattr(self, name)))
 
@@ -485,8 +491,107 @@ def set_profile_boundary(*, scenario: Scenario, behavior: ProfileBoundary | str)
     try:
         normalized = ProfileBoundary(behavior)
     except (TypeError, ValueError) as cause:
-        _raise_validation(code="KINCHECK-SCENARIO-PROFILE-BOUNDARY-INVALID", message="Profile boundary must be 'hold' or 'zero'.", object_ids=(scenario.scenario_id,), cause=cause)
+        _raise_validation(code="KINCHECK-SCENARIO-PROFILE-BOUNDARY-INVALID", message="Profile boundary must be 'hold', 'zero', or 'error'.", object_ids=(scenario.scenario_id,), cause=cause)
     return replace(scenario, profile_boundary=normalized)
+
+
+def add_periodic_joint_driver(
+    *, scenario: Scenario, joint_id: str, profile: PeriodicProfile,
+) -> Scenario:
+    """Sample a periodic scalar target into an explicit position profile."""
+    if scenario.duration_s is None or scenario.sample_period_s is None:
+        _raise_validation(
+            code="KINCHECK-SCENARIO-PERIODIC-WINDOW-MISSING",
+            message="A duration and sample period are required before adding a periodic driver.",
+            object_ids=(scenario.scenario_id, joint_id),
+        )
+    try:
+        motion_profile = profile.to_motion_profile(
+            start_time_s=0.0,
+            end_time_s=float(scenario.duration_s),
+            sample_period_s=float(scenario.sample_period_s),
+        )
+    except (TypeError, ValueError) as cause:
+        _raise_validation(
+            code="KINCHECK-SCENARIO-PERIODIC-PROFILE-INVALID",
+            message="The periodic profile cannot be sampled for this Scenario.",
+            object_ids=(scenario.scenario_id, joint_id),
+            cause=cause,
+        )
+    return add_joint_position_driver(
+        scenario=scenario, joint_id=joint_id, profile=motion_profile
+    )
+
+
+def add_coordinated_motion_profile(
+    *, scenario: Scenario, profile: CoordinatedMotionProfile,
+) -> Scenario:
+    """Convert one shared-time scalar target into one position driver per axis."""
+    if not isinstance(profile, CoordinatedMotionProfile):
+        _raise_validation(
+            code="KINCHECK-SCENARIO-COORDINATED-PROFILE-INVALID",
+            message="profile must be a CoordinatedMotionProfile.",
+            object_ids=(scenario.scenario_id,),
+        )
+    if scenario.duration_s is not None and profile.times_s[-1] > scenario.duration_s:
+        _raise_validation(
+            code="KINCHECK-SCENARIO-COORDINATED-PROFILE-OUTSIDE-RANGE",
+            message="A coordinated profile extends past the Scenario duration.",
+            object_ids=(scenario.scenario_id,),
+        )
+    result = clear_joint_drivers(scenario=scenario)
+    for joint_id, values in profile.axes.items():
+        result = add_joint_position_driver(
+            scenario=result,
+            joint_id=joint_id,
+            profile=MotionProfile(
+                points=tuple(
+                    ProfilePoint(time_s=time_s, value=value)
+                    for time_s, value in zip(profile.times_s, values)
+                ),
+            ),
+        )
+    return replace(
+        result,
+        coordinated_profiles=(*result.coordinated_profiles, profile),
+    )
+
+
+def add_pose_trajectory_target(
+    *, scenario: Scenario, target: PoseTrajectory,
+) -> Scenario:
+    """Record a Cartesian acceptance target; solving it requires a supported driver."""
+    if not isinstance(target, PoseTrajectory):
+        _raise_validation(
+            code="KINCHECK-SCENARIO-POSE-TRAJECTORY-INVALID",
+            message="target must be a PoseTrajectory.",
+            object_ids=(scenario.scenario_id,),
+        )
+    return replace(
+        scenario,
+        pose_trajectory_targets=(*scenario.pose_trajectory_targets, target),
+    )
+
+
+def add_component_pose_driver(*, scenario: Scenario, target: PoseTrajectory) -> Scenario:
+    """Explicitly reject Cartesian driving until a 6D backend is available."""
+    from .errors import BackendCapabilityError
+    issue = _issue(
+        code="KINCHECK-SCENARIO-CAPABILITY-UNSUPPORTED",
+        message="Cartesian PoseTrajectory drivers are not implemented by the scalar backend.",
+        object_ids=(scenario.scenario_id, target.target.component_id),
+        action="Use a scalar Joint profile and check_pose_trajectory, or provide a 6D backend.",
+    )
+    raise BackendCapabilityError(
+        code="KINCHECK-SCENARIO-CAPABILITY-UNSUPPORTED",
+        message=issue.message,
+        report=DiagnosticReport(
+            issues=(issue,), operation="add_component_pose_driver", status="capability_failed"
+        ),
+        object_ids=issue.object_ids,
+        operation="add_component_pose_driver",
+        missing_capabilities=("cartesian_pose_driver",),
+    )
 
 
 def request_joint_result(*, scenario: Scenario, joint_id: str) -> Scenario:
@@ -592,6 +697,15 @@ def validate_scenario(*, scenario: Scenario) -> ValidationResult:
     """Aggregate time, reference, limit, and driver conflict errors."""
 
     issues: list[SimIssue] = []
+    for joint in scenario.assembly.joints:
+        if joint.joint_type not in {JointType.FIXED, JointType.REVOLUTE, JointType.PRISMATIC}:
+            issues.append(_issue(
+                code="KINCHECK-SCENARIO-JOINT-CAPABILITY-UNSUPPORTED",
+                message="The selected backend supports only fixed, revolute, and prismatic scalar joints.",
+                object_ids=(scenario.scenario_id, joint.joint_id),
+                evidence=(Evidence(key="joint_type", actual=joint.joint_type.value, expected=("fixed", "revolute", "prismatic")),),
+                action="Use a supported scalar joint or provide a backend with the requested multi-DOF capability.",
+            ))
     if scenario.duration_s is None or not math.isfinite(scenario.duration_s) or scenario.duration_s <= 0.0:
         issues.append(
             _issue(
@@ -706,7 +820,35 @@ def validate_scenario(*, scenario: Scenario) -> ValidationResult:
                     object_ids=(scenario.scenario_id, request.component_id, request.connector_id),
                     action="Use a Connector ID defined on the component or its Part.",
                 )
-            )
+                )
+
+    for target in scenario.pose_trajectory_targets:
+        component = scenario.assembly.get_component(component_id=target.target.component_id)
+        if component is None:
+            issues.append(_issue(
+                code="KINCHECK-SCENARIO-POSE-TARGET-NOT-FOUND",
+                message="PoseTrajectory target references an unknown component.",
+                object_ids=(scenario.scenario_id, target.target.component_id),
+                action="Use a Component ID present in the bound assembly.",
+            ))
+        elif target.target.connector_id is not None and scenario.assembly.get_connector(
+            component_id=target.target.component_id,
+            connector_id=target.target.connector_id,
+        ) is None:
+            issues.append(_issue(
+                code="KINCHECK-SCENARIO-POSE-TARGET-NOT-FOUND",
+                message="PoseTrajectory target references an unknown connector.",
+                object_ids=(scenario.scenario_id, target.target.component_id, target.target.connector_id),
+                action="Use a Connector ID defined by the target component or part.",
+            ))
+        if scenario.duration_s is not None and target.points[-1].time_s > scenario.duration_s:
+            issues.append(_issue(
+                code="KINCHECK-SCENARIO-POSE-TARGET-OUTSIDE-RANGE",
+                message="PoseTrajectory extends past the Scenario duration.",
+                object_ids=(scenario.scenario_id, target.target.component_id),
+                evidence=(Evidence(key="target_end_time_s", actual=target.points[-1].time_s, expected=f"<= {scenario.duration_s}", unit="s"),),
+                action="Trim the pose target or increase duration_s.",
+            ))
 
     driven_joint_ids: dict[str, list[str]] = {}
     for driver_type, drivers in (
@@ -716,6 +858,14 @@ def validate_scenario(*, scenario: Scenario) -> ValidationResult:
         for driver in drivers:
             joint = require_joint(driver.joint_id, f"{driver_type.title()} driver")
             driven_joint_ids.setdefault(driver.joint_id, []).append(driver_type)
+            if driver.profile.points[0].time_s > 0.0 and scenario.profile_boundary is ProfileBoundary.ERROR:
+                issues.append(_issue(
+                    code="KINCHECK-SCENARIO-PROFILE-DOES-NOT-START-AT-ZERO",
+                    message="A profile with ERROR boundary must start at t=0.",
+                    object_ids=(scenario.scenario_id, driver.joint_id),
+                    evidence=(Evidence(key="profile_start_time_s", actual=driver.profile.points[0].time_s, expected=0.0, unit="s"),),
+                    action="Add a profile point at t=0 or choose hold/zero boundary behavior.",
+                ))
             if driver.profile.points[-1].time_s > (scenario.duration_s or 0.0):
                 issues.append(
                     _issue(
@@ -851,6 +1001,8 @@ def scenario_to_dict(*, scenario: Scenario) -> dict[str, Any]:
         ),
         "initial_state_source": scenario.initial_state_source,
         "profile_boundary": scenario.profile_boundary.value,
+        "pose_trajectory_targets": [item.to_dict() for item in scenario.pose_trajectory_targets],
+        "coordinated_profiles": [item.to_dict() for item in scenario.coordinated_profiles],
     }
 
 
@@ -923,6 +1075,17 @@ def scenario_from_dict(*, assembly: AssemblyModel, data: Mapping[str, Any]) -> S
         ),
         initial_state_source=str(data.get("initial_state_source", "explicit")),
         profile_boundary=data.get("profile_boundary", ProfileBoundary.HOLD.value),
+        pose_trajectory_targets=tuple(
+            PoseTrajectory.from_dict(item) for item in data.get("pose_trajectory_targets", ())
+        ),
+        coordinated_profiles=tuple(
+            CoordinatedMotionProfile(
+                times_s=tuple(item["times_s"]),
+                axes={key: tuple(value) for key, value in item["axes"].items()},
+                position_tolerance=float(item.get("position_tolerance", 1e-6)),
+            )
+            for item in data.get("coordinated_profiles", ())
+        ),
     )
 
 
@@ -1025,6 +1188,10 @@ __all__ = [
     "add_joint_speed_driver",
     "add_joint_speed_profile",
     "add_joint_motion_segments",
+    "add_periodic_joint_driver",
+    "add_coordinated_motion_profile",
+    "add_pose_trajectory_target",
+    "add_component_pose_driver",
     "create_scenario",
     "disable_constraint",
     "replace_joint_driver",

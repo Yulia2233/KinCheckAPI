@@ -38,6 +38,7 @@ Read status, trajectories, residuals, and event evidence from MotionResult objec
 | [`read_trajectory`](read_trajectory.md) | Function | Return a complete component or connector trajectory already recorded in the result. |
 | [`summarize_motion`](summarize_motion.md) | Function | Summarize status, duration, sample count, joint extrema, maximum residuals, and event counts. |
 | [`write_motion_result`](write_motion_result.md) | Function | Write a complete public motion result as deterministic JSON. |
+| [`record_verification_reports`](record_verification_reports.md) | Function | Attach immutable check evidence without changing solver completion status. |
 
 ## Module Rules
 

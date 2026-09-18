@@ -5,7 +5,7 @@
 ```python
 class VisualizationExportError(KinCheckError): ...
 
-VisualizationExportError(*, code: 'str', message: 'str | None' = None, report: 'DiagnosticReport | ValidationResult | None' = None, object_ids: 'Sequence[str]' = (), source_paths: 'Sequence[str]' = (), suggested_actions: 'Sequence[str]' = (), details: 'Mapping[str, Any] | None' = None, operation: 'str | None' = None, status: 'str | None' = None) -> 'None'
+VisualizationExportError(*, code: 'str', message: 'str | None' = None, report: 'DiagnosticReport | ValidationResult | None' = None, object_ids: 'Sequence[str]' = (), source_paths: 'Sequence[str]' = (), suggested_actions: 'Sequence[str]' = (), details: 'Mapping[str, Any] | None' = None, operation: 'str | None' = None, status: 'str | None' = None, stage: 'str | None' = None) -> 'None'
 ```
 
 Source: `src/kincheckapi/errors.py`.
@@ -33,6 +33,7 @@ Raised when a viewer cannot be exported from public assembly and result data.
 | `details` | `Optional[Mapping[str, Any]]` | `None` | Public input or data field `details`. |
 | `operation` | `str | None` | `None` | Public input or data field `operation`. |
 | `status` | `str | None` | `None` | Structured status interpreted according to the stable values for the result type. |
+| `stage` | `str | None` | `None` | Public input or data field `stage`. |
 
 ## Returns and Failures
 

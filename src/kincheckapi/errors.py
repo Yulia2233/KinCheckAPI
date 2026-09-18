@@ -11,6 +11,7 @@ from .diagnostics import (
     ValidationResult,
     _json_value,
     format_error_for_agent,
+    diagnostic_trace,
 )
 
 
@@ -61,6 +62,7 @@ class KinCheckError(Exception):
         details: Mapping[str, Any] | None = None,
         operation: str | None = None,
         status: str | None = None,
+        stage: str | None = None,
     ) -> None:
         if message is None:
             if report and report.issues:
@@ -83,7 +85,7 @@ class KinCheckError(Exception):
                     SimIssue(
                         code=code,
                         severity="error",
-                        stage="api",
+                        stage=stage or "api",
                         message=message,
                         object_ids=tuple(object_ids),
                         source_paths=tuple(source_paths),
@@ -110,8 +112,9 @@ class KinCheckError(Exception):
     def __str__(self) -> str:
         return self.format_for_agent()
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self, *, include_traceback: bool = False) -> dict[str, Any]:
         return {
+            **diagnostic_trace(self, include_traceback=include_traceback),
             "error_type": type(self).__name__,
             "code": self.code,
             "message": self.message,
@@ -147,8 +150,8 @@ class BackendUnavailableError(KinCheckError):
         self.backend_failure = backend_failure
         super().__init__(**kwargs)
 
-    def to_dict(self) -> dict[str, Any]:
-        value = super().to_dict()
+    def to_dict(self, *, include_traceback: bool = False) -> dict[str, Any]:
+        value = super().to_dict(include_traceback=include_traceback)
         value["backend_failure"] = (
             self.backend_failure.to_dict() if self.backend_failure else None
         )
@@ -162,8 +165,8 @@ class BackendCapabilityError(KinCheckError):
         self.missing_capabilities = tuple(missing_capabilities)
         super().__init__(**kwargs)
 
-    def to_dict(self) -> dict[str, Any]:
-        value = super().to_dict()
+    def to_dict(self, *, include_traceback: bool = False) -> dict[str, Any]:
+        value = super().to_dict(include_traceback=include_traceback)
         value["missing_capabilities"] = list(self.missing_capabilities)
         return value
 
@@ -197,8 +200,8 @@ class MotionSolveError(KinCheckError):
         )
         super().__init__(**kwargs)
 
-    def to_dict(self) -> dict[str, Any]:
-        value = super().to_dict()
+    def to_dict(self, *, include_traceback: bool = False) -> dict[str, Any]:
+        value = super().to_dict(include_traceback=include_traceback)
         value.update(
             {
                 "failure_time_s": self.failure_time_s,
@@ -226,8 +229,8 @@ class VerificationError(KinCheckError):
         self.check = check
         super().__init__(**kwargs)
 
-    def to_dict(self) -> dict[str, Any]:
-        value = super().to_dict()
+    def to_dict(self, *, include_traceback: bool = False) -> dict[str, Any]:
+        value = super().to_dict(include_traceback=include_traceback)
         value["check"] = (
             self.check.to_dict() if hasattr(self.check, "to_dict") else _json_value(self.check)
         )

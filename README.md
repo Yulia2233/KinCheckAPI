@@ -1,5 +1,7 @@
 # KinCheckAPI
 
+Current development version: **0.5.5**. See [the v0.5.5 update](doc/updates/v0.5.5.en.md) for curve, planar, event, periodic, synchronization, and structured failure diagnostics.
+
 English | [简体中文](README_zh.md)
 
 ![Four-bar linkage before and after optimization](examples/four_bar_linkage/output/comparison.gif)
@@ -18,7 +20,7 @@ uv venv .venv
 uv pip install --python .venv/bin/python .
 ```
 
-## Addon development: v0.5.4
+## Addon development: v0.5.5
 
 The optional SimpleCADAPI addon adds validated `.scadpkg` preparation while
 preserving `convert_mjcf()`, `verify(model_dir)`, and all assembly, scenario,
@@ -40,9 +42,9 @@ Stop on a failed probe and repair the named dependency in this environment.
 The addon currently declares macOS arm64 and SDK `>=2.1.3b3,<2.1.4`.
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.4
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.5
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.4
+sca addon add ./dist/sca-kincheckapi-0.5.5
 sca addon list
 kincheck verify-package product.scadpkg --work-dir analysis-work --script verification/verify.py --format json
 ```

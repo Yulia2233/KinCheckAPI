@@ -24,6 +24,8 @@ class Scenario:
     integration_component_ids: tuple[str, ...] | None
     initial_state_source: str
     profile_boundary: ProfileBoundary | str
+    pose_trajectory_targets: tuple[kincheckapi.motion_contracts.PoseTrajectory, ...]
+    coordinated_profiles: tuple[kincheckapi.motion_contracts.CoordinatedMotionProfile, ...]
 ```
 
 Source: `src/kincheckapi/scenario.py`.
@@ -61,6 +63,8 @@ A reusable kinematic condition bound to exactly one assembly definition.
 | `integration_component_ids` | `tuple[str, ...] | None` | `None` | Explicitly specified `integration_component_ids` collection. |
 | `initial_state_source` | `str` | `'explicit'` | Public input or data field `initial_state_source`. |
 | `profile_boundary` | `ProfileBoundary | str` | `<ProfileBoundary.HOLD: 'hold'>` | Public input or data field `profile_boundary`. |
+| `pose_trajectory_targets` | `tuple[kincheckapi.motion_contracts.PoseTrajectory, ...]` | `()` | Public input or data field `pose_trajectory_targets`. |
+| `coordinated_profiles` | `tuple[kincheckapi.motion_contracts.CoordinatedMotionProfile, ...]` | `()` | Public input or data field `coordinated_profiles`. |
 
 ## Returns and Failures
 
