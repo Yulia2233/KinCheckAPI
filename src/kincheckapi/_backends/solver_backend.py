@@ -92,9 +92,10 @@ class BackendCompileFailure(RuntimeError):
 class BackendSolveFailure(RuntimeError):
     """physics backend failed or produced non-finite state while stepping."""
 
-    def __init__(self, message: str, *, time_s: float | None = None) -> None:
+    def __init__(self, message: str, *, time_s: float | None = None, last_valid_samples: Sequence[BackendSample] = ()) -> None:
         super().__init__(message)
         self.time_s = time_s
+        self.last_valid_samples = tuple(last_valid_samples)
 
 
 class BackendInitialStateFailure(RuntimeError):
@@ -1311,6 +1312,8 @@ def compile_assembly(
 def _profile_value(profile: MotionProfile, time_s: float, boundary: str = "hold") -> float:
     boundary = getattr(boundary, "value", boundary)
     points = profile.points
+    if boundary == "error" and (time_s < points[0].time_s or time_s > points[-1].time_s):
+        raise BackendSolveFailure("profile evaluated outside its declared range", time_s=float(time_s))
     if time_s <= points[0].time_s:
         return 0.0 if boundary == "zero" and time_s < points[0].time_s else float(points[0].value)
     if time_s >= points[-1].time_s:
@@ -2080,6 +2083,7 @@ def solve_scenario(*, scenario: Scenario, options: Any = None) -> BackendSolveRe
                 raise BackendSolveFailure(
                     "maximum integration substeps exceeded",
                     time_s=float(data.time),
+                    last_valid_samples=tuple(samples),
                 )
             remaining = target_time - float(data.time)
             compiled.model.opt.timestep = min(max_timestep_s, remaining)
@@ -2102,6 +2106,7 @@ def solve_scenario(*, scenario: Scenario, options: Any = None) -> BackendSolveRe
                 raise BackendSolveFailure(
                     f"physics backend failed while stepping the Scenario: {cause}",
                     time_s=float(data.time),
+                    last_valid_samples=tuple(samples),
                 ) from cause
             _write_lock_state(compiled=compiled, data=data, lock_values=lock_values)
             if not all(math.isfinite(float(value)) for value in (*data.qpos, *data.qvel)):
@@ -2117,6 +2122,7 @@ def solve_scenario(*, scenario: Scenario, options: Any = None) -> BackendSolveRe
                 raise BackendSolveFailure(
                     "physics backend produced non-finite joint state",
                     time_s=float(data.time),
+                    last_valid_samples=tuple(samples),
                 )
             if scenario.capture_integration_steps:
                 integration_samples.append(

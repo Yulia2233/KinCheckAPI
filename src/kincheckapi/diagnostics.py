@@ -216,6 +216,9 @@ class AgentReadableResult:
     def raise_if_failed(self) -> None:
         assert_check_passed(check=self)
 
+    def diagnostic_trace(self) -> dict[str, Any]:
+        return diagnostic_trace(self)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ValidationResult(AgentReadableResult):
@@ -250,6 +253,7 @@ class ValidationResult(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "passed": self.passed,
             "operation": self.operation,
             "status": self.status,
@@ -284,6 +288,7 @@ class DiagnosticReport(AgentReadableResult):
     metadata: Mapping[str, Any] = field(default_factory=dict)
     operation: str = "diagnose"
     status: ResultStatus | None = None
+    traceback: str | None = None
 
     def __post_init__(self) -> None:
         allowed_statuses = {
@@ -319,11 +324,12 @@ class DiagnosticReport(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "passed": self.passed,
             "operation": self.operation,
             "status": _result_status(self),
             "issues": [issue.to_dict() for issue in self.issues],
-            "failure_time_s": self.failure_time_s,
+            "failure_time_s": diagnostic_trace(self)["failure_time_s"],
             "last_valid_result": _json_value(self.last_valid_result),
             "backend_failure": (
                 self.backend_failure.to_dict() if self.backend_failure else None
@@ -533,7 +539,71 @@ def _result_operation(result: Any, explicit: str | None = None) -> str:
         "MotionSummary": "summarize_motion",
         "TransmissionRatioCheck": "verify_transmission_ratio",
     }
+    if isinstance(result, BaseException):
+        return "api"
     return names.get(type(result).__name__, type(result).__name__)
+
+
+def diagnostic_trace(result_or_error: Any, *, include_traceback: bool = False) -> dict[str, Any]:
+    """Return stable semantic diagnostics without parsing human-readable output.
+
+    Native traceback capture is opt-in. A previously captured trace is retained
+    on serialization; a missing trace is represented by null. Causes are facts
+    from the native exception or issue, never guessed from an error code.
+    """
+    value = result_or_error
+    report = getattr(value, "report", None)
+    issues = _result_issues(value)
+    primary = next((item for item in issues if item.severity == "error"), None)
+    passed = _result_passed(value) and not isinstance(value, BaseException)
+    operation = _result_operation(value)
+    backend = getattr(value, "backend_failure", None) or getattr(report, "backend_failure", None)
+    native = getattr(value, "__cause__", None)
+    while getattr(native, "__cause__", None) is not None:
+        native = native.__cause__
+    facts = [*_result_evidence(value), *(fact for item in issues for fact in item.evidence)]
+    exception_message = str(value) if isinstance(value, BaseException) else None
+    native_type = type(native).__name__ if native is not None else getattr(backend, "native_error_type", None)
+    if native_type is None and isinstance(value, BaseException):
+        native_type = type(value).__name__
+    if native_type is None:
+        native_type = next((fact.actual for fact in facts if fact.key == "native_error_type"), None)
+    message = getattr(value, "message", None) or (primary.message if primary else None)
+    message = message or exception_message or ("The requested operation passed." if passed else "The requested operation did not pass.")
+    actions = tuple(dict.fromkeys((*getattr(value, "suggested_actions", ()), *(action for item in issues for action in _issue_actions(item)))))
+    if not passed and not actions:
+        actions = ("Inspect the recorded evidence and resolve the reported failure before retrying.",)
+    ids = tuple(dict.fromkeys((*getattr(value, "object_ids", ()), *(oid for item in issues for oid in item.object_ids))))
+    failure_time = getattr(value, "failure_time_s", None)
+    if failure_time is None:
+        failure_time = getattr(report, "failure_time_s", None)
+    if failure_time is None:
+        failure_time = min((item.failure_time_s for item in issues if item.failure_time_s is not None), default=None)
+    last_valid = getattr(value, "last_valid_result", None)
+    if last_valid is None:
+        last_valid = getattr(report, "last_valid_result", None)
+    trace = getattr(value, "traceback", None) or getattr(report, "traceback", None)
+    if include_traceback and isinstance(value, BaseException) and value.__traceback__ is not None:
+        import traceback as traceback_module
+        trace = "".join(traceback_module.format_exception(type(value), value, value.__traceback__))
+    payload = {
+        "passed": passed,
+        "what_happened": message,
+        "cause": str(native) if native is not None else getattr(backend, "native_message", None) or exception_message or (primary.message if primary else message),
+        "how_to_fix": list(actions),
+        "code": getattr(value, "code", None) or (primary.code if primary else "KINCHECK-OK" if passed else "KINCHECK-UNEXPECTED-ERROR" if isinstance(value, BaseException) else "KINCHECK-RESULT-FAILED"),
+        "stage": primary.stage if primary else getattr(value, "stage", None) or operation,
+        "object_ids": list(ids),
+        "source_paths": list(dict.fromkeys(path for item in issues for path in item.source_paths)),
+        "failure_time_s": failure_time,
+        "evidence": [fact.to_dict() for fact in facts],
+        "last_valid_result": _json_value(last_valid) if last_valid is not value else None,
+        "suggested_actions": list(actions),
+        "native_error_type": native_type,
+    }
+    if trace is not None:
+        payload["traceback"] = trace
+    return payload
 
 
 def _result_evidence(result: Any) -> tuple[Evidence, ...]:

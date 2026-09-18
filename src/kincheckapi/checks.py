@@ -44,6 +44,12 @@ CheckType = Literal[
     "minimum_clearance",
     "motion_envelope",
     "driver_tracking",
+    "path_tracking",
+    "planar_tracking",
+    "start_stop_reversal",
+    "periodic_motion",
+    "synchronization",
+    "continuous_interference",
 ]
 RatioMeasurement = Literal[
     "angular_velocity",
@@ -121,12 +127,20 @@ class CheckReport(AgentReadableResult):
         object.__setattr__(self, "issues", issues)
         object.__setattr__(self, "metadata", _freeze(self.metadata))
 
+    @property
+    def status(self) -> str:
+        value = self.metadata.get("status")
+        if value == "capability_failed":
+            return "capability_failed"
+        return "passed" if self.passed else "failed"
+
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "check_id": self.check_id,
             "check_type": self.check_type,
             "operation": self.check_type,
-            "status": "passed" if self.passed else "failed",
+            "status": self.status,
             "passed": self.passed,
             "severity": self.severity,
             "evidence": [item.to_dict() for item in self.evidence],
@@ -179,6 +193,12 @@ class CheckSuiteReport(AgentReadableResult):
         return all(item.passed for item in self.reports)
 
     @property
+    def status(self) -> str:
+        if any(item.status == "capability_failed" for item in self.reports):
+            return "capability_failed"
+        return "passed" if self.passed else "failed"
+
+    @property
     def issues(self) -> tuple[SimIssue, ...]:
         return tuple(issue for report in self.reports for issue in report.issues)
 
@@ -190,9 +210,10 @@ class CheckSuiteReport(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "passed": self.passed,
             "operation": "run_checks",
-            "status": "passed" if self.passed else "failed",
+            "status": self.status,
             "reports": [item.to_dict() for item in self.reports],
             "issues": [item.to_dict() for item in self.issues],
             "metadata": _json_value(self.metadata),
@@ -217,7 +238,7 @@ class DriverTrackingReport(AgentReadableResult):
     issues: tuple[SimIssue, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
-        return {"operation": "check_driver_tracking", "status": "passed" if self.passed else "failed", "passed": self.passed, "joint_id": self.joint_id, "mode": self.mode, "maximum_absolute_error": self.maximum_absolute_error, "mean_absolute_error": self.mean_absolute_error, "rms_error": self.rms_error, "overshoot": self.overshoot, "undertracking": self.undertracking, "settling_time_s": self.settling_time_s, "valid_sample_count": self.valid_sample_count, "first_failure_time_s": self.first_failure_time_s, "tolerance": self.tolerance, "issues": [i.to_dict() for i in self.issues]}
+        return {**self.diagnostic_trace(), "operation": "check_driver_tracking", "status": "passed" if self.passed else "failed", "passed": self.passed, "joint_id": self.joint_id, "mode": self.mode, "maximum_absolute_error": self.maximum_absolute_error, "mean_absolute_error": self.mean_absolute_error, "rms_error": self.rms_error, "overshoot": self.overshoot, "undertracking": self.undertracking, "settling_time_s": self.settling_time_s, "valid_sample_count": self.valid_sample_count, "first_failure_time_s": self.first_failure_time_s, "tolerance": self.tolerance, "issues": [i.to_dict() for i in self.issues]}
 
 
 def _issue(
@@ -1488,12 +1509,43 @@ def run_checks(
                 )
             else:
                 report = check_trajectory(motion_result=motion_result, **parameters)
+        elif spec.check_type == "continuous_interference":
+            try:
+                report = check_continuous_interference(
+                    assembly=assembly, motion_result=motion_result, **parameters
+                )
+            except BackendCapabilityError as error:
+                report = CheckReport(
+                    check_id=spec.check_id, check_type=spec.check_type,
+                    passed=False, severity="error", issues=tuple(error.report.issues),
+                    metadata=error.to_dict(),
+                )
         elif spec.check_type == "driver_tracking":
             if motion_result is None or scenario is None:
                 report = _run_failure(spec=spec, code="KINCHECK-CHECK-SCENARIO-REQUIRED", message="Driver tracking requires Scenario and MotionResult.")
             else:
                 tracking = check_driver_tracking(motion_result=motion_result, scenario=scenario, **parameters)
                 report = CheckReport(check_id=spec.check_id, check_type=spec.check_type, passed=tracking.passed, severity="info" if tracking.passed else "error", evidence=(Evidence(key="maximum_absolute_error", actual=tracking.maximum_absolute_error, expected=f"<= {tracking.tolerance}"), Evidence(key="mean_absolute_error", actual=tracking.mean_absolute_error), Evidence(key="rms_error", actual=tracking.rms_error), Evidence(key="overshoot", actual=tracking.overshoot), Evidence(key="undertracking", actual=tracking.undertracking), Evidence(key="valid_sample_count", actual=tracking.valid_sample_count), Evidence(key="first_failure_time_s", actual=tracking.first_failure_time_s)), issues=tracking.issues, metadata=tracking.to_dict())
+        elif spec.check_type in {"path_tracking", "planar_tracking", "start_stop_reversal", "periodic_motion", "synchronization"}:
+            if motion_result is None:
+                report = _run_failure(spec=spec, code="KINCHECK-CHECK-MOTION-RESULT-REQUIRED", message="This check requires a MotionResult.")
+            else:
+                try:
+                    if spec.check_type == "path_tracking":
+                        trajectory = parameters.pop("trajectory", None)
+                        if trajectory is None:
+                            trajectory = next((item for item in motion_result.trajectories if item.component_id == parameters.pop("component_id", getattr(parameters.get("path_target", None), "component_id", None)) and item.connector_id == parameters.pop("connector_id", None)), None)
+                        report = check_path_tracking(trajectory=trajectory, **parameters)
+                    elif spec.check_type == "planar_tracking":
+                        trajectory = parameters.pop("trajectory", None)
+                        if trajectory is None:
+                            trajectory = next((item for item in motion_result.trajectories if item.component_id == parameters.pop("component_id", "") and item.connector_id == parameters.pop("connector_id", None)), None)
+                        report = check_planar_tracking(trajectory=trajectory, **parameters)
+                    elif spec.check_type == "start_stop_reversal": report = check_start_stop_reversal(motion_result=motion_result, **parameters)
+                    elif spec.check_type == "periodic_motion": report = check_periodic_motion(motion_result=motion_result, **parameters)
+                    else: report = check_synchronization(motion_result=motion_result, **parameters)
+                except (AttributeError, TypeError, ValueError, KeyError) as error:
+                    report = _run_failure(spec=spec, code="KINCHECK-CHECK-PARAMETERS-INVALID", message=str(error))
         elif spec.check_type in {"interference", "minimum_clearance", "motion_envelope"}:
             if motion_result is None:
                 report = _run_failure(
@@ -1587,8 +1639,23 @@ def _raise_check_capability(*, capability: str, operation: str) -> None:
     raise BackendCapabilityError(
         code="KINCHECK-CAPABILITY-UNIMPLEMENTED",
         message=message,
-        report=DiagnosticReport(issues=(issue,)),
+        report=DiagnosticReport(
+            issues=(issue,), operation=operation, status="capability_failed"
+        ),
+        operation=operation,
         missing_capabilities=(capability,),
+    )
+
+
+def check_continuous_interference(
+    *, assembly: AssemblyModel, motion_result: MotionResult,
+    component_pairs: Sequence[Sequence[str]] | None = None,
+    **parameters: Any,
+) -> CheckReport:
+    """Explicit capability boundary for continuous time-of-impact checking."""
+    _raise_check_capability(
+        capability="continuous_time_of_impact",
+        operation="check_continuous_interference",
     )
 
 
@@ -1894,6 +1961,214 @@ def check_motion_envelope(*, assembly: AssemblyModel, motion_result: MotionResul
     ).as_check_report(check_id=check_id)
 
 
+def _distance_point_segment(p: Sequence[float], a: Sequence[float], b: Sequence[float]) -> float:
+    d = [b[i] - a[i] for i in range(len(a))]; den = sum(x*x for x in d)
+    u = 0.0 if den == 0 else max(0.0, min(1.0, sum((p[i]-a[i])*d[i] for i in range(len(a))) / den))
+    return math.sqrt(sum((p[i] - (a[i] + u*d[i]))**2 for i in range(len(a))))
+
+def check_path_tracking(*, motion_result: MotionResult | None = None, component_id: str | None = None, connector_id: str | None = None, trajectory: Any = None, path_target: Any, position_tolerance_m: float = 1e-6, curvature_tolerance_1_m: float | None = None, minimum_turn_radius_m: float | None = None, check_id: str = "path_tracking") -> CheckReport:
+    """Check sampled component/connector positions against a polyline path."""
+    from .motion_contracts import PathTarget
+    issues: list[SimIssue] = []
+    if motion_result is not None and motion_result.status not in {"completed", "completed_with_warnings"}:
+        issues.append(_issue(code="KINCHECK-CHECK-MOTION-RESULT-INCOMPLETE", stage="checks.path_tracking", message="An incomplete MotionResult cannot establish a complete path pass.", object_ids=(motion_result.scenario_id,), failure_time_s=motion_result.end_time_s))
+    if not isinstance(path_target, PathTarget):
+        try: path_target = PathTarget(**dict(path_target))
+        except (TypeError, ValueError) as error:
+            return _report(check_id=check_id, check_type="path_tracking", issues=(_issue(code="KINCHECK-CHECK-PATH-TARGET-INVALID", stage="checks.path_tracking", message=str(error)),))
+    if motion_result is not None:
+        if component_id is None:
+            return _report(check_id=check_id, check_type="path_tracking", issues=(_issue(code="KINCHECK-CHECK-PATH-COMPONENT-REQUIRED", stage="checks.path_tracking", message="component_id is required when checking a MotionResult."),))
+        trajectory = next((item for item in motion_result.trajectories if item.component_id == component_id and item.connector_id == connector_id), None)
+    points = tuple(getattr(trajectory, "positions_m", ()))
+    if not points:
+        poses = tuple(getattr(trajectory, "poses", ())); points = tuple(p.position_m for p in poses)
+    if not points:
+        issue = _issue(code="KINCHECK-CHECK-PATH-TRAJECTORY-MISSING", stage="checks.path_tracking", message="A sampled position trajectory is required.")
+        return _report(check_id=check_id, check_type="path_tracking", issues=(issue,))
+    segments = tuple(zip(path_target.points_m, (*path_target.points_m[1:], path_target.points_m[0]) if path_target.closed else path_target.points_m[1:]))
+    errors = [min(_distance_point_segment(p, a, b) for a,b in segments) for p in points]
+    max_error = max(errors); first = next((float(t) for t,e in zip(getattr(trajectory, "times_s", ()), errors) if e > position_tolerance_m), None)
+    if first is not None:
+        issues.append(_issue(code="KINCHECK-CHECK-PATH-TRACKING-FAILED", stage="checks.path_tracking", message="Path tracking error exceeds tolerance.", object_ids=(getattr(trajectory, "component_id", ""),), failure_time_s=first, evidence=(Evidence(key="maximum_path_error_m", actual=max_error, expected=f"<= {position_tolerance_m}", unit="m"),)))
+    curvature = []
+    poly = path_target.points_m
+    for a,b,c in zip(poly, poly[1:], poly[2:]):
+        ab=math.dist(a,b); bc=math.dist(b,c); ac=math.dist(a,c)
+        area=math.sqrt(max(0., (ab+bc+ac)*(-ab+bc+ac)*(ab-bc+ac)*(ab+bc-ac)))/4.
+        curvature.append(4*area/(ab*bc*ac) if ab*bc*ac else 0.)
+    max_curvature=max(curvature, default=0.)
+    if curvature_tolerance_1_m is not None and max_curvature > curvature_tolerance_1_m:
+        issues.append(_issue(code="KINCHECK-CHECK-PATH-CURVATURE-EXCEEDED", stage="checks.path_tracking", message="Target path curvature exceeds the declared threshold.", evidence=(Evidence(key="maximum_curvature_1_m", actual=max_curvature, expected=f"<= {curvature_tolerance_1_m}", unit="1/m"),)))
+    if minimum_turn_radius_m is not None and max_curvature > 0 and 1/max_curvature < minimum_turn_radius_m:
+        issues.append(_issue(code="KINCHECK-CHECK-PATH-TURN-RADIUS-FAILED", stage="checks.path_tracking", message="Target path contains a turn radius below the declared minimum.", evidence=(Evidence(key="minimum_turn_radius_m", actual=1/max_curvature, expected=f">= {minimum_turn_radius_m}", unit="m"),)))
+    return _report(check_id=check_id, check_type="path_tracking", evidence=(Evidence(key="maximum_path_error_m", actual=max_error, expected=f"<= {position_tolerance_m}", unit="m"), Evidence(key="maximum_curvature_1_m", actual=max_curvature, unit="1/m"), Evidence(key="sample_count", actual=len(points))), issues=issues, metadata={"curvature_supported": True, "path_point_count": len(path_target.points_m)})
+
+def _yaw(q: Sequence[float]) -> float:
+    x,y,z,w = q; return math.atan2(2*(w*z+x*y), 1-2*(y*y+z*z))
+
+def check_planar_tracking(*, motion_result: MotionResult | None = None, component_id: str | None = None, connector_id: str | None = None, trajectory: Any = None, target: Any, position_tolerance_m: float = 1e-6, yaw_tolerance_rad: float = 1e-6, check_id: str = "planar_tracking") -> CheckReport:
+    """Check X/Y/Yaw samples. Target may be PlanarPose points or PoseTrajectory."""
+    from .motion_contracts import PlanarPose, PoseTrajectory
+    issues: list[SimIssue] = []
+    if motion_result is not None and motion_result.status not in {"completed", "completed_with_warnings"}:
+        issues.append(_issue(code="KINCHECK-CHECK-MOTION-RESULT-INCOMPLETE", stage="checks.planar_tracking", message="An incomplete MotionResult cannot establish a complete planar pass.", object_ids=(motion_result.scenario_id,), failure_time_s=motion_result.end_time_s))
+    target_trajectory = target if isinstance(target, PoseTrajectory) else None
+    if target_trajectory is not None:
+        targets = target_trajectory.points
+    else:
+        raw_targets = target.get("points") if isinstance(target, Mapping) else target
+        try:
+            if isinstance(raw_targets, (str, bytes)):
+                raise TypeError("target must be a sequence of planar pose points")
+            targets = tuple(
+                item if isinstance(item, PlanarPose) else PlanarPose(**dict(item))
+                for item in raw_targets
+            )
+            if not targets:
+                raise ValueError("target must contain at least one planar pose point")
+        except (AttributeError, TypeError, ValueError, KeyError) as error:
+            return _report(
+                check_id=check_id,
+                check_type="planar_tracking",
+                issues=(
+                    _issue(
+                        code="KINCHECK-CHECK-PLANAR-TARGET-INVALID",
+                        stage="checks.planar_tracking",
+                        message="Planar tracking target must be a sequence of valid planar pose points.",
+                        evidence=(
+                            Evidence(key="native_error_type", actual=type(error).__name__),
+                            Evidence(key="native_error_message", actual=str(error)),
+                        ),
+                        suggested_actions=(
+                            "Pass PlanarPose values or mappings with time_s, x_m, y_m, and yaw_rad.",
+                        ),
+                    ),
+                ),
+            )
+    if motion_result is not None:
+        if component_id is None:
+            return _report(check_id=check_id, check_type="planar_tracking", issues=(_issue(code="KINCHECK-CHECK-PLANAR-COMPONENT-REQUIRED", stage="checks.planar_tracking", message="component_id is required when checking a MotionResult."),))
+        trajectory = next((item for item in motion_result.trajectories if item.component_id == component_id and item.connector_id == connector_id), None)
+    times = tuple(getattr(trajectory, "times_s", ())); poses = tuple(getattr(trajectory, "poses", ()))
+    if not times or not poses or not targets:
+        return _report(check_id=check_id, check_type="planar_tracking", issues=(_issue(code="KINCHECK-CHECK-PLANAR-DATA-MISSING", stage="checks.planar_tracking", message="Planar trajectory and target samples are required."),))
+    def tv(t):
+        return min(targets, key=lambda x: abs(x.time_s-t))
+    errors=[]
+    for t,p in zip(times, poses):
+        q=tv(t); x,y=p.position_m[:2]; yaw=_yaw(p.orientation_xyzw)
+        if target_trajectory is not None:
+            q_pose = target_trajectory.at(time_s=t)
+            qx,qy,qyaw=q_pose.position_m[0],q_pose.position_m[1],_yaw(q_pose.orientation_xyzw)
+        else:
+            q_pose = q.pose if hasattr(q, "pose") else q
+            qx,qy,qyaw=(q.x_m,q.y_m,q.yaw_rad) if hasattr(q,"x_m") else (q_pose.position_m[0],q_pose.position_m[1],_yaw(q_pose.orientation_xyzw))
+        pe=math.hypot(x-qx, y-qy); ye=abs((yaw-qyaw+math.pi)%(2*math.pi)-math.pi); errors.append((pe,ye))
+        if pe>position_tolerance_m or ye>yaw_tolerance_rad: issues.append(_issue(code="KINCHECK-CHECK-PLANAR-TRACKING-FAILED", stage="checks.planar_tracking", message="Planar translation or heading error exceeds tolerance.", object_ids=(getattr(trajectory,"component_id",""),), failure_time_s=t, evidence=(Evidence(key="position_error_m",actual=pe,expected=f"<= {position_tolerance_m}",unit="m"),Evidence(key="yaw_error_rad",actual=ye,expected=f"<= {yaw_tolerance_rad}",unit="rad"))))
+    return _report(check_id=check_id, check_type="planar_tracking", evidence=(Evidence(key="maximum_translation_error_m",actual=max(x[0] for x in errors),unit="m"), Evidence(key="maximum_yaw_error_rad",actual=max(x[1] for x in errors),unit="rad")), issues=issues)
+
+def check_pose_trajectory(*, motion_result: MotionResult, target: Any, position_tolerance_m: float | None = None, orientation_tolerance_rad: float | None = None, check_id: str = "pose_trajectory") -> CheckReport:
+    """Check a recorded component/connector trajectory against a PoseTrajectory."""
+    from .motion_contracts import PoseTrajectory
+    issues = list(_motion_result_issues(motion_result))
+    if not isinstance(target, PoseTrajectory):
+        issues.append(_issue(code="KINCHECK-CHECK-POSE-TRAJECTORY-TARGET-INVALID", stage="checks.pose_trajectory", message="target must be a PoseTrajectory."))
+        return _report(check_id=check_id, check_type="pose_trajectory", issues=issues)
+    trajectory = next((item for item in motion_result.trajectories if item.component_id == target.target.component_id and item.connector_id == target.target.connector_id), None)
+    if trajectory is None:
+        issues.append(_issue(code="KINCHECK-CHECK-POSE-TRAJECTORY-MISSING", stage="checks.pose_trajectory", message="The target trajectory was not recorded.", object_ids=(target.target.component_id, target.target.connector_id or "component")))
+        return _report(check_id=check_id, check_type="pose_trajectory", issues=issues)
+    position_tolerance_m = target.position_tolerance_m if position_tolerance_m is None else float(position_tolerance_m)
+    orientation_tolerance_rad = target.orientation_tolerance_rad if orientation_tolerance_rad is None else float(orientation_tolerance_rad)
+    if position_tolerance_m < 0 or orientation_tolerance_rad < 0:
+        issues.append(_issue(code="KINCHECK-CHECK-POSE-TRAJECTORY-TOLERANCE-INVALID", stage="checks.pose_trajectory", message="Pose trajectory tolerances must be non-negative."))
+        return _report(check_id=check_id, check_type="pose_trajectory", issues=issues)
+    position_errors=[]; orientation_errors=[]
+    for time_s, actual in zip(trajectory.times_s, trajectory.poses):
+        expected = target.at(time_s=time_s)
+        position_error = math.dist(actual.position_m, expected.position_m)
+        orientation_error = orientation_error_rad(actual=actual, expected=expected)
+        position_errors.append(position_error); orientation_errors.append(orientation_error)
+        if position_error > position_tolerance_m or orientation_error > orientation_tolerance_rad:
+            issues.append(_issue(code="KINCHECK-CHECK-POSE-TRAJECTORY-MISMATCH", stage="checks.pose_trajectory", message="Recorded pose is outside the target trajectory tolerance.", object_ids=(target.target.component_id, target.target.connector_id or "component"), failure_time_s=time_s, evidence=(Evidence(key="position_error_m",actual=position_error,expected=f"<= {position_tolerance_m}",unit="m"), Evidence(key="orientation_error_rad",actual=orientation_error,expected=f"<= {orientation_tolerance_rad}",unit="rad"))))
+    return _report(check_id=check_id, check_type="pose_trajectory", issues=issues, evidence=(Evidence(key="maximum_position_error_m",actual=max(position_errors,default=math.inf),unit="m"), Evidence(key="maximum_orientation_error_rad",actual=max(orientation_errors,default=math.inf),unit="rad")))
+
+def check_start_stop_reversal(*, motion_result: MotionResult, joint_id: str, speed_threshold: float = 1e-6, check_id: str = "start_stop_reversal") -> CheckReport:
+    traj=motion_result.get_joint_trajectory(joint_id=joint_id); issues=list(_motion_result_issues(motion_result))
+    if traj is None: return _report(check_id=check_id, check_type="start_stop_reversal", issues=(*issues,_issue(code="KINCHECK-CHECK-JOINT-TRAJECTORY-MISSING",stage="checks.start_stop_reversal",message="Requested joint trajectory is missing.",object_ids=(joint_id,))))
+    if not math.isfinite(speed_threshold) or speed_threshold < 0:
+        return _report(check_id=check_id, check_type="start_stop_reversal", issues=(*issues,_issue(code="KINCHECK-CHECK-MOTION-EVENT-OPTIONS-INVALID",stage="checks.start_stop_reversal",message="speed_threshold must be finite and non-negative.",object_ids=(joint_id,))))
+    active=[(t,v) for t,v in zip(traj.times_s,traj.velocities) if abs(v)>speed_threshold]
+    starts=active[0][0] if active else None
+    stops=None
+    if starts is not None:
+        stops=next((t for t,v in zip(traj.times_s,traj.velocities) if t>starts and abs(v)<=speed_threshold),None)
+    reversals=[]
+    last_sign=0
+    for t, value in zip(traj.times_s, traj.velocities):
+        sign=1 if value>speed_threshold else -1 if value < -speed_threshold else 0
+        if sign and last_sign and sign != last_sign:
+            reversals.append(t)
+        if sign:
+            last_sign=sign
+    if starts is None: issues.append(_issue(code="KINCHECK-CHECK-START-NOT-DETECTED",stage="checks.start_stop_reversal",message="No start event exceeded the speed threshold.",object_ids=(joint_id,)))
+    if starts is not None and stops is None:
+        issues.append(_issue(code="KINCHECK-CHECK-STOP-NOT-DETECTED",stage="checks.start_stop_reversal",message="No sampled stop event was found after motion started.",object_ids=(joint_id,)))
+    return _report(check_id=check_id, check_type="start_stop_reversal", evidence=(Evidence(key="start_time_s",actual=starts,unit="s"),Evidence(key="stop_time_s",actual=stops,unit="s"),Evidence(key="reversal_times_s",actual=tuple(reversals),unit="s")), issues=issues, metadata={"reversal_count":len(reversals)})
+
+def check_periodic_motion(*, motion_result: MotionResult, joint_id: str, period_s: float, periods: int = 1, position_tolerance: float = 1e-6, velocity_tolerance: float = 1e-6, check_id: str = "periodic_motion") -> CheckReport:
+    if not math.isfinite(period_s) or period_s<=0 or periods<1 or position_tolerance<0 or velocity_tolerance<0: return _report(check_id=check_id,check_type="periodic_motion",issues=(_issue(code="KINCHECK-CHECK-PERIOD-INVALID",stage="checks.periodic_motion",message="period_s and periods must be positive; tolerances must be non-negative."),))
+    tr=motion_result.get_joint_trajectory(joint_id=joint_id); issues=list(_motion_result_issues(motion_result))
+    if tr is None: return _report(check_id=check_id,check_type="periodic_motion",issues=(*issues,_issue(code="KINCHECK-CHECK-JOINT-TRAJECTORY-MISSING",stage="checks.periodic_motion",message="Requested joint trajectory is missing.",object_ids=(joint_id,))))
+    shift=period_s*periods
+    if tr.times_s[-1]-tr.times_s[0] < shift:
+        issues.append(_issue(code="KINCHECK-CHECK-PERIODIC-TIME-WINDOW-TOO-SHORT",stage="checks.periodic_motion",message="The MotionResult does not contain the requested number of periods.",object_ids=(joint_id,),evidence=(Evidence(key="duration_s",actual=tr.times_s[-1]-tr.times_s[0],expected=f">= {shift}",unit="s"),)))
+        return _report(check_id=check_id,check_type="periodic_motion",issues=issues)
+    def interpolate(values, time_s):
+        for left,right,left_value,right_value in zip(tr.times_s,tr.times_s[1:],values,values[1:]):
+            if left <= time_s <= right:
+                fraction=(time_s-left)/(right-left)
+                return left_value+fraction*(right_value-left_value)
+        return values[-1]
+    pairs=[]
+    for i,t in enumerate(tr.times_s):
+        target=t+shift
+        if target<=tr.times_s[-1]+1e-12:
+            pairs.append((t,abs(tr.positions[i]-interpolate(tr.positions,target)),abs(tr.velocities[i]-interpolate(tr.velocities,target))))
+    if not pairs: issues.append(_issue(code="KINCHECK-CHECK-PERIODIC-SAMPLES-MISSING",stage="checks.periodic_motion",message="No complete period pairs are available.",object_ids=(joint_id,)))
+    maxp=max((x[1] for x in pairs),default=float("inf")); maxv=max((x[2] for x in pairs),default=float("inf"))
+    if maxp>position_tolerance or maxv>velocity_tolerance: issues.append(_issue(code="KINCHECK-CHECK-PERIODIC-DRIFT-EXCEEDED",stage="checks.periodic_motion",message="Periodic state drift exceeds tolerance.",object_ids=(joint_id,),evidence=(Evidence(key="maximum_position_drift",actual=maxp,expected=f"<= {position_tolerance}"),Evidence(key="maximum_velocity_drift",actual=maxv,expected=f"<= {velocity_tolerance}"))))
+    return _report(check_id=check_id,check_type="periodic_motion",evidence=(Evidence(key="period_pair_count",actual=len(pairs)),Evidence(key="maximum_position_drift",actual=maxp),Evidence(key="maximum_velocity_drift",actual=maxv)),issues=issues)
+
+def check_synchronization(*, motion_result: MotionResult, joint_ids: Sequence[str], target: Any, check_id: str = "synchronization") -> CheckReport:
+    from .motion_contracts import CoordinatedMotionProfile
+    issues=list(_motion_result_issues(motion_result)); arrivals=[]; errors=[]
+    if not isinstance(target, CoordinatedMotionProfile) or set(joint_ids) != set(target.axes):
+        return _report(check_id=check_id,check_type="synchronization",issues=(*issues,_issue(code="KINCHECK-CHECK-SYNCHRONIZATION-TARGET-INVALID",stage="checks.synchronization",message="target must be a CoordinatedMotionProfile whose axes match joint_ids.",object_ids=tuple(joint_ids))))
+    for jid in joint_ids:
+        tr=motion_result.get_joint_trajectory(joint_id=jid)
+        if tr is None: issues.append(_issue(code="KINCHECK-CHECK-SYNCHRONIZATION-JOINT-MISSING",stage="checks.synchronization",message="A requested synchronization joint is missing.",object_ids=(jid,))); continue
+        for time_s, expected in zip(target.times_s,target.axes[jid]):
+            if time_s < tr.times_s[0] or time_s > tr.times_s[-1]:
+                issues.append(_issue(code="KINCHECK-CHECK-SYNCHRONIZATION-TIME-MISSING",stage="checks.synchronization",message="A coordinated target time is outside a joint trajectory.",object_ids=(jid,),failure_time_s=time_s))
+                continue
+            actual = next(
+                (
+                    left_value + (time_s-left_time)/(right_time-left_time)*(right_value-left_value)
+                    for left_time,right_time,left_value,right_value in zip(
+                        tr.times_s,tr.times_s[1:],tr.positions,tr.positions[1:]
+                    ) if left_time <= time_s <= right_time
+                ),
+                tr.positions[-1],
+            )
+            error=abs(actual-expected); errors.append(error)
+            if error>target.position_tolerance:
+                issues.append(_issue(code="KINCHECK-CHECK-SYNCHRONIZATION-POSITION-FAILED",stage="checks.synchronization",message="A coordinated position exceeds tolerance.",object_ids=(jid,),failure_time_s=time_s,evidence=(Evidence(key="position_error",actual=error,expected=f"<= {target.position_tolerance}"),)))
+        arrivals.append((jid,target.times_s[-1]))
+    return _report(check_id=check_id,check_type="synchronization",evidence=(Evidence(key="maximum_position_error",actual=max(errors,default=math.inf)),Evidence(key="arrival_times_s",actual=dict(arrivals),unit="s")),issues=issues,metadata={"target":target.to_dict()})
+
+
 __all__ = [
     "CheckReport",
     "CheckSpec",
@@ -1902,6 +2177,8 @@ __all__ = [
     "AssemblyIntegrityReport",
     "ContainmentRelation",
     "IntegrityRelationResult",
+    "check_path_tracking", "check_planar_tracking", "check_start_stop_reversal", "check_periodic_motion", "check_synchronization", "check_continuous_interference",
+    "check_pose_trajectory",
     "Direction",
     "RatioMeasurement",
     "check_constraint_equation_residuals",

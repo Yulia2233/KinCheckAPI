@@ -552,6 +552,7 @@ class MotionResult(AgentReadableResult):
     metadata: Mapping[str, Any] = field(default_factory=dict)
     integration_samples: tuple[IntegrationSample, ...] = ()
     driver_trajectories: tuple[DriverTrajectory, ...] = ()
+    traceback: str | None = None
 
     @property
     def passed(self) -> bool:
@@ -639,6 +640,7 @@ class MotionResult(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "scenario_id": self.scenario_id,
             "assembly_id": self.assembly_id,
             "status": self.status,
@@ -1164,6 +1166,22 @@ def write_motion_result(*, motion_result: MotionResult, path: str | Path) -> Non
     )
 
 
+def record_verification_reports(*, motion_result: MotionResult, reports: Sequence[Any]) -> MotionResult:
+    """Attach immutable check evidence without changing solver completion status."""
+    from dataclasses import replace
+
+    payload = tuple(
+        item.to_dict() if hasattr(item, "to_dict") else _json_value(item)
+        for item in reports
+    )
+    metadata = dict(motion_result.metadata)
+    metadata["verification_reports"] = payload
+    metadata["verification_passed"] = bool(payload) and all(
+        bool(item.get("passed", False)) for item in payload if isinstance(item, Mapping)
+    )
+    return replace(motion_result, metadata=metadata)
+
+
 __all__ = [
     "ComponentState",
     "ConnectorState",
@@ -1197,4 +1215,5 @@ __all__ = [
     "read_trajectory",
     "summarize_motion",
     "write_motion_result",
+    "record_verification_reports",
 ]

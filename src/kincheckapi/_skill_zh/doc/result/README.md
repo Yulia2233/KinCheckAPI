@@ -38,6 +38,7 @@
 | [`read_trajectory`](read_trajectory.md) | 函数 | 返回结果中已经记录的组件或 connector 完整轨迹。 |
 | [`summarize_motion`](summarize_motion.md) | 函数 | 汇总状态、时长、样本数、joint extrema、最大残差和事件计数。 |
 | [`write_motion_result`](write_motion_result.md) | 函数 | 将完整公开运动结果写为确定性的 JSON。 |
+| [`record_verification_reports`](record_verification_reports.md) | 函数 | 执行公开操作 `record_verification_reports`。 |
 
 ## 模块规则
 

@@ -35,6 +35,10 @@ MODULES: dict[str, dict[str, Any]] = {
         "title": "Scenario 与驱动",
         "summary": "定义初态、驱动、运行时间、采样和结果记录范围。",
     },
+    "motion_contracts": {
+        "title": "运动工况契约",
+        "summary": "定义路径、位姿、周期和多轴协调目标；不伪造未实现的 6D 求解能力。",
+    },
     "kinematics": {
         "title": "运动学求解与分析",
         "summary": "执行位置和连续运动求解，并分析自由度、Jacobian、奇异性和工作空间。",
@@ -42,7 +46,7 @@ MODULES: dict[str, dict[str, Any]] = {
     "checks": {
         "title": "验收检查",
         "summary": "把用户命题转换成结构化、可复核的运动学检查。",
-        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "DriverTrackingReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_driver_tracking", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_trajectory", "check_transmission_ratio", "run_checks"),
+        "exports": ("CheckReport", "CheckSpec", "CheckSuiteReport", "DriverTrackingReport", "CheckType", "Direction", "RatioMeasurement", "AssemblyIntegrityReport", "ContainmentRelation", "IntegrityRelationResult", "check_assembly_integrity", "check_constraint_equation_residuals", "check_constraint_residuals", "check_driver_tracking", "check_joint_limits", "check_interference", "check_minimum_clearance", "check_motion_envelope", "check_pose_target", "check_pose_trajectory", "check_path_tracking", "check_planar_tracking", "check_start_stop_reversal", "check_periodic_motion", "check_synchronization", "check_continuous_interference", "check_trajectory", "check_transmission_ratio", "run_checks"),
     },
     "clearance": {
         "title": "几何安全",
@@ -109,6 +113,11 @@ MODULES: dict[str, dict[str, Any]] = {
 
 
 MODULE_RULES = {
+    "motion_contracts": (
+        "Targets are immutable records; time values use seconds and positions use metres.",
+        "PoseTrajectory is an acceptance target; Cartesian driving remains a capability boundary until a 6D backend exists.",
+        "Path and periodic contracts require explicit finite ranges and never imply continuous-time guarantees.",
+    ),
     "cadir": (
         "XML 根 `model` 必须非空并等于 mapping 的 `root_definition_id`。",
         "XML、mapping 和 mesh 必须来自同一导出批次；资产解析不得越过 `asset_root`。",

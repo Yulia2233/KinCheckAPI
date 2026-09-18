@@ -5,7 +5,7 @@
 ```python
 class MotionPackageError(KinCheckError): ...
 
-MotionPackageError(*, code: 'str', message: 'str | None' = None, report: 'DiagnosticReport | ValidationResult | None' = None, object_ids: 'Sequence[str]' = (), source_paths: 'Sequence[str]' = (), suggested_actions: 'Sequence[str]' = (), details: 'Mapping[str, Any] | None' = None, operation: 'str | None' = None, status: 'str | None' = None) -> 'None'
+MotionPackageError(*, code: 'str', message: 'str | None' = None, report: 'DiagnosticReport | ValidationResult | None' = None, object_ids: 'Sequence[str]' = (), source_paths: 'Sequence[str]' = (), suggested_actions: 'Sequence[str]' = (), details: 'Mapping[str, Any] | None' = None, operation: 'str | None' = None, status: 'str | None' = None, stage: 'str | None' = None) -> 'None'
 ```
 
 源码：`src/kincheckapi/errors.py`。
@@ -33,6 +33,7 @@ from kincheckapi.errors import MotionPackageError
 | `details` | `Optional[Mapping[str, Any]]` | `None` | `details` 的公开输入或数据字段。 |
 | `operation` | `str | None` | `None` | `operation` 的公开输入或数据字段。 |
 | `status` | `str | None` | `None` | 结构化状态；按对应结果类型允许的稳定值解释。 |
+| `stage` | `str | None` | `None` | `stage` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

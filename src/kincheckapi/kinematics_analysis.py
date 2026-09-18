@@ -317,6 +317,7 @@ class WorkspaceResult(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "passed": self.passed,
             "operation": "compute_workspace",
             "status": "passed" if self.passed else "failed",
@@ -483,7 +484,7 @@ def _pose_from_position_result(*, assembly: AssemblyModel, result: Any, target: 
 def check_reachability(*, assembly: AssemblyModel, target: Any,
                        options: ReachabilityOptions | Mapping[str, Any] | None = None,
                        joint_positions: Mapping[str, float] | None = None,
-                       **kwargs: Any) -> Any:
+                       solver_options: Any = None) -> Any:
     """Try one target pose and retain a machine-readable reason on failure."""
 
     from .kinematics import ReachabilityResult, solve_position
@@ -530,7 +531,6 @@ def check_reachability(*, assembly: AssemblyModel, target: Any,
     positions = dict(opts.initial_joint_positions)
     positions.update(joint_positions or {})
     try:
-        solver_options = kwargs.pop("solver_options", None)
         if solver_options is None:
             solver_options = PositionSolveOptions(
                 position_tolerance_m=opts.position_tolerance_m,
@@ -541,7 +541,6 @@ def check_reachability(*, assembly: AssemblyModel, target: Any,
             joint_positions=positions,
             pose_targets=(target_value,),
             options=solver_options,
-            **kwargs,
         )
         pose = _pose_from_position_result(assembly=assembly, result=result, target=TargetReference(component_id=getattr(target_value, "component_id"), connector_id=getattr(target_value, "connector_id", None)))
         passed = bool(getattr(result, "passed", False)) and pose is not None
@@ -573,7 +572,7 @@ def _target_reference(value: Any) -> TargetReference:
 
 
 def compute_workspace(*, assembly: AssemblyModel, target: Any,
-                      options: WorkspaceOptions | Mapping[str, Any], **kwargs: Any) -> WorkspaceResult:
+                      options: WorkspaceOptions | Mapping[str, Any], solver_options: Any = None) -> WorkspaceResult:
     """Enumerate a finite joint grid; every attempted point is retained."""
 
     from .kinematics import solve_position
@@ -666,7 +665,6 @@ def compute_workspace(*, assembly: AssemblyModel, target: Any,
         )
     samples: list[WorkspaceSample] = []
     reachable: list[Pose] = []
-    solver_options = kwargs.pop("solver_options", None)
     for combination in combinations:
         positions = dict(zip(ids, combination))
         try:
@@ -677,7 +675,7 @@ def compute_workspace(*, assembly: AssemblyModel, target: Any,
                     position_tolerance_m=opts.position_tolerance_m,
                     orientation_tolerance_rad=opts.orientation_tolerance_rad,
                 )
-            result = solve_position(assembly=assembly, joint_positions=positions, options=current_solver_options, **kwargs)
+                result = solve_position(assembly=assembly, joint_positions=positions, options=current_solver_options)
             pose = _pose_from_position_result(assembly=assembly, result=result, target=target_ref)
             ok = bool(getattr(result, "passed", False)) and pose is not None
             sample_issues = list(getattr(result, "issues", ()))

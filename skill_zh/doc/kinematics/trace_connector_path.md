@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-trace_connector_path(**kwargs: Any) -> Any
+trace_connector_path(*, motion_result: Any, component_id: str, connector_id: str) -> Any
 ```
 
 源码：`src/kincheckapi/kinematics.py`。
@@ -22,7 +22,9 @@ from kincheckapi.kinematics import trace_connector_path
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `kwargs` | `Any` | 必填 | `kwargs` 的公开输入或数据字段。 |
+| `motion_result` | `Any` | 必填 | 待查询或检查的公开 `MotionResult`。 |
+| `component_id` | `str` | 必填 | 稳定且可解析的 component ID。 |
+| `connector_id` | `str` | 必填 | 稳定且可解析的 connector ID。 |
 
 ## 返回与失败
 

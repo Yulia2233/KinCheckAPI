@@ -25,6 +25,13 @@ Turn user claims into structured, reviewable kinematic acceptance checks.
 | [`check_minimum_clearance`](check_minimum_clearance.md) | Function | Run the strict signed minimum-clearance check as a CheckReport. |
 | [`check_motion_envelope`](check_motion_envelope.md) | Function | Compute a mesh motion envelope and expose it through the check API. |
 | [`check_pose_target`](check_pose_target.md) | Function | Check recorded component/Connector poses against explicit targets. |
+| [`check_pose_trajectory`](check_pose_trajectory.md) | Function | Check a recorded component/connector trajectory against a PoseTrajectory. |
+| [`check_path_tracking`](check_path_tracking.md) | Function | Check sampled component/connector positions against a polyline path. |
+| [`check_planar_tracking`](check_planar_tracking.md) | Function | Check X/Y/Yaw samples. Target may be PlanarPose points or PoseTrajectory. |
+| [`check_start_stop_reversal`](check_start_stop_reversal.md) | Function | Execute a structured check: `check_start_stop_reversal`. |
+| [`check_periodic_motion`](check_periodic_motion.md) | Function | Execute a structured check: `check_periodic_motion`. |
+| [`check_synchronization`](check_synchronization.md) | Function | Execute a structured check: `check_synchronization`. |
+| [`check_continuous_interference`](check_continuous_interference.md) | Function | Explicit capability boundary for continuous time-of-impact checking. |
 | [`check_trajectory`](check_trajectory.md) | Function | Check sampled trajectory ranges without modifying the result. |
 | [`check_transmission_ratio`](check_transmission_ratio.md) | Function | Compare two explicit joint curves after deterministic time alignment. |
 | [`run_checks`](run_checks.md) | Function | Execute explicit acceptance claims in `CheckSpec` order and return a `CheckSuiteReport`. |

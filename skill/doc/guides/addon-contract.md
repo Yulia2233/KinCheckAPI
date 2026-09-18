@@ -43,9 +43,9 @@ For a clean repository use `sca addon add ./repo`. For a development checkout
 containing virtual environments, first stage only distributable files:
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.4
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.5
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.4
+sca addon add ./dist/sca-kincheckapi-0.5.5
 sca addon list
 ```
 

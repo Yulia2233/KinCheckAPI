@@ -24,6 +24,7 @@ class MotionResult:
     metadata: Mapping[str, Any]
     integration_samples: tuple[IntegrationSample, ...]
     driver_trajectories: tuple[DriverTrajectory, ...]
+    traceback: str | None
 ```
 
 Source: `src/kincheckapi/result.py`.
@@ -61,6 +62,7 @@ Stable output of any KinCheckAPI motion backend.
 | `metadata` | `Mapping[str, Any]` | default_factory | Additional read-only structured metadata. |
 | `integration_samples` | `tuple[IntegrationSample, ...]` | `()` | Public input or data field `integration_samples`. |
 | `driver_trajectories` | `tuple[DriverTrajectory, ...]` | `()` | Public input or data field `driver_trajectories`. |
+| `traceback` | `str | None` | `None` | Public input or data field `traceback`. |
 
 ## Returns and Failures
 

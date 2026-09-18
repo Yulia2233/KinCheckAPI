@@ -8,6 +8,7 @@ class KinematicCapabilities:
     joint_types: Mapping[str, bool]
     driver_modes: tuple[str, ...]
     output_channels: tuple[str, ...]
+    analysis_capabilities: Mapping[str, bool]
 ```
 
 源码：`src/kincheckapi/kinematics.py`。
@@ -29,6 +30,7 @@ from kincheckapi.kinematics import KinematicCapabilities
 | `joint_types` | `Mapping[str, bool]` | 必填 | `joint_types` 的公开输入或数据字段。 |
 | `driver_modes` | `tuple[str, ...]` | `('position', 'speed')` | `driver_modes` 的公开输入或数据字段。 |
 | `output_channels` | `tuple[str, ...]` | `('joint', 'component', 'connector', 'residuals')` | `output_channels` 的公开输入或数据字段。 |
+| `analysis_capabilities` | `Mapping[str, bool]` | default_factory | `analysis_capabilities` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

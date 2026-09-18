@@ -24,6 +24,10 @@ Define initial state, drivers, run duration, sampling, and result recording scop
 | [`add_joint_speed_driver`](add_joint_speed_driver.md) | Function | Add data and return the updated immutable object: `add_joint_speed_driver`. |
 | [`add_joint_speed_profile`](add_joint_speed_profile.md) | Function | Add data and return the updated immutable object: `add_joint_speed_profile`. |
 | [`add_joint_motion_segments`](add_joint_motion_segments.md) | Function | Add an ordered piecewise position or speed driver for one joint. |
+| [`add_periodic_joint_driver`](add_periodic_joint_driver.md) | Function | Sample a periodic scalar target into an explicit position profile. |
+| [`add_coordinated_motion_profile`](add_coordinated_motion_profile.md) | Function | Convert one shared-time scalar target into one position driver per axis. |
+| [`add_pose_trajectory_target`](add_pose_trajectory_target.md) | Function | Record a Cartesian acceptance target; solving it requires a supported driver. |
+| [`add_component_pose_driver`](add_component_pose_driver.md) | Function | Explicitly reject Cartesian driving until a 6D backend is available. |
 | [`create_scenario`](create_scenario.md) | Function | Create an empty scenario referencing an immutable assembly model. |
 | [`disable_constraint`](disable_constraint.md) | Function | Disable a constraint by stable ID in a Scenario; use only for explicit diagnostic or comparison conditions. |
 | [`replace_joint_driver`](replace_joint_driver.md) | Function | Execute the public operation `replace_joint_driver`. |

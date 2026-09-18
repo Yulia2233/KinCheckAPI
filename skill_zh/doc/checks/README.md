@@ -25,6 +25,13 @@
 | [`check_minimum_clearance`](check_minimum_clearance.md) | 函数 | 执行结构化检查：`check_minimum_clearance`。 |
 | [`check_motion_envelope`](check_motion_envelope.md) | 函数 | 执行结构化检查：`check_motion_envelope`。 |
 | [`check_pose_target`](check_pose_target.md) | 函数 | 执行结构化检查：`check_pose_target`。 |
+| [`check_pose_trajectory`](check_pose_trajectory.md) | 函数 | 执行结构化检查：`check_pose_trajectory`。 |
+| [`check_path_tracking`](check_path_tracking.md) | 函数 | 执行结构化检查：`check_path_tracking`。 |
+| [`check_planar_tracking`](check_planar_tracking.md) | 函数 | 执行结构化检查：`check_planar_tracking`。 |
+| [`check_start_stop_reversal`](check_start_stop_reversal.md) | 函数 | 执行结构化检查：`check_start_stop_reversal`。 |
+| [`check_periodic_motion`](check_periodic_motion.md) | 函数 | 执行结构化检查：`check_periodic_motion`。 |
+| [`check_synchronization`](check_synchronization.md) | 函数 | 执行结构化检查：`check_synchronization`。 |
+| [`check_continuous_interference`](check_continuous_interference.md) | 函数 | 执行结构化检查：`check_continuous_interference`。 |
 | [`check_trajectory`](check_trajectory.md) | 函数 | 执行结构化检查：`check_trajectory`。 |
 | [`check_transmission_ratio`](check_transmission_ratio.md) | 函数 | 执行结构化检查：`check_transmission_ratio`。 |
 | [`run_checks`](run_checks.md) | 函数 | 按 `CheckSpec` 顺序执行显式验收命题，返回 `CheckSuiteReport`。 |

@@ -165,6 +165,7 @@ class ClearanceReport(AgentReadableResult):
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            **self.diagnostic_trace(),
             "operation": self.operation, "passed": self.passed, "status": self.status,
             "events": [item.to_dict() for item in self.events], "measurements": [item.to_dict() for item in self.measurements],
             "envelopes": [item.to_dict() for item in self.envelopes], "checked_component_pair_count": self.checked_component_pair_count,

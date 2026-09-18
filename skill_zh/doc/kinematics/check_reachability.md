@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-check_reachability(**kwargs: Any) -> ReachabilityResult
+check_reachability(*, assembly: AssemblyModel, target: Any, options: Any = None, joint_positions: Optional[Mapping[str, float]] = None, solver_options: Any = None) -> ReachabilityResult
 ```
 
 源码：`src/kincheckapi/kinematics.py`。
@@ -22,7 +22,11 @@ from kincheckapi.kinematics import check_reachability
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `kwargs` | `Any` | 必填 | `kwargs` 的公开输入或数据字段。 |
+| `assembly` | `AssemblyModel` | 必填 | 待构造、校验、求解或导出的 `AssemblyModel`。 |
+| `target` | `Any` | 必填 | `target` 的公开输入或数据字段。 |
+| `options` | `Any` | `None` | 对应求解或分析的公开配置对象；记录实际阈值。 |
+| `joint_positions` | `Optional[Mapping[str, float]]` | `None` | 按稳定 joint ID 给出的关节位置；转动用 rad，平移用 m。 |
+| `solver_options` | `Any` | `None` | `solver_options` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

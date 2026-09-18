@@ -35,9 +35,9 @@ kincheck doctor --addon --format json
 带虚拟环境的开发仓库先生成只包含可分发文件的目录：
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.4
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.5
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.4
+sca addon add ./dist/sca-kincheckapi-0.5.5
 sca addon list
 ```
 

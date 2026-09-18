@@ -24,6 +24,10 @@
 | [`add_joint_speed_driver`](add_joint_speed_driver.md) | 函数 | 添加并返回更新后的不可变对象：`add_joint_speed_driver`。 |
 | [`add_joint_speed_profile`](add_joint_speed_profile.md) | 函数 | 添加并返回更新后的不可变对象：`add_joint_speed_profile`。 |
 | [`add_joint_motion_segments`](add_joint_motion_segments.md) | 函数 | 添加并返回更新后的不可变对象：`add_joint_motion_segments`。 |
+| [`add_periodic_joint_driver`](add_periodic_joint_driver.md) | 函数 | 添加并返回更新后的不可变对象：`add_periodic_joint_driver`。 |
+| [`add_coordinated_motion_profile`](add_coordinated_motion_profile.md) | 函数 | 添加并返回更新后的不可变对象：`add_coordinated_motion_profile`。 |
+| [`add_pose_trajectory_target`](add_pose_trajectory_target.md) | 函数 | 添加并返回更新后的不可变对象：`add_pose_trajectory_target`。 |
+| [`add_component_pose_driver`](add_component_pose_driver.md) | 函数 | 添加并返回更新后的不可变对象：`add_component_pose_driver`。 |
 | [`create_scenario`](create_scenario.md) | 函数 | 创建公开对象：`create_scenario`。 |
 | [`disable_constraint`](disable_constraint.md) | 函数 | 在 Scenario 中按稳定 ID 禁用约束；只用于明确的诊断或对照工况。 |
 | [`replace_joint_driver`](replace_joint_driver.md) | 函数 | 执行公开操作 `replace_joint_driver`。 |

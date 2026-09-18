@@ -3,7 +3,7 @@ name: sca-kincheckapi
 description: Verify CAD mechanism topology, motion, transmission, poses, limits and geometric safety with KinCheckAPI. Consume a finished .scadpkg assembly's definitions, occurrence graph, geometry and claim-required interface.* tags; produce an independent Python verifier and structured acceptance results. Use for verification-first design iteration or checking an existing package. Existing MJCF model-directory verifiers remain supported.
 ---
 
-# KinCheckAPI Verification Program Skill (v0.5.4)
+# KinCheckAPI Verification Program Skill (v0.5.5)
 
 Turn the user's mechanism requirements into an executable acceptance program, then build and iterate the model against that program. Always follow this order:
 

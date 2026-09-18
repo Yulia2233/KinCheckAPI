@@ -7,7 +7,7 @@ Solve positions and continuous motion and analyze degrees of freedom, Jacobians,
 | Symbol | Type | Purpose |
 | --- | --- | --- |
 | [`KinematicSolveOptions`](KinematicSolveOptions.md) | Type | Deterministic controls for backend integration and constraint solving. |
-| [`KinematicCapabilities`](KinematicCapabilities.md) | Type | KinematicCapabilities(*, joint_types: 'Mapping[str, bool]', driver_modes: 'tuple[str, ...]' = ('position', 'speed'), output_channels: 'tuple[str, ...]' = ('joint', 'component', 'connector', 'residuals')) |
+| [`KinematicCapabilities`](KinematicCapabilities.md) | Type | KinematicCapabilities(*, joint_types: 'Mapping[str, bool]', driver_modes: 'tuple[str, ...]' = ('position', 'speed'), output_channels: 'tuple[str, ...]' = ('joint', 'component', 'connector', 'residuals'), analysis_capabilities: 'Mapping[str, bool]' = <factory>) |
 | [`ClosureReport`](ClosureReport.md) | Type | ClosureReport(*, passed: 'bool', residuals: 'tuple[Any, ...]' = (), issues: 'tuple[SimIssue, ...]' = ()) |
 | [`ConnectorPathResult`](ConnectorPathResult.md) | Type | Path statistics read from one recorded Connector trajectory. |
 | [`DofReport`](DofReport.md) | Type | DofReport(*, total_dofs: 'int', joint_dofs: 'Mapping[str, int]', component_dofs: 'Mapping[str, int]', issues: 'tuple[SimIssue, ...]' = ()) |
@@ -41,6 +41,7 @@ Solve positions and continuous motion and analyze degrees of freedom, Jacobians,
 | [`validate_closures`](validate_closures.md) | Function | Validate authored or solved Closure residuals. Calling the compatibility shim without an assembly or result continues to return ``None``. With an assembly, the authored component poses are checked before a solver is started; with a MotionResult, the recorded samples and declared Closure tolerances are checked. |
 | [`verify_transmission_ratio`](verify_transmission_ratio.md) | Function | Deprecated compatibility entry point; new code must use `kincheckapi.checks.check_transmission_ratio()`. |
 | [`write_motion_result`](write_motion_result.md) | Function | Write a complete public motion result as deterministic JSON. |
+| [`solve_inverse_kinematics`](solve_inverse_kinematics.md) | Function | Explicit capability boundary for the not-yet-implemented general IK solver. |
 
 ## Module Rules
 

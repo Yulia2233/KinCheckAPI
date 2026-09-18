@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-trace_connector_path(**kwargs: Any) -> Any
+trace_connector_path(*, motion_result: Any, component_id: str, connector_id: str) -> Any
 ```
 
 Source: `src/kincheckapi/kinematics.py`.
@@ -22,7 +22,9 @@ Compute times, path length, endpoints, and world-coordinate bounds from a record
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `kwargs` | `Any` | required | Public input or data field `kwargs`. |
+| `motion_result` | `Any` | required | The public `MotionResult` to query or check. |
+| `component_id` | `str` | required | Stable, resolvable component ID. |
+| `connector_id` | `str` | required | Stable, resolvable connector ID. |
 
 ## Returns and Failures
 
