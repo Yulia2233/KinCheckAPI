@@ -16,7 +16,7 @@ from kincheckapi.checks import check_continuous_interference
 
 ## Purpose
 
-Explicit capability boundary for continuous time-of-impact checking.
+Check explicit component pairs between recorded trajectory samples.
 
 ## Parameters and Fields
 

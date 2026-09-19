@@ -11,6 +11,7 @@
 | [`MinimumClearance`](MinimumClearance.md) | 类型 | 表示 `MinimumClearance` 的公开、可序列化数据结构。 |
 | [`MotionEnvelope`](MotionEnvelope.md) | 类型 | 表示 `MotionEnvelope` 的公开、可序列化数据结构。 |
 | [`SamplingScope`](SamplingScope.md) | 类型别名 | 定义 `SamplingScope` 使用的公开类型约定。 |
+| [`check_continuous_interference`](check_continuous_interference.md) | 函数 | 在声明的分段刚体位姿插值下，跨相邻轨迹样本保守地检查显式组件对，并返回 TOI 区间证据。 |
 | [`check_envelope_interference`](check_envelope_interference.md) | 函数 | 比较两个运动包络报告的世界轴对齐包围盒是否重叠。它不会执行三角网格干涉，也不会确认穿透。 |
 | [`check_interference`](check_interference.md) | 函数 | 检查离散运动样本中的指定组件对是否发生网格穿透。 |
 | [`create_motion_envelope`](create_motion_envelope.md) | 函数 | 为明确组件生成离散运动包络，供后续空间干涉分析。 |
@@ -20,5 +21,5 @@
 ## 模块规则
 
 - 显式给出组件对或组件范围、`asset_root`、时间窗和容差。
-- 结果来自三角网格和离散时间采样，不是连续时间无碰撞证明。
+- 普通干涉、最小间隙和包络结果来自离散采样；跨样本连续证明必须显式调用 `check_continuous_interference()`。
 - 空 pair、空样本、缺失 mesh 或 partial 运动结果不得解释为安全通过。

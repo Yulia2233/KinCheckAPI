@@ -25,7 +25,7 @@
 | 单自由度运动 | A | 一个标量 Joint 的位置、速度、加速度、限位和路径。 | 初始关节值 → 一个 driver/profile → solve_motion → check_joint_limits、check_driver_tracking、check_trajectory。 | 需先确认拓扑确实只有一个有效 DOF。 |
 | 多自由度协调运动 | B/C | 可同时声明多个 Joint driver；每个关节可分别跟踪，传动约束可检查。 | 多次 add_joint_position_driver/add_joint_speed_profile → solve_motion → 每个关节 check_driver_tracking + check_transmission_ratio。 | 没有多轴同步误差、统一插补器、末端协同规划或同时到达专用检查。 |
 | 正运动学 | A/B | 已知标量关节值可得到 Component/Connector 位姿。 | solve_position(assembly, joint_positions) → PositionResult.component_poses；动态场景读取 MotionResult。 | 对一般 6D Joint 不支持；没有 DH/齐次矩阵报告。 |
-| 逆运动学 | C | PoseTarget + solve_position 或 check_reachability 可对受支持拓扑尝试一个目标。 | PoseTarget → check_reachability 或 solve_position → 读取 reachable、position_result、residuals。 | 不是通用多解 IK：无冗余解集、连续轨迹规划、碰撞约束 IK 和优化目标；仅标量树 Joint。 |
+| 逆运动学 | B/C | 现有标量树关节支持有界数值 IK、有限多初始值、候选解筛选和结构化不可达/奇异诊断；6D 和连续轨迹仍不支持。 | `PoseTarget` + `IKOptions` + `solve_inverse_kinematics` → 读取 `IKSolutionSet` 的 solutions/selected_solution/attempts；静态可达性仍可用 `check_reachability`。 | 多初始值不是全局完备解枚举；无 6D Joint、碰撞约束 IK、时间最优 IK 和连续 PoseTrajectory 驱动。 |
 | 工作空间分析 | B | compute_workspace 对显式有限关节范围做确定性网格采样，并保留 reachability/residual/Jacobian。 | WorkspaceOptions(joint_ranges, samples_per_joint, max_samples) → compute_workspace。 | 不是连续工作空间边界证明；可能截断，姿态工作空间和障碍物约束需外部分析。 |
 | 奇异位形 | A/B | compute_jacobian 提供 rank、奇异值、condition number；find_singularities 对 MotionResult 每个采样分类。 | solve_motion → find_singularities；静态点用 compute_jacobian。 | 依赖有限差分和 target；没有动力学意义上的力矩能力或连续区间证明。 |
 | 启动工况 | B | 零速度初始状态加速度 ramp，可记录启动时间、速度和加速度。 | set_initial_joint_velocity(..., 0) → ramp MotionSegment/speed profile → solve_motion → check_driver_tracking + check_trajectory；启动时间脚本计算。 | 没有 startup API、稳态判据、峰值摘要或 jerk 指标。 |
@@ -221,6 +221,36 @@ trajectory、clearance、integrity 和 v0.5.4 contract 测试。结论针对受�
 ProfileBoundary.ERROR、未支持关节 capability failure、统一 diagnostic_trace、
 最后有效结果和可选原生 traceback 也已经接入。
 
-连续时间 TOI、Cartesian Pose driver、通用多解 IK 和 6D Joint 仍然是明确的
-capability failure。它们没有被包装成“检查通过”；调用方会得到稳定错误码、
+Cartesian Pose driver、6D Joint 和通用 6D/全局完备 IK 仍然是明确的 capability
+failure。标量树关节的有限数值 IK 已在 v0.5.6 实现，但多初始值不声称
+枚举全部解。未实现能力没有被包装成“检查通过”；调用方会得到稳定错误码、
 missing_capabilities、stage、object_ids、evidence 和修复建议。
+
+## v0.5.6 实现后的逆运动学状态
+
+`solve_inverse_kinematics()` 现在对支持范围内的静态 `PoseTarget` 执行有界数值求解。
+验证顺序是：先校验装配拓扑、目标引用、有效关节范围和搜索选项；再以用户初始值
+和确定性多初始值运行阻尼最小二乘迭代；最后重新回代检查目标位姿、闭环/传动残差、
+Jacobian 秩和关节限位。只有通过全部检查的候选才进入 `solutions`，其余状态保留在
+`attempts` 并标记 `singular`、`limit_hit`、`stalled` 或 `iteration_limit`。
+
+因此“逆运动学已解决”在本文件中仅表示标量树关节的有限数值 IK；spherical/free/
+planar/cylindrical、PoseTrajectory 连续驱动、碰撞约束和全局完备多解仍不属于当前
+覆盖范围。
+
+
+## v0.5.7 实现后的连续几何状态
+
+`check_continuous_interference()` 已实现跨相邻轨迹样本的保守连续检查。调用者必须
+显式给出 Component 对、完整 `MotionResult`、时间窗和位姿插值模型；默认使用位置
+线性插值与最短弧 quaternion SLERP。算法结合端点/中点 FCL 查询、相对线速度和角
+速度乘网格包围球半径得到保守距离下界，并按时间顺序递归细分；只有保守证明安全的前缀才能推进首次接触
+时间下界，未排除区间必须留在报告中。
+
+连续结果区分 `passed`、`failed`、`indeterminate`、`capability_failed` 和
+`validation_failed`。只有所有区间都有完整覆盖并取得大于安全间隙的证据才会通过；
+预算、时间轴、网格或后端不足时不会把离散采样包装成连续安全。事件保存对象、
+区间、接触时间上界、最近点、法向来源、相对速度、certainty、查询次数和细分次数，
+并可通过 `record_verification_reports()` 随 `.kincheck` round-trip。
+
+该能力仍限于记录的分段刚体运动，不覆盖变形体、摩擦、冲击、接触力或动力学碰撞。

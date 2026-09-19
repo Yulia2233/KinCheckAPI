@@ -1,0 +1,52 @@
+{
+  "assembly_integrity_passed": true,
+  "checks": [
+    {
+      "check_id": "constraint_residuals",
+      "passed": true
+    },
+    {
+      "check_id": "check_driver_tracking",
+      "passed": true
+    },
+    {
+      "check_id": "joint_limits",
+      "passed": true
+    },
+    {
+      "check_id": "trajectory",
+      "passed": true
+    },
+    {
+      "check_id": "interference",
+      "passed": true
+    },
+    {
+      "check_id": "minimum_clearance",
+      "passed": true
+    },
+    {
+      "check_id": "check_continuous_interference",
+      "passed": true
+    },
+    {
+      "check_id": "fixed_hardware_interference",
+      "passed": true
+    },
+    {
+      "check_id": "fixed_hardware_minimum_clearance",
+      "passed": true
+    },
+    {
+      "check_id": "physical_initial_interference",
+      "passed": true
+    }
+  ],
+  "continuous_group_pair_count": 6,
+  "detector_negative_control_passed": true,
+  "motion_status": "completed_with_warnings",
+  "passed": true,
+  "physical_component_count": 9,
+  "physical_pair_count": 36,
+  "sample_count": 201
+}

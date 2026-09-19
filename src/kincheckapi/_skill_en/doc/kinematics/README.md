@@ -41,7 +41,10 @@ Solve positions and continuous motion and analyze degrees of freedom, Jacobians,
 | [`validate_closures`](validate_closures.md) | Function | Validate authored or solved Closure residuals. Calling the compatibility shim without an assembly or result continues to return ``None``. With an assembly, the authored component poses are checked before a solver is started; with a MotionResult, the recorded samples and declared Closure tolerances are checked. |
 | [`verify_transmission_ratio`](verify_transmission_ratio.md) | Function | Deprecated compatibility entry point; new code must use `kincheckapi.checks.check_transmission_ratio()`. |
 | [`write_motion_result`](write_motion_result.md) | Function | Write a complete public motion result as deterministic JSON. |
-| [`solve_inverse_kinematics`](solve_inverse_kinematics.md) | Function | Explicit capability boundary for the not-yet-implemented general IK solver. |
+| [`solve_inverse_kinematics`](solve_inverse_kinematics.md) | Function | Find verified scalar-joint configurations for one world-frame Pose target. Multistart is deterministic and finite, not exhaustive. Unsupported trajectory drivers and joint/constraint types return capability_failed with evidence. Invalid input and numerical failures are structured results, not empty passes. |
+| [`IKOptions`](IKOptions.md) | Type | Controls for numerical IK; every search and convergence limit is recorded. task_mode='position' leaves orientation unconstrained but still reports its error. Joint limits always gate acceptance. enforce_joint_limits controls projection during iteration only; disabling projection never accepts an out-of-range answer. |
+| [`IKSolution`](IKSolution.md) | Type | One evaluated seed, including the last state of an unsuccessful search. |
+| [`IKSolutionSet`](IKSolutionSet.md) | Type | Verified distinct solutions and all attempts; no claim of exhaustive search. |
 
 ## Module Rules
 

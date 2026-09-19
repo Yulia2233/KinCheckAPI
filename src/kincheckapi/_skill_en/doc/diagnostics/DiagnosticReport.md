@@ -11,7 +11,7 @@ class DiagnosticReport:
     backend_failure: BackendFailure | None
     metadata: Mapping[str, Any]
     operation: str
-    status: Optional[Literal['passed', 'failed', 'partial', 'capability_failed', 'validation_failed']]
+    status: Optional[Literal['passed', 'failed', 'partial', 'indeterminate', 'capability_failed', 'validation_failed']]
     traceback: str | None
 ```
 
@@ -37,7 +37,7 @@ Complete diagnostic context attached to a public KinCheckAPI error.
 | `backend_failure` | `BackendFailure | None` | `None` | Public input or data field `backend_failure`. |
 | `metadata` | `Mapping[str, Any]` | default_factory | Additional read-only structured metadata. |
 | `operation` | `str` | `'diagnose'` | Public input or data field `operation`. |
-| `status` | `Optional[Literal['passed', 'failed', 'partial', 'capability_failed', 'validation_failed']]` | `None` | Structured status interpreted according to the stable values for the result type. |
+| `status` | `Optional[Literal['passed', 'failed', 'partial', 'indeterminate', 'capability_failed', 'validation_failed']]` | `None` | Structured status interpreted according to the stable values for the result type. |
 | `traceback` | `str | None` | `None` | Public input or data field `traceback`. |
 
 ## Returns and Failures

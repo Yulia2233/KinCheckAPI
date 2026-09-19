@@ -16,7 +16,7 @@ from kincheckapi.checks import check_continuous_interference
 
 ## 用途
 
-执行结构化检查：`check_continuous_interference`。
+在声明的分段刚体位姿插值下，跨相邻轨迹样本保守地检查显式组件对，并返回 TOI 区间证据。
 
 ## 参数与字段
 

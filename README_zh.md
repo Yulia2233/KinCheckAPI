@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-当前开发版本：**0.5.5**。参见 [v0.5.5 更新说明](doc/updates/v0.5.5.md)，了解曲线、平面、启停换向、周期、多轴同步和结构化失败诊断。
+当前版本：**0.5.7**。[v0.5.7 更新说明](doc/updates/v0.5.7.md) 介绍连续碰撞/TOI、复审修复、网格包含检测优化和完整四连杆验证；有界数值逆运动学的范围与用法见 [v0.5.6 更新说明](doc/updates/v0.5.6.md)。
 
 [English](README.md) | 简体中文
 
@@ -20,7 +20,7 @@ uv venv .venv
 uv pip install --python .venv/bin/python .
 ```
 
-## 插件开发版本：v0.5.5
+## 插件开发版本：v0.5.7
 
 新增可选 SimpleCADAPI addon，将经过校验的 `.scadpkg` 准备为原有 MJCF 输入。
 `convert_mjcf()`、`verify(model_dir)`、装配、工况、求解和检查 API 保持不变。
@@ -41,9 +41,9 @@ kincheck doctor --addon --format json
 SDK 兼容范围为 `>=2.1.3b3,<2.1.4`。
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.5
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.7
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.5
+sca addon add ./dist/sca-kincheckapi-0.5.7
 sca addon list
 kincheck verify-package product.scadpkg --work-dir analysis-work --script verification/verify.py --format json
 ```
@@ -52,17 +52,19 @@ skill 安装名称为 `sca-kincheckapi`。产品包命令强制运行时预检�
 保存到独立工作目录，永不修改源包。几何修改交回主 SimpleCADAPI skill 并重新 capture。
 标签、单位、坐标系及发布要求见 [插件消费契约](skill_zh/doc/guides/addon-contract.md)。
 
-## 上一版本：v0.5.1
+## 版本记录
 
-v0.5.1 新增全状态装配体整体性检查：在静态初始姿态或完整 MotionResult 的每个采样中，通过机械关系、容纳或导向关系、几何连接和显式米制连接容差，验证各 Component 始终构成一个有效的连通整体。
-
-近期版本：
+- **[v0.5.7](doc/updates/v0.5.7.md)**：保守连续碰撞检测、首次接触时间区间、含旋转贡献的接触点速度及失败证据保存；四连杆示例覆盖全部 36 组实体配对，并加入真实网格碰撞反例。
+- **[v0.5.6](doc/updates/v0.5.6.md)**：支持范围内标量关节的有界静态数值 IK、确定性多初始值搜索、候选回代验证与结构化失败状态。
+- **[v0.5.5](doc/updates/v0.5.5.md)**：路径/位姿跟踪、启停/换向、周期和协调运动检查，以及结构化诊断。
+- **[v0.5.4](doc/updates/v0.5.4.md)**：运动分段、驱动跟踪、积分采样和详细曲柄滑块示例。
+- **[v0.5.1](doc/updates/v0.5.1.md)**：通过机械、容纳/导向和几何关系检查装配体整体连通性。
 
 - **v0.5.0** 统一面向 Agent 的错误和验证输出：公开错误与结果均提供 `format_for_agent()`，`str()` 输出相同的规范正文，`raise_if_failed()` 将失败转换为同源的 `VerificationError`。结构化字段仍可通过 `to_dict()` 获取。
 - **v0.4.1** 移除旧 Artifact 输入路径；转换仅接受 CADIR MJCF、mapping 和网格目录。AssemblyModel → Scenario → `solve_motion()` 及下游行为保持不变。
 - **v0.3.1** 统一运动结果、检查和分析的失败语义：`partial` 保留已记录的证据，但不能通过完整性验收；位置与方向残差分别使用米和弧度容差；公开阈值拒绝 NaN、无穷值和非法范围。
 
-详见 [v0.5.1 更新记录](doc/updates/v0.5.1.md)、[运动学验证失败模式矩阵](doc/kinematic-verification-failure-modes.md) 和[可复现失败案例](fail/README.md)。完整历史见 [doc/updates](doc/updates)。
+详见 [v0.5.1 更新记录](doc/updates/v0.5.1.md)、[运动学验证失败模式矩阵](doc/kinematic-verification-failure-modes.md) 和[空组件对失败示例](fail/04_empty_component_pairs.py)。完整历史见 [doc/updates](doc/updates)。
 
 紧凑二级减速器与[四连杆示例](examples/four_bar_linkage/verification/README_zh.md) 统一使用 `verification/`、`model_before/`、`model_after/`、`output/`；建模源码位于各模型目录的 `source/` 中。
 
@@ -76,15 +78,16 @@ v0.5.1 新增全状态装配体整体性检查：在静态初始姿态或完整 
 - 计算雅可比、有效自由度、奇异性、可达性和工作空间；
 - 检查目标姿态、轨迹和 connector 路径，支持关节锁定；
 - 基于真实 STL 网格检查干涉、有符号最小间隙和运动包络；
+- 在声明的刚体位姿插值下，跨轨迹样本连续检查显式组件对，输出带区间和 certainty 的 TOI 证据；无法证明安全时返回 `indeterminate`；
 - 通过 `run_checks()` 统一执行干涉、间隙、包络、传动、限位和轨迹验收；
 - 导出、验证和读取包含轨迹与网格的 `.kincheck` 结果包；
-- 提供紧凑二级行星减速器、四连杆和曲柄滑块三个示例。
+- 提供紧凑二级行星减速器、四连杆、曲柄滑块和详细导向四连杆执行机构四个示例。
 
 ## 当前边界
 
 - 不保证任意闭环机构都能稳定完成随时间变化的位置求解；模型错误、初态不一致或不支持的机构会明确报错或返回 `partial`，不会伪装为成功；
 - `partial` MotionResult 保留已记录的轨迹、残差和几何证据，其中可能包含违反约束的样本，不能据此给出通过结论；
-- 几何检查基于显式离散时间点的真实三角网格，不构成连续时间绝对无碰撞证明，也不等价于精确 BREP/NURBS 曲面距离；
+- 离散几何检查基于显式采样时刻的真实三角网格。`check_continuous_interference()` 在声明的分段刚体插值和速度上界下增加保守区间证明；它不覆盖任意变形体或动力学运动，也不等价于精确 BREP/NURBS 曲面距离；
 - 尚未实现完整动力学、接触力、摩擦和冲击；多自由度关节（`cylindrical`、`spherical`、`planar`、`free`）仍不在后端支持范围内；
 - `.scadpkg` 是持久化产品源；可选 addon 校验并准备产品包，再交给原有 MJCF 转换入口，不接受原始 CADIR XML。
 
@@ -138,6 +141,14 @@ uv run --extra addon python examples/slider_crank/model/source/slider_crank.cadi
 uv run python examples/slider_crank/verification/verify.py examples/slider_crank/model
 uv run python examples/slider_crank/verification/export_motion_package.py
 python viewer/kincheck_viewer.py examples/slider_crank/output/slider_crank.kincheck --serve
+```
+
+[导向四连杆执行机构](examples/guided_four_bar_actuator/README.md) 提供了带加工硬件细节的完整 CADIR 装配体、独立验证脚本、离散间隙检查以及 v0.5.7 连续干涉/TOI 检查。全部 6 组刚体配对均参与检查，包括相邻关节：完整网格覆盖 28 组相对运动实体对，另对 8 组固定实体对检查初态并利用相对位姿不变性覆盖全程。详见[验证范围](examples/guided_four_bar_actuator/verification/README_zh.md)与[碰撞复核](examples/guided_four_bar_actuator/output/collision_review.md)。结果包和 JSON 证据位于 `examples/guided_four_bar_actuator/output/`：
+
+```bash
+uv run python examples/guided_four_bar_actuator/verification/verify.py examples/guided_four_bar_actuator/model --report examples/guided_four_bar_actuator/output/collision_verification.json
+uv run python examples/guided_four_bar_actuator/verification/export_motion_package.py
+python viewer/kincheck_viewer.py examples/guided_four_bar_actuator/output/guided_four_bar_actuator.kincheck --serve
 ```
 
 独立查看器可直接回放导出的 `.kincheck` 包，无需重新运行求解器：

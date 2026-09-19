@@ -67,13 +67,14 @@ from .scenario import (
 )
 from .motion_contracts import PosePoint, PoseTrajectory, PlanarPose, PathTarget, CoordinatedMotionProfile, PeriodicProfile, MotionEvent
 from .checks import check_path_tracking, check_planar_tracking, check_pose_trajectory, check_start_stop_reversal, check_periodic_motion, check_synchronization, check_continuous_interference
+from .continuous_result import ContinuousContactEvent, ContinuousInterferenceOptions, ContinuousInterferenceReport
 from .diagnostics import diagnostic_trace
-from .kinematics import KinematicSolveOptions, KinematicCapabilities, backend_capabilities, solve_inverse_kinematics
+from .kinematics import KinematicSolveOptions, KinematicCapabilities, backend_capabilities, solve_inverse_kinematics, IKOptions, IKSolution, IKSolutionSet
 from .result import IntegrationSample, record_verification_reports
 from .clearance import ClearanceReport, EnvelopeSample, MinimumClearance, MotionEnvelope, SamplingScope
 from .checks import AssemblyIntegrityReport, ContainmentRelation, IntegrityRelationResult, check_assembly_integrity
 
-__version__ = "0.5.5"
+__version__ = "0.5.7"
 
 __all__ = [
     "AssemblyModel",
@@ -94,6 +95,7 @@ __all__ = [
     "ProfileBoundary",
     "PosePoint", "PoseTrajectory", "PlanarPose", "PathTarget", "CoordinatedMotionProfile", "PeriodicProfile", "MotionEvent", "diagnostic_trace",
     "check_path_tracking", "check_planar_tracking", "check_pose_trajectory", "check_start_stop_reversal", "check_periodic_motion", "check_synchronization", "check_continuous_interference",
+    "ContinuousContactEvent", "ContinuousInterferenceOptions", "ContinuousInterferenceReport",
     "add_periodic_joint_driver", "add_coordinated_motion_profile",
     "add_pose_trajectory_target", "add_component_pose_driver",
     "add_joint_motion_segments",
@@ -104,6 +106,9 @@ __all__ = [
     "KinematicCapabilities",
     "backend_capabilities",
     "solve_inverse_kinematics",
+    "IKOptions",
+    "IKSolution",
+    "IKSolutionSet",
     "IntegrationSample",
     "record_verification_reports",
     "ClearanceReport",

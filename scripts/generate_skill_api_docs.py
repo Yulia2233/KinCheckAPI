@@ -52,6 +52,11 @@ MODULES: dict[str, dict[str, Any]] = {
         "title": "几何安全",
         "summary": "在离散运动样本上检查网格干涉、最小间隙和运动包络。",
     },
+    "continuous_result": {
+        "title": "连续碰撞证据",
+        "summary": "定义跨轨迹样本区间的保守连续干涉选项、接触事件和可审计报告。",
+        "exports": ("ContinuousInterferenceOptions", "ContinuousContactEvent", "ContinuousInterferenceReport"),
+    },
     "result": {
         "title": "结果模型与查询",
         "summary": "读取 MotionResult 中的状态、轨迹、残差和事件证据。",
@@ -147,8 +152,13 @@ MODULE_RULES = {
     ),
     "clearance": (
         "显式给出组件对或组件范围、`asset_root`、时间窗和容差。",
-        "结果来自三角网格和离散时间采样，不是连续时间无碰撞证明。",
+        "普通干涉、最小间隙和包络结果来自离散采样；跨样本连续证明必须显式调用 `check_continuous_interference()`。",
         "空 pair、空样本、缺失 mesh 或 partial 运动结果不得解释为安全通过。",
+    ),
+    "continuous_result": (
+        "连续通过只表示声明的位姿插值和速度上界下已取得完整保守证据；不能外推到未记录的非刚体或动力学运动。",
+        "`failed` 记录接触或间隙违规；`indeterminate` 表示预算、时间轴或几何证据不足，不能当作通过。",
+        "事件中的最早接触时间是上界，`certainty`、查询次数、细分次数和 options 必须随报告保存。",
     ),
     "result": (
         "只读取 MotionResult 中实际记录的对象和样本，不从空结果推断通过。",
@@ -217,6 +227,7 @@ PURPOSE_OVERRIDES = {
     "try_solve_motion": "在失败时保留结构化报告和 `last_valid_result`；不会把失败转换成通过。",
     "run_checks": "按 `CheckSpec` 顺序执行显式验收命题，返回 `CheckSuiteReport`。",
     "check_interference": "检查离散运动样本中的指定组件对是否发生网格穿透。",
+    "check_continuous_interference": "在声明的分段刚体位姿插值下，跨相邻轨迹样本保守地检查显式组件对，并返回 TOI 区间证据。",
     "measure_minimum_clearance": "测量离散运动样本中指定组件对的最小带符号间隙。",
     "create_motion_envelope": "为明确组件生成离散运动包络，供后续空间干涉分析。",
     "write_motion_result": "将完整公开运动结果写为确定性的 JSON。",
@@ -368,7 +379,7 @@ def clean_annotation(value: Any) -> str:
 
 def requalify(text: str) -> str:
     for module_name in (
-        "assembly", "checks", "clearance", "clearance_result", "diagnostics",
+        "assembly", "checks", "clearance", "clearance_result", "continuous_result", "diagnostics",
         "errors", "export", "integrity", "kinematics", "kinematics_analysis",
         "kinematics_geometry", "pose", "result", "scenario", "trajectory_checks",
         "visualization",
@@ -500,7 +511,7 @@ def signature_text(name: str, value: Any, kind: str) -> str:
             signature = inspect.signature(value, eval_str=True)
             text = str(signature)
             for module_name in (
-                "assembly", "checks", "clearance", "clearance_result", "diagnostics",
+                "assembly", "checks", "clearance", "clearance_result", "continuous_result", "diagnostics",
                 "errors", "export", "integrity", "kinematics", "kinematics_analysis",
                 "kinematics_geometry", "pose", "result", "scenario", "trajectory_checks",
                 "visualization",
@@ -589,7 +600,7 @@ def page(module_name: str, import_module: str, name: str, value: Any) -> str:
         lines.extend(enum_section(value))
         lines.append("")
     lines.extend(["## 返回与失败", "", returns_text(value, kind), ""])
-    if module_name in {"checks", "clearance", "kinematics", "diagnostics"}:
+    if module_name in {"checks", "clearance", "continuous_result", "kinematics", "diagnostics"}:
         lines.append("结构化结果中的 `issues`、状态、样本数和实际测量是契约的一部分；不要只判断函数是否抛异常。")
         lines.append("")
     lines.extend(["## 模块约束", ""])

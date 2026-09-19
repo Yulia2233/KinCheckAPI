@@ -26,6 +26,12 @@ from .clearance_result import (
     MotionEnvelope,
     SamplingScope,
 )
+from .continuous_result import (
+    ContinuousContactEvent,
+    ContinuousInterferenceOptions,
+    ContinuousInterferenceReport,
+)
+from ._continuous_motion import DistanceSample, MeshPairQuery, RigidSegment, rotation_vector, segment_at, sphere_lower_bound
 
 
 def _issue(
@@ -307,6 +313,170 @@ def _check_sample_spacing(times: Sequence[float], max_sample_period_s: float | N
     return ()
 
 
+def _continuous_issue(*, code: str, message: str, object_ids: Sequence[str] = (),
+                      failure_time_s: float | None = None,
+                      evidence: Sequence[Evidence] = ()) -> SimIssue:
+    return _issue(
+        code=code,
+        message=message,
+        object_ids=object_ids,
+        failure_time_s=failure_time_s,
+        evidence=evidence,
+        suggested_actions=(
+            "Inspect the continuous-check evidence and revise the motion, geometry, or numerical budget.",
+        ),
+    )
+
+
+def _continuous_pair_event(
+    *, pair: tuple[str, str], query: MeshPairQuery,
+    segment_a: RigidSegment, segment_b: RigidSegment, left: float, right: float,
+    options: ContinuousInterferenceOptions, query_count: list[int],
+    subdivision_count: list[int], events: list[ContinuousContactEvent],
+    lower_bounds: list[float], observed_distances: list[float],
+    certified_intervals: list[dict[str, Any]],
+) -> bool:
+    """Search left to right; a separated sample never certifies its prefix."""
+    threshold = options.minimum_clearance_m
+    speed_bound = (
+        float(np.linalg.norm(segment_b.velocity - segment_a.velocity))
+        + float(np.linalg.norm(segment_a.omega)) * query.radius_a
+        + float(np.linalg.norm(segment_b.omega)) * query.radius_b
+    )
+    cache: dict[float, DistanceSample] = {}
+    hit: DistanceSample | None = None
+    unresolved_start: float | None = None
+    hit_reached = False
+    limits: set[str] = set()
+
+    def sample(time_s: float) -> DistanceSample | None:
+        nonlocal hit
+        if time_s in cache:
+            return cache[time_s]
+        if query_count[0] >= options.max_queries:
+            limits.add("max_queries")
+            return None
+        query_count[0] += 1
+        value = query.query(time_s, segment_a.pose(time_s), segment_b.pose(time_s))
+        cache[time_s] = value
+        observed_distances.append(value.distance)
+        # Keep an observed violation even if refinement later runs out of budget.
+        if value.distance <= threshold and (hit is None or time_s < hit.time):
+            hit = value
+        return value
+
+    def unresolved(start: float) -> None:
+        nonlocal unresolved_start
+        unresolved_start = start if unresolved_start is None else min(unresolved_start, start)
+
+    def certify(start: float, end: float, bound: float, source: str) -> None:
+        lower_bounds.append(bound)
+        certified_intervals.append({
+            "component_pair": pair, "time_interval_s": (start, end),
+            "clearance_lower_bound_m": bound, "source": source,
+        })
+
+    def visit(start: float, end: float, depth: int) -> bool:
+        nonlocal hit_reached
+        sphere_bound = sphere_lower_bound(
+            segment_a, segment_b, start, end, query.radius_a + query.radius_b,
+        )
+        if sphere_bound > threshold + options.distance_tolerance_m:
+            certify(start, end, sphere_bound, "bounding_spheres")
+            return True
+        first = sample(start)
+        if first is None:
+            unresolved(start)
+            return False
+        if first.distance <= threshold:
+            unresolved(start)
+            hit_reached = True
+            return False
+        middle = (start + end) * 0.5
+        last = sample(end)
+        center = sample(middle)
+        if last is None or center is None:
+            unresolved(start)
+            return False
+        # Every time lies within dt/4 of one of these three samples.
+        bound = min(first.distance, center.distance, last.distance) - speed_bound * (end - start) / 4
+        if bound > threshold + options.distance_tolerance_m:
+            certify(start, end, bound, "mesh_distance_velocity_bound")
+            return True
+        if end - start <= options.time_tolerance_s or middle in (start, end):
+            unresolved(start)
+            hit_reached = hit is not None and hit.time <= end
+            return False
+        if depth >= options.max_iterations or subdivision_count[0] >= options.max_subdivisions:
+            limits.add("max_iterations" if depth >= options.max_iterations else "max_subdivisions")
+            unresolved(start)
+            hit_reached = hit is not None and hit.time <= end
+            return False
+        subdivision_count[0] += 1
+        before_safe = visit(start, middle, depth + 1)
+        if hit_reached or "max_queries" in limits:
+            return False
+        # An unresolved prefix is retained in the final bracket, never skipped.
+        after_safe = visit(middle, end, depth + 1)
+        return before_safe and after_safe
+
+    safe = visit(left, right, 0)
+    if safe:
+        return True
+    lower = left if unresolved_start is None else unresolved_start
+    upper = hit.time if hit is not None else right
+    state = hit or min(
+        (s for s in cache.values() if lower <= s.time <= upper),
+        key=lambda s: (s.distance, s.time), default=None,
+    )
+
+    def velocity_at(value: DistanceSample | None) -> tuple[float, float, float] | None:
+        if value is None or value.point_a is None or value.point_b is None:
+            return None
+        velocity = segment_b.point_velocity(value.time, value.point_b) - segment_a.point_velocity(value.time, value.point_a)
+        return tuple(float(v) for v in velocity)
+
+    relative = velocity_at(state)
+    speed = math.hypot(*relative) if relative is not None else None
+    normal = state.normal if state is not None else None
+    closing = max(0.0, -float(np.dot(relative, normal))) if relative is not None and normal is not None else None
+    angle = math.acos(max(-1.0, min(1.0, -float(np.dot(relative, normal)) / speed))) if normal is not None and speed and closing else None
+    pre_contact = max(
+        (s for s in cache.values() if hit is not None and s.time < hit.time and s.distance > threshold),
+        key=lambda s: s.time, default=None,
+    )
+    event_type = "possible_contact"
+    if hit is not None:
+        event_type = "clearance_violation" if hit.distance > 0 else "initial_overlap" if hit.time == left else "contact"
+    events.append(ContinuousContactEvent(
+        component_a_id=pair[0], component_b_id=pair[1], time_interval_s=(lower, upper),
+        earliest_contact_time_s=hit.time if hit is not None else None,
+        state_time_s=state.time if state is not None else lower,
+        signed_distance_m=state.distance if state is not None else None,
+        confirmed=hit is not None, certainty="bracketed" if hit is not None else "indeterminate",
+        event_type=event_type,
+        position_a_m=state.point_a if state is not None else None,
+        position_b_m=state.point_b if state is not None else None,
+        contact_normal=normal, normal_source=state.normal_source if state is not None else "unavailable",
+        relative_velocity_m_s=relative, relative_speed_m_s=speed,
+        closing_speed_m_s=closing, contact_angle_rad=angle,
+        pre_contact_time_s=pre_contact.time if pre_contact is not None else None,
+        pre_contact_relative_velocity_m_s=velocity_at(pre_contact),
+        evidence=(
+            Evidence(key="time_lower_bound_s", actual=lower, unit="s"),
+            Evidence(key="time_upper_bound_s", actual=hit.time if hit is not None else None, unit="s"),
+            Evidence(key="toi_tolerance_met", actual=hit is not None and upper - lower <= options.time_tolerance_s),
+            Evidence(key="budget_limits_reached", actual=tuple(sorted(limits))),
+            Evidence(key="query_count", actual=query_count[0], expected=f"<= {options.max_queries}"),
+            Evidence(key="subdivision_count", actual=subdivision_count[0], expected=f"<= {options.max_subdivisions}"),
+            Evidence(key="relative_velocity_convention", actual="world point velocity B - A, including omega cross r"),
+            Evidence(key="contact_angle_reference", actual="A-to-B normal versus negative relative point velocity; null without an approaching normal"),
+            Evidence(key="pre_contact_state", actual="last observed separated sample, not a certified collision-free history"),
+        ),
+    ))
+    return False
+
+
 def _validate_query_parameters(*, penetration_tolerance_m: float | None = None, minimum_allowed_clearance_m: float | None = None, sampling_scope: SamplingScope) -> None:
     if sampling_scope not in {"motion_result", "solver_steps"}:
         raise ValueError("KINCHECK-CLEARANCE-PARAMETER-INVALID: sampling_scope must be motion_result or solver_steps")
@@ -545,6 +715,213 @@ def _prepare_envelope_components(
     return meshes, (*issues, *mesh_issues), version
 
 
+def _continuous_report(
+    *, options: ContinuousInterferenceOptions | None, events: Sequence[ContinuousContactEvent],
+    query_count: int, subdivision_count: int, checked_pairs: int,
+    observed_distances: Sequence[float], lower_bounds: Sequence[float],
+    metadata: Mapping[str, Any], extra_issues: Sequence[SimIssue] = (),
+    fallback_status: str = "passed",
+) -> ContinuousInterferenceReport:
+    confirmed = tuple(event for event in events if event.confirmed)
+    uncertain = tuple(event for event in events if not event.confirmed)
+    issues = [
+        _continuous_issue(
+            code="KINCHECK-CLEARANCE-CONTINUOUS-TOI-BRACKETED",
+            message="Contact or insufficient clearance was observed; the reported interval retains every unresolved earlier time.",
+            object_ids=(event.component_a_id, event.component_b_id),
+            failure_time_s=event.state_time_s, evidence=event.evidence,
+        ) for event in confirmed
+    ]
+    issues.extend(
+        _continuous_issue(
+            code="KINCHECK-CLEARANCE-CONTINUOUS-TOI-INDETERMINATE",
+            message="Continuous coverage or TOI refinement remains incomplete within the numerical budget.",
+            object_ids=(event.component_a_id, event.component_b_id), evidence=event.evidence,
+        ) for event in events if not event.confirmed or any(
+            item.key == "budget_limits_reached" and item.actual for item in event.evidence
+        )
+    )
+    issues.extend(extra_issues)
+    status = "failed" if confirmed else "indeterminate" if uncertain else fallback_status
+    # Local safe intervals cannot certify an unchecked or colliding remainder.
+    lower_bound = min(lower_bounds) if status == "passed" and not issues and lower_bounds else None
+    if status == "passed" and (lower_bound is None or options is None or lower_bound <= options.minimum_clearance_m):
+        status = "indeterminate"
+        issues.append(_continuous_issue(
+            code="KINCHECK-CLEARANCE-CONTINUOUS-TOI-INDETERMINATE",
+            message="The entire requested scope has no complete certified clearance lower bound.",
+        ))
+    return ContinuousInterferenceReport(
+        status=status, options=options, events=tuple(events), checked_component_pair_count=checked_pairs,
+        query_count=query_count, subdivision_count=subdivision_count,
+        minimum_clearance_m=min(observed_distances, default=None),
+        clearance_lower_bound_m=lower_bound, issues=tuple(issues),
+        metadata={**dict(metadata), "coverage_complete": status == "passed",
+                  "minimum_clearance_scope": "observed_mesh_queries_only"},
+    )
+
+
+def check_continuous_interference(
+    *, assembly: AssemblyModel, motion_result: MotionResult,
+    component_pairs: Sequence[Sequence[str]],
+    options: ContinuousInterferenceOptions | Mapping[str, Any] | None = None,
+    start_time_s: float | None = None,
+    end_time_s: float | None = None,
+    asset_root: str | Path | None = None,
+) -> ContinuousInterferenceReport:
+    """Conservative continuous collision check over piecewise rigid intervals."""
+    query_count, subdivision_count = [0], [0]
+    opts = None
+    events: list[ContinuousContactEvent] = []
+    lower_bounds: list[float] = []
+    observed_distances: list[float] = []
+    certified_intervals: list[dict[str, Any]] = []
+    pairs: tuple[tuple[str, str], ...] = ()
+    metadata: dict[str, Any] = {"certified_intervals": certified_intervals}
+    try:
+        try:
+            opts = ContinuousInterferenceOptions(**dict(options)) if isinstance(options, Mapping) else ContinuousInterferenceOptions() if options is None else options
+        except (TypeError, ValueError) as error:
+            issue = _continuous_issue(
+                code="KINCHECK-CLEARANCE-CONTINUOUS-PARAMETER-INVALID",
+                message="Continuous interference options are invalid.",
+                evidence=(Evidence(key="native_error_type", actual=type(error).__name__),),
+            )
+            return ContinuousInterferenceReport(status="validation_failed", issues=(issue,), metadata={"coverage_complete": False})
+        if not isinstance(opts, ContinuousInterferenceOptions):
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-PARAMETER-INVALID", message="options must be ContinuousInterferenceOptions or a mapping.")
+            return ContinuousInterferenceReport(status="validation_failed", issues=(issue,), metadata={"coverage_complete": False})
+        if not isinstance(assembly, AssemblyModel) or not isinstance(motion_result, MotionResult):
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-INPUT-INVALID", message="assembly and motion_result must be KinCheckAPI models.")
+            return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        if motion_result.status not in {"completed", "completed_with_warnings"}:
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-INPUT-INVALID", message="A complete MotionResult is required for continuous checking.", evidence=(Evidence(key="motion_result_status", actual=motion_result.status, expected="completed or completed_with_warnings"),))
+            return ContinuousInterferenceReport(status="partial", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        if not component_pairs:
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-INPUT-INVALID", message="component_pairs must explicitly contain at least one pair.")
+            return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        if opts.interpolation is None:
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-TIME-AXIS-INVALID", message="A continuous interpolation model is required; None cannot prove safety.")
+            return ContinuousInterferenceReport(status="indeterminate", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        normalized_input_pairs: list[tuple[str, str]] = []
+        known_component_ids = {component.component_id for component in assembly.components}
+        for raw_pair in component_pairs:
+            if isinstance(raw_pair, (str, bytes)):
+                issue = _continuous_issue(code="KINCHECK-CLEARANCE-COMPONENT-PAIR-INVALID", message="Each component pair must contain two distinct Component IDs.", object_ids=(str(raw_pair),))
+                return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+            try:
+                if len(raw_pair) != 2:
+                    raise ValueError
+                left, right = str(raw_pair[0]), str(raw_pair[1])
+            except (IndexError, TypeError, ValueError):
+                issue = _continuous_issue(code="KINCHECK-CLEARANCE-COMPONENT-PAIR-INVALID", message="Each component pair must contain two distinct Component IDs.")
+                return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+            if left == right:
+                issue = _continuous_issue(code="KINCHECK-CLEARANCE-COMPONENT-PAIR-INVALID", message="A continuous component pair must contain two distinct Component IDs.", object_ids=(left, right))
+                return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+            if left not in known_component_ids or right not in known_component_ids:
+                issue = _continuous_issue(code="KINCHECK-CLEARANCE-COMPONENT-PAIR-NOT-FOUND", message="A continuous component pair references an unknown Component.", object_ids=(left, right))
+                return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+            normalized_input_pairs.append(tuple(sorted((left, right))))
+        ids = tuple(sorted({item for pair in normalized_input_pairs for item in pair}))
+        trajectories = {item.component_id: item for item in motion_result.trajectories if item.connector_id is None}
+        missing = tuple(item for item in ids if item not in trajectories or len(trajectories[item].times_s) < 2)
+        if missing:
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-TRAJECTORY-MISSING", message="Continuous checking needs at least two component trajectory samples for every requested object.", object_ids=missing)
+            return ContinuousInterferenceReport(status="indeterminate", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        if opts.interpolation == "linear_pose":
+            rotating = tuple(
+                component_id
+                for component_id in ids
+                if any(
+                    float(np.linalg.norm(rotation_vector(first, second))) > 1e-12
+                    for first, second in zip(trajectories[component_id].poses, trajectories[component_id].poses[1:])
+                )
+            )
+            if rotating:
+                issue = _continuous_issue(
+                    code="KINCHECK-CLEARANCE-CONTINUOUS-INTERPOLATION-INVALID",
+                    message="linear_pose requires a constant orientation for every checked component.",
+                    object_ids=rotating,
+                    evidence=(Evidence(key="interpolation", actual=opts.interpolation, expected="slerp_pose for changing orientations"),),
+                )
+                return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        meshes, pairs, prep_issues, backend_version = _prepare(assembly=assembly, motion_result=motion_result, component_pairs=normalized_input_pairs, excluded_pairs=(), asset_root=asset_root, sampling_scope="motion_result", component_ids=ids)
+        if any(i.severity == "error" for i in prep_issues):
+            return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=prep_issues, metadata={"coverage_complete": False, "backend_version": backend_version})
+        coverage_start = max(float(trajectories[item].times_s[0]) for item in ids)
+        coverage_end = min(float(trajectories[item].times_s[-1]) for item in ids)
+        start = coverage_start if start_time_s is None else float(start_time_s)
+        end = coverage_end if end_time_s is None else float(end_time_s)
+        if not math.isfinite(start) or not math.isfinite(end) or end <= start or start < coverage_start or end > coverage_end:
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-TIME-AXIS-INVALID", message="The continuous time window must be finite, positive, and covered by every trajectory.", evidence=(Evidence(key="time_window_s", actual=(start, end), expected=(coverage_start, coverage_end), unit="s"),))
+            return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        times = tuple(sorted({start, end, *(float(t) for item in ids for t in trajectories[item].times_s if start <= float(t) <= end)}))
+        intervals = tuple((left, right) for left, right in zip(times, times[1:]) if left >= start and right <= end)
+        if not intervals:
+            issue = _continuous_issue(code="KINCHECK-CLEARANCE-CONTINUOUS-TIME-AXIS-INVALID", message="The continuous window has no adjacent trajectory intervals.")
+            return ContinuousInterferenceReport(status="validation_failed", options=opts, issues=(issue,), metadata={"coverage_complete": False})
+        metadata.update({
+            "backend_version": backend_version, "time_window_s": (start, end),
+            "pair_count": len(pairs), "interval_count": len(intervals),
+            "interpolation": opts.interpolation, "velocity_bound_source": "piecewise_pose_secant",
+            "require_velocity_bound": opts.require_velocity_bound,
+        })
+        pair_queries = {pair: MeshPairQuery(meshes[pair[0]], meshes[pair[1]], opts.report_contact_normal) for pair in pairs}
+        for pair, query in pair_queries.items():
+            ta, tb = trajectories[pair[0]], trajectories[pair[1]]
+            for left, right in intervals:
+                sa = segment_at(ta.times_s, ta.poses, left)
+                sb = segment_at(tb.times_s, tb.poses, left)
+                _continuous_pair_event(pair=pair, query=query, segment_a=sa, segment_b=sb, left=left, right=right, options=opts, query_count=query_count, subdivision_count=subdivision_count, events=events, lower_bounds=lower_bounds, observed_distances=observed_distances, certified_intervals=certified_intervals)
+        return _continuous_report(
+            options=opts, events=events, query_count=query_count[0], subdivision_count=subdivision_count[0],
+            checked_pairs=len(pairs), observed_distances=observed_distances, lower_bounds=lower_bounds,
+            metadata=metadata,
+        )
+    except BackendCapabilityError as error:
+        issues = tuple(
+            SimIssue(
+                code=(
+                    "KINCHECK-CLEARANCE-CONTINUOUS-BACKEND-UNSUPPORTED"
+                    if issue.code == "KINCHECK-CLEARANCE-BACKEND-UNAVAILABLE"
+                    else issue.code
+                ),
+                severity=issue.severity,
+                stage=issue.stage,
+                message=issue.message,
+                object_ids=issue.object_ids,
+                source_paths=issue.source_paths,
+                evidence=issue.evidence,
+                suggested_actions=issue.suggested_actions,
+                failure_time_s=issue.failure_time_s,
+            )
+            for issue in error.report.issues
+        )
+        return _continuous_report(
+            options=opts, events=events, query_count=query_count[0], subdivision_count=subdivision_count[0],
+            checked_pairs=len(pairs), observed_distances=observed_distances, lower_bounds=(),
+            metadata=metadata, extra_issues=issues, fallback_status="capability_failed",
+        )
+    except (KeyError, TypeError, ValueError, RuntimeError, OSError) as error:
+        text = str(error)
+        code = text.partition(":")[0] if text.startswith("KINCHECK-CLEARANCE-CONTINUOUS-") else "KINCHECK-CLEARANCE-CONTINUOUS-INPUT-INVALID"
+        issue = _continuous_issue(
+            code=code,
+            message=text,
+            evidence=(
+                Evidence(key="native_error_type", actual=type(error).__name__),
+                Evidence(key="query_count", actual=query_count[0], expected="<= max_queries"),
+                Evidence(key="subdivision_count", actual=subdivision_count[0]),
+            ),
+        )
+        return _continuous_report(
+            options=opts, events=events, query_count=query_count[0], subdivision_count=subdivision_count[0],
+            checked_pairs=len(pairs), observed_distances=observed_distances, lower_bounds=(),
+            metadata=metadata, extra_issues=(issue,), fallback_status="indeterminate",
+        )
+
+
 def check_interference(
     *,
     assembly: AssemblyModel,
@@ -770,6 +1147,7 @@ __all__ = [
     "MinimumClearance",
     "MotionEnvelope",
     "SamplingScope",
+    "check_continuous_interference",
     "check_envelope_interference",
     "check_interference",
     "create_motion_envelope",

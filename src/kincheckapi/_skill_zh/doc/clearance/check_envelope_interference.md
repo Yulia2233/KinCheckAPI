@@ -34,7 +34,7 @@ from kincheckapi.clearance import check_envelope_interference
 ## 模块约束
 
 - 显式给出组件对或组件范围、`asset_root`、时间窗和容差。
-- 结果来自三角网格和离散时间采样，不是连续时间无碰撞证明。
+- 普通干涉、最小间隙和包络结果来自离散采样；跨样本连续证明必须显式调用 `check_continuous_interference()`。
 - 空 pair、空样本、缺失 mesh 或 partial 运动结果不得解释为安全通过。
 - 输入必须是两个 `operation == 'motion_envelope'` 的 `ClearanceReport`。
 - `metadata['confirmed_mesh_interference']` 固定为 `False`；发生 overlap 后使用精确 mesh 检查确认。

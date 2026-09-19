@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-Current development version: **0.5.5**. See [the v0.5.5 update](doc/updates/v0.5.5.en.md) for curve, planar, event, periodic, synchronization, and structured failure diagnostics.
+Current version: **0.5.7**. [v0.5.7 release notes](doc/updates/v0.5.7.en.md) cover continuous collision/TOI evidence, review fixes, containment-query optimization, and the fully checked four-bar actuator. Bounded numerical inverse kinematics is documented separately in [v0.5.6](doc/updates/v0.5.6.en.md).
 
 English | [简体中文](README_zh.md)
 
@@ -20,7 +20,7 @@ uv venv .venv
 uv pip install --python .venv/bin/python .
 ```
 
-## Addon development: v0.5.5
+## Addon development: v0.5.7
 
 The optional SimpleCADAPI addon adds validated `.scadpkg` preparation while
 preserving `convert_mjcf()`, `verify(model_dir)`, and all assembly, scenario,
@@ -42,9 +42,9 @@ Stop on a failed probe and repair the named dependency in this environment.
 The addon currently declares macOS arm64 and SDK `>=2.1.3b3,<2.1.4`.
 
 ```bash
-python scripts/package_addon.py dist/sca-kincheckapi-0.5.5
+python scripts/package_addon.py dist/sca-kincheckapi-0.5.7
 sca addon init
-sca addon add ./dist/sca-kincheckapi-0.5.5
+sca addon add ./dist/sca-kincheckapi-0.5.7
 sca addon list
 kincheck verify-package product.scadpkg --work-dir analysis-work --script verification/verify.py --format json
 ```
@@ -56,17 +56,19 @@ SimpleCADAPI skill and require a new capture. See the
 [addon consumption contract](skill/doc/guides/addon-contract.md) for interface
 requirements, units, coordinate conventions and release checks.
 
-## Previous release: v0.5.1
+## Release history
 
-v0.5.1 adds whole-state assembly integrity checking: across the static initial pose or every sample of a complete MotionResult, verify that Components always remain one valid connected network — through mechanical relations, containment/guide relations, geometric connections, and explicit metric connection tolerances.
-
-Recent releases:
+- **[v0.5.7](doc/updates/v0.5.7.en.md)** adds conservative continuous collision checking, auditable first-contact brackets, rotating contact-point velocities, and persistent failure evidence. The guided four-bar example covers all 36 physical pairs and includes a real-mesh collision negative control.
+- **[v0.5.6](doc/updates/v0.5.6.en.md)** adds bounded static numerical IK for supported scalar joints, deterministic multistart search, candidate validation, and structured failure states.
+- **[v0.5.5](doc/updates/v0.5.5.en.md)** adds path/pose tracking, start/stop/reversal, periodic and coordination checks with structured diagnostics.
+- **[v0.5.4](doc/updates/v0.5.4.en.md)** adds motion segments, driver tracking, integration samples, and the detailed slider-crank example.
+- **[v0.5.1](doc/updates/v0.5.1.md)** adds whole-state assembly integrity checking through mechanical, containment/guide, and geometric relations.
 
 - **v0.5.0** unified agent-facing error and verification output: every public error and result provides `format_for_agent()`, `str()` renders the same canonical body, and `raise_if_failed()` converts failures into a same-source `VerificationError`. Structured fields remain available through `to_dict()`.
 - **v0.4.1** removed the legacy Artifact input path; conversion now accepts only CADIR MJCF + mapping + mesh directories. AssemblyModel → Scenario → `solve_motion()` and all downstream behavior are unchanged.
 - **v0.3.1** unified failure semantics across motion results, checks, and analysis: `partial` results keep recorded evidence but can never pass integrity acceptance; position and orientation residuals use metre and radian tolerances; public thresholds reject NaN, infinities, and illegal ranges.
 
-See the [v0.5.1 update report](doc/updates/v0.5.1.md), the [kinematic verification failure-mode matrix](doc/kinematic-verification-failure-modes.md), and the [reproducible failure cases](fail/README.md). Full history in [doc/updates](doc/updates).
+See the [v0.5.1 update report](doc/updates/v0.5.1.md), the [kinematic verification failure-mode matrix](doc/kinematic-verification-failure-modes.md), and the [empty-pair failure example](fail/04_empty_component_pairs.py). Full history in [doc/updates](doc/updates).
 
 The compact two-stage reducer and [four-bar example](examples/four_bar_linkage/verification/README.md) share `verification/`, `model_before/`, `model_after/`, and `output/`; modeling sources live under each model directory.
 
@@ -80,15 +82,16 @@ The compact two-stage reducer and [four-bar example](examples/four_bar_linkage/v
 - Compute Jacobians, effective degrees of freedom, singularities, reachability, and workspaces;
 - Check target poses, trajectories, and connector paths, with joint locking support;
 - Check interference, signed minimum clearance, and motion envelopes against real STL meshes;
+- Check explicit component pairs continuously between trajectory samples under a declared pose interpolation, with bracketed TOI evidence and an `indeterminate` result when safety cannot be proved;
 - Run interference, clearance, envelope, transmission, limit, and trajectory acceptance uniformly through `run_checks()`;
 - Export, validate, and read `.kincheck` result packages containing trajectories and meshes;
-- Ship three examples: a compact two-stage planetary reducer, a four-bar linkage, and a slider-crank mechanism.
+- Ship four examples: a compact two-stage planetary reducer, a four-bar linkage, a slider-crank mechanism, and a detailed guided four-bar actuator.
 
 ## Current boundaries
 
 - No guarantee that arbitrary closed-loop mechanisms complete time-varying position solving stably; model errors, inconsistent initial states, or unsupported mechanisms raise explicit errors or return `partial` — never a disguised success;
 - A `partial` MotionResult preserves recorded trajectories, residuals, and geometric evidence, which may include samples that violate constraints; it can never produce a pass conclusion;
-- Geometric checks use real triangle meshes at explicit discrete time points; they are not continuous-time absolute collision-freedom proofs, nor exact BREP/NURBS surface distances;
+- Discrete geometric checks use real triangle meshes at explicit sample times. `check_continuous_interference()` adds a conditional conservative interval proof for the declared piecewise rigid interpolation and velocity bound; it never claims arbitrary deformable or dynamic collision freedom, nor exact BREP/NURBS surface distances;
 - Full dynamics, contact forces, friction, and impact are not implemented; multi-dof joints (`cylindrical`, `spherical`, `planar`, `free`) are still outside backend support;
 - `.scadpkg` is the persistent product source. The optional addon prepares validated packages for the unchanged MJCF conversion entry; raw CADIR XML is not an input.
 
@@ -142,6 +145,14 @@ uv run --extra addon python examples/slider_crank/model/source/slider_crank.cadi
 uv run python examples/slider_crank/verification/verify.py examples/slider_crank/model
 uv run python examples/slider_crank/verification/export_motion_package.py
 python viewer/kincheck_viewer.py examples/slider_crank/output/slider_crank.kincheck --serve
+```
+
+The [guided four-bar actuator](examples/guided_four_bar_actuator/README.md) adds a detailed CADIR assembly with machined hardware, an independent verifier, sampled clearance, and the v0.5.7 continuous interference/TOI check. All six rigid-group pairs are checked, including joint neighbors; their meshes cover 28 moving physical pairs, while eight fixed physical pairs are checked separately using invariant relative placement. See the [verification scope](examples/guided_four_bar_actuator/verification/README.md) and [collision review](examples/guided_four_bar_actuator/output/collision_review.md). Its exported package and JSON evidence are under `examples/guided_four_bar_actuator/output/`:
+
+```bash
+uv run python examples/guided_four_bar_actuator/verification/verify.py examples/guided_four_bar_actuator/model --report examples/guided_four_bar_actuator/output/collision_verification.json
+uv run python examples/guided_four_bar_actuator/verification/export_motion_package.py
+python viewer/kincheck_viewer.py examples/guided_four_bar_actuator/output/guided_four_bar_actuator.kincheck --serve
 ```
 
 The standalone viewer replays any exported `.kincheck` package without re-running the solver:

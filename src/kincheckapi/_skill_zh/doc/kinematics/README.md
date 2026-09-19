@@ -42,6 +42,9 @@
 | [`verify_transmission_ratio`](verify_transmission_ratio.md) | 函数 | 弃用的兼容入口；新代码使用 `kincheckapi.checks.check_transmission_ratio()`。 |
 | [`write_motion_result`](write_motion_result.md) | 函数 | 将完整公开运动结果写为确定性的 JSON。 |
 | [`solve_inverse_kinematics`](solve_inverse_kinematics.md) | 函数 | 求解指定运动学问题：`solve_inverse_kinematics`。 |
+| [`IKOptions`](IKOptions.md) | 类型 | 表示 `IKOptions` 的公开、可序列化数据结构。 |
+| [`IKSolution`](IKSolution.md) | 类型 | 表示 `IKSolution` 的公开、可序列化数据结构。 |
+| [`IKSolutionSet`](IKSolutionSet.md) | 类型 | 表示 `IKSolutionSet` 的公开、可序列化数据结构。 |
 
 ## 模块规则
 
