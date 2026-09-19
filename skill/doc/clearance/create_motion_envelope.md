@@ -39,7 +39,7 @@ Issues, status, sample counts, and actual measurements in a structured result ar
 ## Module Constraints
 
 - Specify component pairs or scope, `asset_root`, time window, and tolerance explicitly.
-- Results come from triangle meshes and discrete time samples; they are not continuous-time collision proofs.
+- Discrete interference, minimum-clearance, and envelope results use sampled states; call `check_continuous_interference()` explicitly for cross-sample evidence.
 - Do not interpret empty pairs, empty samples, missing meshes, or partial motion as a safety pass.
 
 ## Related Documentation

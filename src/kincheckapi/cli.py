@@ -54,7 +54,7 @@ def _result_dict(result: Any, *, operation: str) -> dict[str, Any]:
     else:
         raise ValueError("Verifier must return a structured verdict or bool, not None or an arbitrary value")
     if type(payload.get("passed")) is not bool and payload.get("status") not in {
-        "passed", "failed", "partial", "capability_failed", "validation_failed"
+        "passed", "failed", "partial", "indeterminate", "capability_failed", "validation_failed"
     }:
         raise ValueError("Verifier result needs an explicit passed boolean or recognized verdict status")
     payload.setdefault("operation", operation)
@@ -66,7 +66,7 @@ def _status(payload: dict[str, Any]) -> str:
     status = payload.get("status")
     if status == "passed" and payload.get("passed") is False:
         return "failed"
-    if status in {"passed", "failed", "partial", "capability_failed", "validation_failed"}:
+    if status in {"passed", "failed", "partial", "indeterminate", "capability_failed", "validation_failed"}:
         return str(status)
     return "passed" if payload.get("passed") is True else "failed"
 

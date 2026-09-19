@@ -195,8 +195,8 @@ def _contains_any_closed_component(container: MeshModel, container_pose: Pose, c
 
     FCL reports triangle intersections, but two closed surfaces can have no
     intersecting triangles when one solid is completely enclosed by the other.
-    Every candidate vertex is checked with trimesh's ray/triangle containment
-    query, so this is still a real mesh test rather than an AABB approximation.
+    A containment pass requires every candidate vertex to pass trimesh ray/triangle
+    queries. A failed vertex short-circuits that component without approximating it.
     """
     if not container.watertight or not candidate.watertight:
         raise ValueError("Containment requires watertight meshes")
@@ -208,8 +208,16 @@ def _contains_any_closed_component(container: MeshModel, container_pose: Pose, c
     points = _world_vertices(candidate, candidate_pose)
     try:
         for indices in candidate.component_vertex_indices:
-            contained = np.asarray(container_world.contains(points[indices]), dtype=bool)
-            if len(contained) and np.all(contained):
+            # Complete containment requires every vertex. A single outside
+            # vertex disproves it; do not ray-test the rest of a large link.
+            # Keep checking later disconnected components even after a miss.
+            all_inside = bool(len(indices))
+            for offset in range(0, len(indices), 32):
+                contained = np.asarray(container_world.contains(points[indices[offset:offset + 32]]), dtype=bool)
+                if not np.all(contained):
+                    all_inside = False
+                    break
+            if all_inside:
                 return True
     except Exception as cause:
         raise RuntimeError(f"KINCHECK-CLEARANCE-CONTAINMENT-QUERY-FAILED: {cause}") from cause

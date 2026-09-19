@@ -130,8 +130,8 @@ class CheckReport(AgentReadableResult):
     @property
     def status(self) -> str:
         value = self.metadata.get("status")
-        if value == "capability_failed":
-            return "capability_failed"
+        if value in {"capability_failed", "validation_failed", "indeterminate", "partial"}:
+            return str(value)
         return "passed" if self.passed else "failed"
 
     def to_dict(self) -> dict[str, Any]:
@@ -196,6 +196,12 @@ class CheckSuiteReport(AgentReadableResult):
     def status(self) -> str:
         if any(item.status == "capability_failed" for item in self.reports):
             return "capability_failed"
+        if any(item.status == "validation_failed" for item in self.reports):
+            return "validation_failed"
+        if any(item.status == "partial" for item in self.reports):
+            return "partial"
+        if any(item.status == "indeterminate" for item in self.reports):
+            return "indeterminate"
         return "passed" if self.passed else "failed"
 
     @property
@@ -1652,11 +1658,32 @@ def check_continuous_interference(
     component_pairs: Sequence[Sequence[str]] | None = None,
     **parameters: Any,
 ) -> CheckReport:
-    """Explicit capability boundary for continuous time-of-impact checking."""
-    _raise_check_capability(
-        capability="continuous_time_of_impact",
-        operation="check_continuous_interference",
+    """Check explicit component pairs between recorded trajectory samples."""
+    from .clearance import check_continuous_interference as _continuous
+
+    check_id = parameters.pop("check_id", "continuous_interference")
+    unknown = tuple(sorted(set(parameters) - {"options", "start_time_s", "end_time_s", "asset_root"}))
+    if unknown:
+        return CheckReport(
+            check_id=check_id, check_type="continuous_interference", passed=False, severity="error",
+            issues=(SimIssue(
+                code="KINCHECK-CLEARANCE-CONTINUOUS-PARAMETER-INVALID", severity="error",
+                stage="checks.continuous_interference",
+                message="Unrecognized continuous interference parameters; safety options must be inside options.",
+                evidence=(Evidence(key="unrecognized_parameters", actual=unknown),),
+                suggested_actions=("Move minimum_clearance_m and numerical tolerances into ContinuousInterferenceOptions or the options mapping; remove unknown fields.",),
+            ),), metadata={"status": "validation_failed"},
+        )
+    result = _continuous(
+        assembly=assembly,
+        motion_result=motion_result,
+        component_pairs=component_pairs or (),
+        options=parameters.pop("options", None),
+        start_time_s=parameters.pop("start_time_s", None),
+        end_time_s=parameters.pop("end_time_s", None),
+        asset_root=parameters.pop("asset_root", None),
     )
+    return result.as_check_report(check_id=check_id)
 
 
 def _target_value(value: Any) -> tuple[str, str | None, Pose, float, float, float | None]:

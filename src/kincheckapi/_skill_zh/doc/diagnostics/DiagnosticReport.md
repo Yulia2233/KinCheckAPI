@@ -11,7 +11,7 @@ class DiagnosticReport:
     backend_failure: BackendFailure | None
     metadata: Mapping[str, Any]
     operation: str
-    status: Optional[Literal['passed', 'failed', 'partial', 'capability_failed', 'validation_failed']]
+    status: Optional[Literal['passed', 'failed', 'partial', 'indeterminate', 'capability_failed', 'validation_failed']]
     traceback: str | None
 ```
 
@@ -37,7 +37,7 @@ from kincheckapi.diagnostics import DiagnosticReport
 | `backend_failure` | `BackendFailure | None` | `None` | `backend_failure` 的公开输入或数据字段。 |
 | `metadata` | `Mapping[str, Any]` | default_factory | 附加的只读结构化元数据。 |
 | `operation` | `str` | `'diagnose'` | `operation` 的公开输入或数据字段。 |
-| `status` | `Optional[Literal['passed', 'failed', 'partial', 'capability_failed', 'validation_failed']]` | `None` | 结构化状态；按对应结果类型允许的稳定值解释。 |
+| `status` | `Optional[Literal['passed', 'failed', 'partial', 'indeterminate', 'capability_failed', 'validation_failed']]` | `None` | 结构化状态；按对应结果类型允许的稳定值解释。 |
 | `traceback` | `str | None` | `None` | `traceback` 的公开输入或数据字段。 |
 
 ## 返回与失败

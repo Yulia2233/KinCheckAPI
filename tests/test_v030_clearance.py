@@ -627,3 +627,42 @@ def test_disabling_solver_step_capture_clears_component_filter(ex3_assembly):
     disabled = scenario.set_capture_integration_steps(scenario=condition, enabled=False, component_ids=("cmp.ex3.crank",))
     assert disabled.capture_integration_steps is False
     assert disabled.integration_component_ids is None
+
+
+@pytest.mark.parametrize("offset, expected", ((0.0, True), (0.4, False), (2.0, False)))
+def test_containment_batches_match_complete_vertex_query(tmp_path, monkeypatch, offset, expected):
+    import numpy as np
+    from kincheckapi import _clearance_fcl as backend
+    assembly, _ = _fixture(tmp_path)
+    sphere = trimesh.creation.icosphere(subdivisions=3, radius=0.2)
+    sphere.apply_translation((offset, 0, 0))
+    sphere.export(tmp_path / "b.stl")
+    outer, candidate = [backend.load_mesh(assembly=assembly, part=p, asset_root=tmp_path) for p in assembly.parts]
+    surface = trimesh.Trimesh(vertices=outer.vertices, faces=outer.faces, process=False)
+    reference = bool(np.all(surface.contains(candidate.vertices)))
+    assert reference is expected
+    original = trimesh.Trimesh.contains
+    counts = []
+
+    def counted(self, points):
+        counts.append(len(points))
+        return original(self, points)
+
+    monkeypatch.setattr(trimesh.Trimesh, "contains", counted)
+    assert backend._contains_any_closed_component(outer, Pose(), candidate, Pose()) is expected
+    if expected:
+        assert sum(counts) == len(candidate.vertices)
+    if offset == 2.0:
+        assert sum(counts) < len(candidate.vertices)
+
+
+def test_containment_still_checks_later_disconnected_solids(tmp_path):
+    from kincheckapi import _clearance_fcl as backend
+    assembly, _ = _fixture(tmp_path)
+    outside = trimesh.creation.icosphere(subdivisions=2, radius=0.1)
+    outside.apply_translation((2, 0, 0))
+    inside = trimesh.creation.icosphere(subdivisions=2, radius=0.1)
+    trimesh.util.concatenate((outside, inside)).export(tmp_path / "b.stl")
+    outer, candidate = [backend.load_mesh(assembly=assembly, part=p, asset_root=tmp_path) for p in assembly.parts]
+    assert len(candidate.component_vertex_indices) == 2
+    assert backend._contains_any_closed_component(outer, Pose(), candidate, Pose())

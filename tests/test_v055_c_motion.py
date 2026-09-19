@@ -200,7 +200,7 @@ def test_pose_target_and_coordinated_profile_round_trip(ex3_assembly):
     assert restored.coordinated_profiles[0].axes["joint.ex3.ground_crank"] == (0.0, 0.1)
 
 
-def test_cartesian_driver_and_general_ik_are_explicit_capability_failures(ex3_assembly):
+def test_cartesian_driver_and_pose_trajectory_ik_are_explicit_capability_failures(ex3_assembly):
     from kincheckapi.errors import BackendCapabilityError
     target = PoseTrajectory(
         target="cmp.ex3.rocker",
@@ -212,13 +212,9 @@ def test_cartesian_driver_and_general_ik_are_explicit_capability_failures(ex3_as
     assert "CAPABILITY" in driver_error.value.code
     assert driver_error.value.operation == "add_component_pose_driver"
     assert driver_error.value.report.status == "capability_failed"
-    with pytest.raises(BackendCapabilityError) as ik_error:
-        kinematics.solve_inverse_kinematics(assembly=ex3_assembly, target=target)
-    assert "CAPABILITY" in ik_error.value.code
-    assert ik_error.value.operation == "solve_inverse_kinematics"
-    assert ik_error.value.object_ids == ("cmp.ex3.rocker",)
-    assert ik_error.value.report.status == "capability_failed"
-    assert ik_error.value.report.issues[0].evidence[0].actual == "general_inverse_kinematics"
+    ik_result = kinematics.solve_inverse_kinematics(assembly=ex3_assembly, target=target)
+    assert ik_result.status == "capability_failed"
+    assert ik_result.issues[0].code == "KINCHECK-KIN-IK-CAPABILITY-UNSUPPORTED"
 
 
 def test_diagnostic_trace_has_four_answer_fields():
@@ -229,20 +225,12 @@ def test_diagnostic_trace_has_four_answer_fields():
     assert value["how_to_fix"]
     assert "traceback" not in value
 
-def test_continuous_interference_is_an_explicit_capability_boundary():
-    from kincheckapi.errors import BackendCapabilityError
-    with pytest.raises(BackendCapabilityError) as error:
-        checks.check_continuous_interference(assembly=object(), motion_result=object())
-    assert error.value.code == "KINCHECK-CAPABILITY-UNIMPLEMENTED"
-    assert error.value.missing_capabilities == ("continuous_time_of_impact",)
-    from kincheckapi.assembly import AssemblyModel
-    suite = checks.run_checks(
-        assembly=AssemblyModel(assembly_id="a", parts=(), components=()), motion_result=_motion(),
-        checks=(checks.CheckSpec(check_id="toi", check_type="continuous_interference"),),
+def test_continuous_interference_invalid_input_is_structured():
+    report = checks.check_continuous_interference(
+        assembly=object(), motion_result=object(), component_pairs=()
     )
-    assert suite.status == "capability_failed"
-    assert suite.reports[0].status == "capability_failed"
-    assert suite.to_dict()["status"] == "capability_failed"
+    assert report.status == "validation_failed"
+    assert report.issues[0].code == "KINCHECK-CLEARANCE-CONTINUOUS-INPUT-INVALID"
 
 def test_diagnostic_trace_can_opt_in_to_native_traceback_text():
     try:

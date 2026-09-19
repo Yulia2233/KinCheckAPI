@@ -17,6 +17,7 @@ ResultStatus = Literal[
     "passed",
     "failed",
     "partial",
+    "indeterminate",
     "capability_failed",
     "validation_failed",
 ]
@@ -100,6 +101,26 @@ _GUIDANCE_BY_CODE: dict[str, AgentGuidance] = {
     "KINCHECK-CLEARANCE-TRAJECTORY-MISSING": AgentGuidance(
         operation="check_clearance",
         how_to_fix=("Record trajectories for every requested component and run the check again.",),
+    ),
+    "KINCHECK-CLEARANCE-CONTINUOUS-INPUT-INVALID": AgentGuidance(
+        operation="check_continuous_interference",
+        possible_causes=("The continuous check did not receive a complete MotionResult, explicit component pairs, or a valid time window.",),
+        how_to_fix=("Provide completed component trajectories, explicit pairs, a valid asset root, and a covered time window.",),
+    ),
+    "KINCHECK-CLEARANCE-CONTINUOUS-TOI-BRACKETED": AgentGuidance(
+        operation="check_continuous_interference",
+        possible_causes=("The continuous interval contains contact, overlap, or a clearance violation under the declared interpolation.",),
+        how_to_fix=("Inspect the reported interval and geometry, then revise the motion or declared minimum clearance.",),
+    ),
+    "KINCHECK-CLEARANCE-CONTINUOUS-TOI-INDETERMINATE": AgentGuidance(
+        operation="check_continuous_interference",
+        possible_causes=("The conservative distance bound could not prove safety within the time, query, or subdivision budget.",),
+        how_to_fix=("Increase the numerical budget, refine the recorded trajectory, or treat the interval as unresolved.",),
+    ),
+    "KINCHECK-CLEARANCE-CONTINUOUS-BACKEND-UNSUPPORTED": AgentGuidance(
+        operation="check_continuous_interference",
+        possible_causes=("The required FCL mesh-query backend is unavailable in the verification environment.",),
+        how_to_fix=("Install python-fcl, trimesh, and rtree in the KinCheckAPI environment and rerun the check.",),
     ),
     "KINCHECK-CHECK-POSE-TARGET-MISMATCH": AgentGuidance(
         operation="check_pose_target",
@@ -295,12 +316,13 @@ class DiagnosticReport(AgentReadableResult):
             "passed",
             "failed",
             "partial",
+            "indeterminate",
             "capability_failed",
             "validation_failed",
         }
         if self.status is not None and self.status not in allowed_statuses:
             raise ValueError(
-                "status must be passed, failed, partial, capability_failed, or validation_failed"
+                "status must be passed, failed, partial, indeterminate, capability_failed, or validation_failed"
             )
         object.__setattr__(self, "issues", tuple(self.issues))
         metadata = dict(self.metadata)
@@ -308,7 +330,7 @@ class DiagnosticReport(AgentReadableResult):
         status = self.status
         if status is None:
             declared = metadata.get("status")
-            if declared in {"partial", "capability_failed", "validation_failed", "failed", "passed"}:
+            if declared in {"partial", "indeterminate", "capability_failed", "validation_failed", "failed", "passed"}:
                 status = declared
             elif self.backend_failure is not None and not self.issues:
                 status = "failed"
@@ -498,6 +520,8 @@ def _result_status(result: Any) -> str:
         raw = result.status
     if raw == "partial":
         return "partial"
+    if raw == "indeterminate":
+        return "indeterminate"
     if raw == "capability_failed":
         return "capability_failed"
     if raw == "validation_failed":
@@ -986,10 +1010,16 @@ def assert_check_passed(*, check: Any) -> None:
     elif isinstance(existing_report, DiagnosticReport) and existing_report.issues == issues:
         report = existing_report
     else:
+        result_status = _result_status(check)
+        report_status = (
+            result_status
+            if result_status in {"failed", "partial", "indeterminate", "capability_failed", "validation_failed"}
+            else "validation_failed"
+        )
         report = DiagnosticReport(
             issues=issues,
             operation=_result_operation(check),
-            status=("partial" if _result_status(check) == "partial" else "validation_failed"),
+            status=report_status,
             metadata={"source_result_type": type(check).__name__},
         )
     # Local import prevents the diagnostics/error type dependency becoming cyclic.

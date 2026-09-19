@@ -31,7 +31,7 @@ Turn user claims into structured, reviewable kinematic acceptance checks.
 | [`check_start_stop_reversal`](check_start_stop_reversal.md) | Function | Execute a structured check: `check_start_stop_reversal`. |
 | [`check_periodic_motion`](check_periodic_motion.md) | Function | Execute a structured check: `check_periodic_motion`. |
 | [`check_synchronization`](check_synchronization.md) | Function | Execute a structured check: `check_synchronization`. |
-| [`check_continuous_interference`](check_continuous_interference.md) | Function | Explicit capability boundary for continuous time-of-impact checking. |
+| [`check_continuous_interference`](check_continuous_interference.md) | Function | Check explicit component pairs between recorded trajectory samples. |
 | [`check_trajectory`](check_trajectory.md) | Function | Check sampled trajectory ranges without modifying the result. |
 | [`check_transmission_ratio`](check_transmission_ratio.md) | Function | Compare two explicit joint curves after deterministic time alignment. |
 | [`run_checks`](run_checks.md) | Function | Execute explicit acceptance claims in `CheckSpec` order and return a `CheckSuiteReport`. |

@@ -61,3 +61,12 @@ examples/*/model_*/source/state/
 # Preserve the slider-crank package used by the standalone viewer example.
 !examples/slider_crank/output/
 !examples/slider_crank/output/*.kincheck
+
+# Preserve the complete guided four-bar CADIR package and verified replay.
+!examples/guided_four_bar_actuator/model/out/
+!examples/guided_four_bar_actuator/model/out/*.scadpkg
+!examples/guided_four_bar_actuator/output/
+!examples/guided_four_bar_actuator/output/*.kincheck
+!examples/guided_four_bar_actuator/output/verification.json
+examples/guided_four_bar_actuator/model/out/.cache/
+examples/guided_four_bar_actuator/model/out/state/

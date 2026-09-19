@@ -31,7 +31,7 @@
 | [`check_start_stop_reversal`](check_start_stop_reversal.md) | 函数 | 执行结构化检查：`check_start_stop_reversal`。 |
 | [`check_periodic_motion`](check_periodic_motion.md) | 函数 | 执行结构化检查：`check_periodic_motion`。 |
 | [`check_synchronization`](check_synchronization.md) | 函数 | 执行结构化检查：`check_synchronization`。 |
-| [`check_continuous_interference`](check_continuous_interference.md) | 函数 | 执行结构化检查：`check_continuous_interference`。 |
+| [`check_continuous_interference`](check_continuous_interference.md) | 函数 | 在声明的分段刚体位姿插值下，跨相邻轨迹样本保守地检查显式组件对，并返回 TOI 区间证据。 |
 | [`check_trajectory`](check_trajectory.md) | 函数 | 执行结构化检查：`check_trajectory`。 |
 | [`check_transmission_ratio`](check_transmission_ratio.md) | 函数 | 执行结构化检查：`check_transmission_ratio`。 |
 | [`run_checks`](run_checks.md) | 函数 | 按 `CheckSpec` 顺序执行显式验收命题，返回 `CheckSuiteReport`。 |

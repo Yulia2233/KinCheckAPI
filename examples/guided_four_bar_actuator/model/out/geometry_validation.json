@@ -1,0 +1,177 @@
+[
+  {
+    "bounding_box_mm": [
+      -18.000000100000015,
+      -21.000000100000015,
+      -12.003299918834978,
+      58.000000100000015,
+      21.000000100000015,
+      2.011732789191015
+    ],
+    "counts": {
+      "closed_shell": 1,
+      "edge_occurrences": 72,
+      "face_occurrences": 16,
+      "open_shell": 0,
+      "shell": 1,
+      "solid": 1,
+      "unique_edges": 36,
+      "unique_faces": 16,
+      "unique_vertices": 24,
+      "vertex_occurrences": 144
+    },
+    "part_id": "base",
+    "valid": true,
+    "volume_mm3": 27014.056511660925
+  },
+  {
+    "bounding_box_mm": [
+      -5.000000100000041,
+      -5.0140129468778225,
+      2.9859870531221775,
+      25.00000010000005,
+      5.0140129468778225,
+      7.0140129468778225
+    ],
+    "counts": {
+      "closed_shell": 1,
+      "edge_occurrences": 340,
+      "face_occurrences": 54,
+      "open_shell": 0,
+      "shell": 1,
+      "solid": 1,
+      "unique_edges": 172,
+      "unique_faces": 54,
+      "unique_vertices": 120,
+      "vertex_occurrences": 680
+    },
+    "part_id": "crank",
+    "valid": true,
+    "volume_mm3": 562.5974085622582
+  },
+  {
+    "bounding_box_mm": [
+      -5.0000001000000776,
+      -5.014012946877818,
+      7.98598705312218,
+      55.00000010000008,
+      5.01401294687782,
+      12.01401294687782
+    ],
+    "counts": {
+      "closed_shell": 1,
+      "edge_occurrences": 340,
+      "face_occurrences": 54,
+      "open_shell": 0,
+      "shell": 1,
+      "solid": 1,
+      "unique_edges": 172,
+      "unique_faces": 54,
+      "unique_vertices": 120,
+      "vertex_occurrences": 680
+    },
+    "part_id": "coupler",
+    "valid": true,
+    "volume_mm3": 1077.3974085622363
+  },
+  {
+    "bounding_box_mm": [
+      -5.00000010000003,
+      -5.014012946877817,
+      2.9859870531221824,
+      40.00000010000003,
+      5.014012946877818,
+      7.014012946877818
+    ],
+    "counts": {
+      "closed_shell": 1,
+      "edge_occurrences": 340,
+      "face_occurrences": 54,
+      "open_shell": 0,
+      "shell": 1,
+      "solid": 1,
+      "unique_edges": 172,
+      "unique_faces": 54,
+      "unique_vertices": 120,
+      "vertex_occurrences": 680
+    },
+    "part_id": "rocker",
+    "valid": true,
+    "volume_mm3": 819.9974085622695
+  },
+  {
+    "bounding_box_mm": [
+      -3.4000001000000046,
+      -2.9444864728670948,
+      -11.002933272297753,
+      3.4000001000000046,
+      2.9444864728670948,
+      9.900000100000003
+    ],
+    "counts": {
+      "closed_shell": 1,
+      "edge_occurrences": 60,
+      "face_occurrences": 16,
+      "open_shell": 0,
+      "shell": 1,
+      "solid": 1,
+      "unique_edges": 30,
+      "unique_faces": 16,
+      "unique_vertices": 20,
+      "vertex_occurrences": 120
+    },
+    "part_id": "ground_pin",
+    "valid": true,
+    "volume_mm3": 314.1676323999948
+  },
+  {
+    "bounding_box_mm": [
+      -3.4000001000000046,
+      -2.9444864728670948,
+      3.197066727702247,
+      3.4000001000000046,
+      2.9444864728670948,
+      14.900000100000003
+    ],
+    "counts": {
+      "closed_shell": 1,
+      "edge_occurrences": 60,
+      "face_occurrences": 16,
+      "open_shell": 0,
+      "shell": 1,
+      "solid": 1,
+      "unique_edges": 30,
+      "unique_faces": 16,
+      "unique_vertices": 20,
+      "vertex_occurrences": 120
+    },
+    "part_id": "link_pin",
+    "valid": true,
+    "volume_mm3": 198.55702274789036
+  },
+  {
+    "bounding_box_mm": [
+      -14.000000100000003,
+      -21.500000100000005,
+      -4.000000100000004,
+      50.0000001,
+      -16.499999899999995,
+      16.000000100000005
+    ],
+    "counts": {
+      "closed_shell": 1,
+      "edge_occurrences": 168,
+      "face_occurrences": 30,
+      "open_shell": 0,
+      "shell": 1,
+      "solid": 1,
+      "unique_edges": 84,
+      "unique_faces": 30,
+      "unique_vertices": 56,
+      "vertex_occurrences": 336
+    },
+    "part_id": "guard",
+    "valid": true,
+    "volume_mm3": 2068.0
+  }
+]

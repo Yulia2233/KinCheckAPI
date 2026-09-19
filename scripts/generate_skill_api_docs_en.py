@@ -48,6 +48,10 @@ MODULES: dict[str, dict[str, str]] = {
         "title": "Geometric Safety",
         "summary": "Check mesh interference, minimum clearance, and motion envelopes at discrete motion samples.",
     },
+    "continuous_result": {
+        "title": "Continuous Collision Evidence",
+        "summary": "Define conservative continuous-interference options, contact events, and auditable reports across trajectory intervals.",
+    },
     "result": {
         "title": "Result Models and Queries",
         "summary": "Read status, trajectories, residuals, and event evidence from MotionResult objects.",
@@ -130,8 +134,13 @@ MODULE_RULES: dict[str, tuple[str, ...]] = {
     ),
     "clearance": (
         "Specify component pairs or scope, `asset_root`, time window, and tolerance explicitly.",
-        "Results come from triangle meshes and discrete time samples; they are not continuous-time collision proofs.",
+        "Discrete interference, minimum-clearance, and envelope results use sampled states; call `check_continuous_interference()` explicitly for cross-sample evidence.",
         "Do not interpret empty pairs, empty samples, missing meshes, or partial motion as a safety pass.",
+    ),
+    "continuous_result": (
+        "A continuous pass is conditional on the declared pose interpolation and piecewise velocity bound; it does not cover unrecorded deformable or dynamic motion.",
+        "`failed` records contact or clearance violation; `indeterminate` means the budget, time axis, or geometric evidence cannot prove safety.",
+        "Persist the event certainty, query/subdivision counts, options, and interval evidence with every report.",
     ),
     "result": (
         "Read only objects and samples actually recorded in MotionResult; never infer a pass from empty results.",
@@ -500,7 +509,7 @@ def page(module_name: str, import_module: str, name: str, value: Any) -> str:
         lines.extend(enum_section(value))
         lines.append("")
     lines.extend(["## Returns and Failures", "", returns_text(value, kind), ""])
-    if module_name in {"checks", "clearance", "kinematics", "diagnostics"}:
+    if module_name in {"checks", "clearance", "continuous_result", "kinematics", "diagnostics"}:
         lines.extend(
             [
                 "Issues, status, sample counts, and actual measurements in a structured result are part of the contract; do not check only whether the call raised an exception.",

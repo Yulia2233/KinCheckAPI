@@ -61,6 +61,7 @@ from .kinematics_analysis import (
     WorkspaceSample,
 )
 from .kinematics_limits import detect_limit_events
+from .kinematics_ik import IKOptions, IKSolution, IKSolutionSet, solve_inverse_kinematics
 
 
 Member = Literal["sun", "ring", "carrier"]
@@ -115,6 +116,7 @@ class KinematicCapabilities:
         "start_stop_reversal": True,
         "synchronization": True,
         "pose_trajectory_driver": False,
+        "scalar_inverse_kinematics": True,
         "general_inverse_kinematics": False,
         "continuous_time_of_impact": False,
     })
@@ -1913,18 +1915,6 @@ def write_motion_result(*, motion_result: MotionResult, path: str | Path) -> Non
     write_result(motion_result=motion_result, path=path)
 
 
-def solve_inverse_kinematics(*, assembly: AssemblyModel, target: Any, initial_joint_positions: Mapping[str, float] | None = None, joint_limits: Mapping[str, Sequence[float]] | None = None, solution_selection: str = "first") -> Any:
-    """Explicit capability boundary for the not-yet-implemented general IK solver."""
-    target_id = getattr(target, "component_id", None)
-    if not target_id:
-        target_id = getattr(getattr(target, "target", None), "component_id", "")
-    _raise_unimplemented(
-        capability="general_inverse_kinematics",
-        object_ids=(str(target_id),) if target_id else (),
-        operation="solve_inverse_kinematics",
-    )
-
-
 __all__ = [
     "KinematicSolveOptions",
     "KinematicCapabilities",
@@ -1962,4 +1952,7 @@ __all__ = [
     "verify_transmission_ratio",
     "write_motion_result",
     "solve_inverse_kinematics",
+    "IKOptions",
+    "IKSolution",
+    "IKSolutionSet",
 ]
