@@ -1,2 +1,4 @@
 examples/compact_two_stage_planetary_reducer/model_before/*.scadpkg filter=lfs diff=lfs merge=lfs -text
 examples/compact_two_stage_planetary_reducer/model_after/*.scadpkg filter=lfs diff=lfs merge=lfs -text
+examples/dynamics_loaded_arm/**/*.scadpkg filter=lfs diff=lfs merge=lfs -text
+examples/dynamics_loaded_arm/**/*.kincheck filter=lfs diff=lfs merge=lfs -text

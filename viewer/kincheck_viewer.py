@@ -184,7 +184,9 @@ def unpack_package(
         assets.mkdir(exist_ok=True)
         static_source = Path(__file__).with_name("static")
         if not static_source.is_dir():
-            raise ViewerPackageError(f"viewer static resources are missing: {static_source}")
+            raise ViewerPackageError(
+                f"viewer static resources are missing: {static_source}"
+            )
         shutil.copytree(static_source, destination / "static", dirs_exist_ok=True)
         shutil.copy2(static_source / "index.html", destination / "index.html")
         parts = {
@@ -251,8 +253,14 @@ def unpack_package(
                 }
             )
 
+        physics = (
+            _read_json(archive, manifest["physics_path"])
+            if manifest.get("physics_path")
+            else None
+        )
         viewer_manifest = {
             "schema_version": VIEWER_SCHEMA_VERSION,
+            "physics": physics,
             "title": title or manifest.get("title") or manifest.get("assembly_id"),
             "assembly_id": manifest.get("assembly_id"),
             "scenario_id": manifest.get("scenario_id"),
@@ -260,6 +268,9 @@ def unpack_package(
             "start_time_s": motion.get("start_time_s", 0.0),
             "end_time_s": motion.get("end_time_s", 0.0),
             "sample_count": len(motion.get("sample_times_s", ())),
+            "physics_case_count": len(physics.get("static_results", ()))
+            if physics
+            else 0,
             "component_result_scope": motion_metadata.get(
                 "component_result_scope", "requested"
             ),
@@ -272,11 +283,17 @@ def unpack_package(
             "workspace": workspace,
             "metrics": {
                 "input": _joint_payload(
-                    {str(item["joint_id"]): item for item in motion.get("joint_trajectories", ())},
+                    {
+                        str(item["joint_id"]): item
+                        for item in motion.get("joint_trajectories", ())
+                    },
                     input_joint_id,
                 ),
                 "output": _joint_payload(
-                    {str(item["joint_id"]): item for item in motion.get("joint_trajectories", ())},
+                    {
+                        str(item["joint_id"]): item
+                        for item in motion.get("joint_trajectories", ())
+                    },
                     output_joint_id,
                 ),
                 "expected_ratio": expected_ratio,
@@ -285,11 +302,17 @@ def unpack_package(
                 "ratio_mode": ratio_mode,
                 "ratio_unit": ratio_unit,
                 "maximum_position_residual_m": max(
-                    (float(item.get("position_residual_m", 0.0)) for item in motion.get("constraint_residuals", ())),
+                    (
+                        float(item.get("position_residual_m", 0.0))
+                        for item in motion.get("constraint_residuals", ())
+                    ),
                     default=0.0,
                 ),
                 "maximum_orientation_residual_rad": max(
-                    (float(item.get("orientation_residual_rad", 0.0)) for item in motion.get("constraint_residuals", ())),
+                    (
+                        float(item.get("orientation_residual_rad", 0.0))
+                        for item in motion.get("constraint_residuals", ())
+                    ),
                     default=0.0,
                 ),
             },
@@ -297,7 +320,8 @@ def unpack_package(
             "missing_asset_component_ids": missing_components,
         }
         (destination / "viewer.json").write_text(
-            json.dumps(viewer_manifest, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
+            json.dumps(viewer_manifest, ensure_ascii=True, indent=2, sort_keys=True)
+            + "\n",
             encoding="utf-8",
         )
     return destination / "index.html"
@@ -327,17 +351,25 @@ def serve(*, root: Path, host: str, port: int, open_browser: bool) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Play a KinCheck .kincheck motion package")
+    parser = argparse.ArgumentParser(
+        description="Play a KinCheck .kincheck motion package"
+    )
     parser.add_argument("package", type=Path, help="path to a .kincheck file")
-    parser.add_argument("--output", type=Path, help="viewer directory (default: viewer/runtime/<name>)")
+    parser.add_argument(
+        "--output", type=Path, help="viewer directory (default: viewer/runtime/<name>)"
+    )
     parser.add_argument("--input-joint", help="joint ID shown as the input speed")
     parser.add_argument("--output-joint", help="joint ID shown as the output speed")
     parser.add_argument("--expected-ratio", type=float)
     parser.add_argument("--title")
-    parser.add_argument("--serve", action="store_true", help="start a local web server after unpacking")
+    parser.add_argument(
+        "--serve", action="store_true", help="start a local web server after unpacking"
+    )
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8767)
-    parser.add_argument("--no-open", action="store_true", help="do not open a browser window")
+    parser.add_argument(
+        "--no-open", action="store_true", help="do not open a browser window"
+    )
     args = parser.parse_args()
     output = args.output or Path(__file__).with_name("runtime") / args.package.stem
     try:
@@ -349,11 +381,23 @@ def main() -> None:
             expected_ratio=args.expected_ratio,
             title=args.title,
         )
-    except (OSError, zipfile.BadZipFile, ViewerPackageError, KeyError, TypeError, ValueError) as cause:
+    except (
+        OSError,
+        zipfile.BadZipFile,
+        ViewerPackageError,
+        KeyError,
+        TypeError,
+        ValueError,
+    ) as cause:
         parser.error(str(cause))
     print(f"Unpacked viewer: {index}")
     if args.serve:
-        serve(root=index.parent, host=args.host, port=args.port, open_browser=not args.no_open)
+        serve(
+            root=index.parent,
+            host=args.host,
+            port=args.port,
+            open_browser=not args.no_open,
+        )
 
 
 if __name__ == "__main__":

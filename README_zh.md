@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-当前版本：**0.5.7**。[v0.5.7 更新说明](doc/updates/v0.5.7.md) 介绍连续碰撞/TOI、复审修复、网格包含检测优化和完整四连杆验证；有界数值逆运动学的范围与用法见 [v0.5.6 更新说明](doc/updates/v0.5.6.md)。
+当前版本：**0.6.0**。[v0.6.0 更新](doc/updates/v0.6.0.md)。[v0.5.7 更新说明](doc/updates/v0.5.7.md) 介绍连续碰撞/TOI、复审修复、网格包含检测优化和完整四连杆验证；有界数值逆运动学的范围与用法见 [v0.5.6 更新说明](doc/updates/v0.5.6.md)。
 
 [English](README.md) | 简体中文
 
@@ -174,3 +174,7 @@ package = export.motion_package(
 )
 loaded = export.read_package(path=package.path)
 ```
+
+## v0.6.0 真实物性与静力
+
+本版交付 [E01 带载摆臂](examples/dynamics_loaded_arm/README.md)：CADIR 密度与封闭 BREP 积分、逐 occurrence 惯量、后端显式惯量、树形静力、局部 BREP 接触区域和带哈希物理结果包。未宣称逆/正动力学、接触响应、结构强度、振动或疲劳。详见[物性与静力](skill_zh/doc/guides/physical-statics.md)、[E01 requirements](examples/dynamics_loaded_arm/requirements.md)、[验证程序](examples/dynamics_loaded_arm/verification/verify.py)和[静力证据](examples/dynamics_loaded_arm/output/verification.json)。

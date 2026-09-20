@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="dynamics_loaded_arm">
+  <compiler angle="radian" coordinate="local" />
+  <option gravity="0 0 -9.81" />
+  <asset>
+    <mesh name="mesh_arm" file="meshes/mesh_arm.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_base" file="meshes/mesh_base.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_bushing_left" file="meshes/mesh_bushing_left.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_bushing_right" file="meshes/mesh_bushing_right.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_coupling" file="meshes/mesh_coupling.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_coupling_screw_n94" file="meshes/mesh_coupling_screw_n94.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_ear_screw_290" file="meshes/mesh_ear_screw_290.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_left_33_18_washer" file="meshes/mesh_foot_left_33_18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_left_33_n18_washer" file="meshes/mesh_foot_left_33_n18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_left_n33_18_washer" file="meshes/mesh_foot_left_n33_18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_left_n33_n18" file="meshes/mesh_foot_left_n33_n18.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_left_n33_n18_washer" file="meshes/mesh_foot_left_n33_n18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_right_33_18_washer" file="meshes/mesh_foot_right_33_18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_right_33_n18_washer" file="meshes/mesh_foot_right_33_n18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_right_n33_18_washer" file="meshes/mesh_foot_right_n33_18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foot_right_n33_n18_washer" file="meshes/mesh_foot_right_n33_n18_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foundation_300_85_washer" file="meshes/mesh_foundation_300_85_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foundation_300_n85_washer" file="meshes/mesh_foundation_300_n85_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foundation_n25_85_washer" file="meshes/mesh_foundation_n25_85_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foundation_n25_n85" file="meshes/mesh_foundation_n25_n85.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_foundation_n25_n85_washer" file="meshes/mesh_foundation_n25_n85_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_guard" file="meshes/mesh_guard.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_hub_clamp" file="meshes/mesh_hub_clamp.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_hub_nut" file="meshes/mesh_hub_nut.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_key" file="meshes/mesh_key.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_load_ear" file="meshes/mesh_load_ear.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_lock_ring" file="meshes/mesh_lock_ring.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_bearing_0" file="meshes/mesh_motor_bearing_0.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_foot_50_n100_washer" file="meshes/mesh_motor_foot_50_n100_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_foot_50_n84_washer" file="meshes/mesh_motor_foot_50_n84_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_foot_n36_n100" file="meshes/mesh_motor_foot_n36_n100.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_foot_n36_n100_washer" file="meshes/mesh_motor_foot_n36_n100_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_foot_n36_n84_washer" file="meshes/mesh_motor_foot_n36_n84_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_guard_n20_240" file="meshes/mesh_motor_guard_n20_240.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_mount" file="meshes/mesh_motor_mount.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_rotor" file="meshes/mesh_motor_rotor.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_motor_stator" file="meshes/mesh_motor_stator.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_payload" file="meshes/mesh_payload.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_payload_screw_275_20_washer" file="meshes/mesh_payload_screw_275_20_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_payload_screw_275_n20" file="meshes/mesh_payload_screw_275_n20.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_payload_screw_275_n20_washer" file="meshes/mesh_payload_screw_275_n20_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_payload_screw_325_20_washer" file="meshes/mesh_payload_screw_325_20_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_payload_screw_325_n20_washer" file="meshes/mesh_payload_screw_325_n20_washer.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_platform" file="meshes/mesh_platform.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_platform_screw_282_n10" file="meshes/mesh_platform_screw_282_n10.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_ring_screw" file="meshes/mesh_ring_screw.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_shaft" file="meshes/mesh_shaft.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_support_left" file="meshes/mesh_support_left.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_support_right" file="meshes/mesh_support_right.obj" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_thrust_right" file="meshes/mesh_thrust_right.obj" scale="0.001 0.001 0.001" />
+  </asset>
+  <worldbody>
+    <geom name="base" type="mesh" mesh="mesh_base" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <geom name="bushing_left" type="mesh" mesh="mesh_bushing_left" density="7850" contype="1" conaffinity="1" pos="0 0.034 0.26" quat="1 0 0 0" />
+    <geom name="bushing_right" type="mesh" mesh="mesh_bushing_right" density="7850" contype="1" conaffinity="1" pos="0 -0.034 0.26" quat="0 0 0 1" />
+    <geom name="foot_left_33_18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="0.033 0.068 0.03" quat="1 0 0 0" />
+    <geom name="foot_left_33_18_washer" type="mesh" mesh="mesh_foot_left_33_18_washer" density="7850" contype="1" conaffinity="1" pos="0.033 0.068 0.028" quat="1 0 0 0" />
+    <geom name="foot_left_33_n18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="0.033 0.032 0.03" quat="1 0 0 0" />
+    <geom name="foot_left_33_n18_washer" type="mesh" mesh="mesh_foot_left_33_n18_washer" density="7850" contype="1" conaffinity="1" pos="0.033 0.032 0.028" quat="1 0 0 0" />
+    <geom name="foot_left_n33_18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="-0.033 0.068 0.03" quat="1 0 0 0" />
+    <geom name="foot_left_n33_18_washer" type="mesh" mesh="mesh_foot_left_n33_18_washer" density="7850" contype="1" conaffinity="1" pos="-0.033 0.068 0.028" quat="1 0 0 0" />
+    <geom name="foot_left_n33_n18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="-0.033 0.032 0.03" quat="1 0 0 0" />
+    <geom name="foot_left_n33_n18_washer" type="mesh" mesh="mesh_foot_left_n33_n18_washer" density="7850" contype="1" conaffinity="1" pos="-0.033 0.032 0.028" quat="1 0 0 0" />
+    <geom name="foot_right_33_18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="0.033 -0.032 0.03" quat="1 0 0 0" />
+    <geom name="foot_right_33_18_washer" type="mesh" mesh="mesh_foot_right_33_18_washer" density="7850" contype="1" conaffinity="1" pos="0.033 -0.032 0.028" quat="1 0 0 0" />
+    <geom name="foot_right_33_n18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="0.033 -0.068 0.03" quat="1 0 0 0" />
+    <geom name="foot_right_33_n18_washer" type="mesh" mesh="mesh_foot_right_33_n18_washer" density="7850" contype="1" conaffinity="1" pos="0.033 -0.068 0.028" quat="1 0 0 0" />
+    <geom name="foot_right_n33_18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="-0.033 -0.032 0.03" quat="1 0 0 0" />
+    <geom name="foot_right_n33_18_washer" type="mesh" mesh="mesh_foot_right_n33_18_washer" density="7850" contype="1" conaffinity="1" pos="-0.033 -0.032 0.028" quat="1 0 0 0" />
+    <geom name="foot_right_n33_n18" type="mesh" mesh="mesh_foot_left_n33_n18" density="7850" contype="1" conaffinity="1" pos="-0.033 -0.068 0.03" quat="1 0 0 0" />
+    <geom name="foot_right_n33_n18_washer" type="mesh" mesh="mesh_foot_right_n33_n18_washer" density="7850" contype="1" conaffinity="1" pos="-0.033 -0.068 0.028" quat="1 0 0 0" />
+    <geom name="foundation_300_85" type="mesh" mesh="mesh_foundation_n25_n85" density="7850" contype="1" conaffinity="1" pos="0.3 0.085 0.018" quat="1 0 0 0" />
+    <geom name="foundation_300_85_washer" type="mesh" mesh="mesh_foundation_300_85_washer" density="7850" contype="1" conaffinity="1" pos="0.3 0.085 0.016" quat="1 0 0 0" />
+    <geom name="foundation_300_n85" type="mesh" mesh="mesh_foundation_n25_n85" density="7850" contype="1" conaffinity="1" pos="0.3 -0.085 0.018" quat="1 0 0 0" />
+    <geom name="foundation_300_n85_washer" type="mesh" mesh="mesh_foundation_300_n85_washer" density="7850" contype="1" conaffinity="1" pos="0.3 -0.085 0.016" quat="1 0 0 0" />
+    <geom name="foundation_n25_85" type="mesh" mesh="mesh_foundation_n25_n85" density="7850" contype="1" conaffinity="1" pos="-0.025 0.085 0.018" quat="1 0 0 0" />
+    <geom name="foundation_n25_85_washer" type="mesh" mesh="mesh_foundation_n25_85_washer" density="7850" contype="1" conaffinity="1" pos="-0.025 0.085 0.016" quat="1 0 0 0" />
+    <geom name="foundation_n25_n85" type="mesh" mesh="mesh_foundation_n25_n85" density="7850" contype="1" conaffinity="1" pos="-0.025 -0.085 0.018" quat="1 0 0 0" />
+    <geom name="foundation_n25_n85_washer" type="mesh" mesh="mesh_foundation_n25_n85_washer" density="7850" contype="1" conaffinity="1" pos="-0.025 -0.085 0.016" quat="1 0 0 0" />
+    <geom name="guard" type="mesh" mesh="mesh_guard" density="2700" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <geom name="motor_bearing_0" type="mesh" mesh="mesh_motor_bearing_0" density="7850" contype="1" conaffinity="1" pos="0 -0.153 0.26" quat="0.707106781187 -0.707106781187 -0 0" />
+    <geom name="motor_bearing_1" type="mesh" mesh="mesh_motor_bearing_0" density="7850" contype="1" conaffinity="1" pos="0 -0.115 0.26" quat="0.707106781187 -0.707106781187 -0 0" />
+    <geom name="motor_foot_50_n100" type="mesh" mesh="mesh_motor_foot_n36_n100" density="7850" contype="1" conaffinity="1" pos="0.05 -0.1 0.03" quat="1 0 0 0" />
+    <geom name="motor_foot_50_n100_washer" type="mesh" mesh="mesh_motor_foot_50_n100_washer" density="7850" contype="1" conaffinity="1" pos="0.05 -0.1 0.028" quat="1 0 0 0" />
+    <geom name="motor_foot_50_n84" type="mesh" mesh="mesh_motor_foot_n36_n100" density="7850" contype="1" conaffinity="1" pos="0.05 -0.084 0.03" quat="1 0 0 0" />
+    <geom name="motor_foot_50_n84_washer" type="mesh" mesh="mesh_motor_foot_50_n84_washer" density="7850" contype="1" conaffinity="1" pos="0.05 -0.084 0.028" quat="1 0 0 0" />
+    <geom name="motor_foot_n36_n100" type="mesh" mesh="mesh_motor_foot_n36_n100" density="7850" contype="1" conaffinity="1" pos="-0.036 -0.1 0.03" quat="1 0 0 0" />
+    <geom name="motor_foot_n36_n100_washer" type="mesh" mesh="mesh_motor_foot_n36_n100_washer" density="7850" contype="1" conaffinity="1" pos="-0.036 -0.1 0.028" quat="1 0 0 0" />
+    <geom name="motor_foot_n36_n84" type="mesh" mesh="mesh_motor_foot_n36_n100" density="7850" contype="1" conaffinity="1" pos="-0.036 -0.084 0.03" quat="1 0 0 0" />
+    <geom name="motor_foot_n36_n84_washer" type="mesh" mesh="mesh_motor_foot_n36_n84_washer" density="7850" contype="1" conaffinity="1" pos="-0.036 -0.084 0.028" quat="1 0 0 0" />
+    <geom name="motor_guard_20_240" type="mesh" mesh="mesh_motor_guard_n20_240" density="7850" contype="1" conaffinity="1" pos="0.02 -0.1 0.24" quat="0.707106781187 -0.707106781187 -0 0" />
+    <geom name="motor_guard_20_280" type="mesh" mesh="mesh_motor_guard_n20_240" density="7850" contype="1" conaffinity="1" pos="0.02 -0.1 0.28" quat="0.707106781187 -0.707106781187 -0 0" />
+    <geom name="motor_guard_n20_240" type="mesh" mesh="mesh_motor_guard_n20_240" density="7850" contype="1" conaffinity="1" pos="-0.02 -0.1 0.24" quat="0.707106781187 -0.707106781187 -0 0" />
+    <geom name="motor_guard_n20_280" type="mesh" mesh="mesh_motor_guard_n20_240" density="7850" contype="1" conaffinity="1" pos="-0.02 -0.1 0.28" quat="0.707106781187 -0.707106781187 -0 0" />
+    <geom name="motor_mount" type="mesh" mesh="mesh_motor_mount" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <geom name="motor_stator" type="mesh" mesh="mesh_motor_stator" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <geom name="support_left" type="mesh" mesh="mesh_support_left" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <geom name="support_right" type="mesh" mesh="mesh_support_right" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+    <body name="body_arm" pos="0 0 0" quat="1 0 0 0">
+      <joint name="joint_joint_dynamics_loaded_arm_support_left_to_arm_685164ca01d9" type="hinge" pos="0 0 0.26" axis="0 -1 0" limited="true" range="-0.349065850399 1.0471975512" />
+      <geom name="arm" type="mesh" mesh="mesh_arm" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="coupling" type="mesh" mesh="mesh_coupling" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="coupling_screw_n81" type="mesh" mesh="mesh_coupling_screw_n94" density="7850" contype="1" conaffinity="1" pos="0.014 -0.081 0.26" quat="0.5 0.5 0.5 0.5" />
+      <geom name="coupling_screw_n94" type="mesh" mesh="mesh_coupling_screw_n94" density="7850" contype="1" conaffinity="1" pos="0.014 -0.094 0.26" quat="0.5 0.5 0.5 0.5" />
+      <geom name="ear_screw_290" type="mesh" mesh="mesh_ear_screw_290" density="7850" contype="1" conaffinity="1" pos="0.29 0.035 0.304" quat="1 0 0 0" />
+      <geom name="ear_screw_310" type="mesh" mesh="mesh_ear_screw_290" density="7850" contype="1" conaffinity="1" pos="0.31 0.035 0.304" quat="1 0 0 0" />
+      <geom name="hub_clamp" type="mesh" mesh="mesh_hub_clamp" density="7850" contype="1" conaffinity="1" pos="-0.026 0 0.268" quat="1 0 0 0" />
+      <geom name="hub_nut" type="mesh" mesh="mesh_hub_nut" density="7850" contype="1" conaffinity="1" pos="-0.026 0 0.246" quat="1 0 0 0" />
+      <geom name="key" type="mesh" mesh="mesh_key" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="load_ear" type="mesh" mesh="mesh_load_ear" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="lock_ring" type="mesh" mesh="mesh_lock_ring" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="motor_rotor" type="mesh" mesh="mesh_motor_rotor" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="payload" type="mesh" mesh="mesh_payload" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="payload_screw_275_20" type="mesh" mesh="mesh_payload_screw_275_n20" density="7850" contype="1" conaffinity="1" pos="0.275 0.02 0.383954349062" quat="1 0 0 0" />
+      <geom name="payload_screw_275_20_washer" type="mesh" mesh="mesh_payload_screw_275_20_washer" density="7850" contype="1" conaffinity="1" pos="0.275 0.02 0.381954349062" quat="1 0 0 0" />
+      <geom name="payload_screw_275_n20" type="mesh" mesh="mesh_payload_screw_275_n20" density="7850" contype="1" conaffinity="1" pos="0.275 -0.02 0.383954349062" quat="1 0 0 0" />
+      <geom name="payload_screw_275_n20_washer" type="mesh" mesh="mesh_payload_screw_275_n20_washer" density="7850" contype="1" conaffinity="1" pos="0.275 -0.02 0.381954349062" quat="1 0 0 0" />
+      <geom name="payload_screw_325_20" type="mesh" mesh="mesh_payload_screw_275_n20" density="7850" contype="1" conaffinity="1" pos="0.325 0.02 0.383954349062" quat="1 0 0 0" />
+      <geom name="payload_screw_325_20_washer" type="mesh" mesh="mesh_payload_screw_325_20_washer" density="7850" contype="1" conaffinity="1" pos="0.325 0.02 0.381954349062" quat="1 0 0 0" />
+      <geom name="payload_screw_325_n20" type="mesh" mesh="mesh_payload_screw_275_n20" density="7850" contype="1" conaffinity="1" pos="0.325 -0.02 0.383954349062" quat="1 0 0 0" />
+      <geom name="payload_screw_325_n20_washer" type="mesh" mesh="mesh_payload_screw_325_n20_washer" density="7850" contype="1" conaffinity="1" pos="0.325 -0.02 0.381954349062" quat="1 0 0 0" />
+      <geom name="platform" type="mesh" mesh="mesh_platform" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="platform_screw_282_10" type="mesh" mesh="mesh_platform_screw_282_n10" density="7850" contype="1" conaffinity="1" pos="0.282 0.01 0.3" quat="1 0 0 0" />
+      <geom name="platform_screw_282_n10" type="mesh" mesh="mesh_platform_screw_282_n10" density="7850" contype="1" conaffinity="1" pos="0.282 -0.01 0.3" quat="1 0 0 0" />
+      <geom name="platform_screw_294_10" type="mesh" mesh="mesh_platform_screw_282_n10" density="7850" contype="1" conaffinity="1" pos="0.294 0.01 0.3" quat="1 0 0 0" />
+      <geom name="platform_screw_294_n10" type="mesh" mesh="mesh_platform_screw_282_n10" density="7850" contype="1" conaffinity="1" pos="0.294 -0.01 0.3" quat="1 0 0 0" />
+      <geom name="ring_screw" type="mesh" mesh="mesh_ring_screw" density="7850" contype="1" conaffinity="1" pos="0.013 0.0735 0.26" quat="0.5 0.5 0.5 0.5" />
+      <geom name="shaft" type="mesh" mesh="mesh_shaft" density="7850" contype="1" conaffinity="1" pos="0 0 0" quat="1 0 0 0" />
+      <geom name="thrust_left" type="mesh" mesh="mesh_thrust_right" density="7850" contype="1" conaffinity="1" pos="0 -0.071 0.26" quat="0.707106781187 -0.707106781187 -0 0" />
+      <geom name="thrust_right" type="mesh" mesh="mesh_thrust_right" density="7850" contype="1" conaffinity="1" pos="0 0.069 0.26" quat="0.707106781187 -0.707106781187 -0 0" />
+    </body>
+  </worldbody>
+</mujoco>

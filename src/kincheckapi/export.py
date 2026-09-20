@@ -27,6 +27,7 @@ from .assembly import (
     validate_assembly,
 )
 from .diagnostics import Evidence, SimIssue, ValidationResult
+from .physics_types import DynamicsModel, StaticResult, PhysicsReport
 from .errors import MotionPackageError
 from .result import (
     ConstraintEquationResidual,
@@ -92,6 +93,9 @@ class MotionPackage:
     motion_result: MotionResult
     validation: Mapping[str, Any]
     mesh_members: Mapping[str, str]
+    dynamics_model: DynamicsModel | None = None
+    static_results: tuple[StaticResult, ...] = ()
+    static_checks: tuple[PhysicsReport, ...] = ()
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "manifest", MappingProxyType(dict(self.manifest)))
@@ -188,6 +192,9 @@ def motion_package(
     title: str | None = None,
     require_meshes: bool = False,
     metadata: Mapping[str, Any] | None = None,
+    dynamics_model: DynamicsModel | None = None,
+    static_results: tuple[StaticResult, ...] = (),
+    static_checks: tuple[PhysicsReport, ...] = (),
 ) -> MotionPackageArtifact:
     """Export backend-independent motion data and meshes to one ``.kincheck`` file."""
 
@@ -288,6 +295,12 @@ def motion_package(
             source_paths=(str(root),) if root else (),
         )
 
+    if dynamics_model is not None or static_results:
+        from .physics_package import physics_document
+        if dynamics_model is None or dynamics_model.assembly != assembly:
+            _fail(code="KINCHECK-PACKAGE-ASSEMBLY-MISMATCH", message="Physics assembly differs from motion assembly.")
+        payloads["physics.json"] = _json_bytes(physics_document(dynamics_model, static_results, static_checks))
+
     files = [
         {
             "path": path,
@@ -320,6 +333,7 @@ def motion_package(
         "missing_mesh_part_ids": missing,
         "metadata": dict(metadata or {}),
         "files": files,
+        **({"physics_path": "physics.json", "capabilities": ["mass_properties", "tree_static_equilibrium"]} if dynamics_model is not None else {}),
     }
     manifest_bytes = _json_bytes(manifest)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -741,6 +755,14 @@ def validate_package(*, path: str | Path) -> ValidationResult:
                         )
                     )
                 seen_parts.add(part_id)
+        if "physics_path" in manifest:
+            try:
+                from .physics_package import read_physics_document
+                if manifest["physics_path"] != "physics.json" or "physics.json" not in declared:
+                    raise ValueError("Physics member must be explicitly hash-indexed at physics.json")
+                read_physics_document(assembly_from_dict(data=assembly_data), json.loads(archive.read("physics.json")))
+            except Exception as exc:
+                issues.append(_issue(code="KINCHECK-PACKAGE-PHYSICS-INVALID", message=str(exc), path=source))
     return ValidationResult(issues=tuple(issues), operation="validate_package")
 
 
@@ -920,6 +942,11 @@ def read_package(*, path: str | Path) -> MotionPackage:
         assembly_data = json.loads(archive.read(str(manifest["assembly_path"])))
         motion_data = json.loads(archive.read(str(manifest["motion_path"])))
         validation = json.loads(archive.read(str(manifest["validation_path"])))
+        dynamics_model, static_results, static_checks = None, (), ()
+        if "physics_path" in manifest:
+            from .physics_package import read_physics_document
+            dynamics_model, static_results, static_checks = read_physics_document(
+                assembly_from_dict(data=assembly_data), json.loads(archive.read(manifest["physics_path"])))
     mesh_members = {
         str(item["part_id"]): str(item["path"]) for item in manifest.get("meshes", ())
     }
@@ -930,6 +957,9 @@ def read_package(*, path: str | Path) -> MotionPackage:
         motion_result=_motion_from_dict(motion_data["motion_result"]),
         validation=validation,
         mesh_members=mesh_members,
+        dynamics_model=dynamics_model,
+        static_results=static_results,
+        static_checks=static_checks,
     )
 
 

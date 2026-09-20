@@ -11,6 +11,9 @@ class MotionPackage:
     motion_result: MotionResult
     validation: Mapping[str, Any]
     mesh_members: Mapping[str, str]
+    dynamics_model: kincheckapi.physics_types.DynamicsModel | None
+    static_results: tuple[kincheckapi.physics_types.StaticResult, ...]
+    static_checks: tuple[kincheckapi.physics_types.PhysicsReport, ...]
 ```
 
 源码：`src/kincheckapi/export.py`。
@@ -35,6 +38,9 @@ from kincheckapi.export import MotionPackage
 | `motion_result` | `MotionResult` | 必填 | 待查询或检查的公开 `MotionResult`。 |
 | `validation` | `Mapping[str, Any]` | 必填 | `validation` 的公开输入或数据字段。 |
 | `mesh_members` | `Mapping[str, str]` | 必填 | `mesh_members` 的公开输入或数据字段。 |
+| `dynamics_model` | `kincheckapi.physics_types.DynamicsModel | None` | `None` | `dynamics_model` 的公开输入或数据字段。 |
+| `static_results` | `tuple[kincheckapi.physics_types.StaticResult, ...]` | `()` | `static_results` 的公开输入或数据字段。 |
+| `static_checks` | `tuple[kincheckapi.physics_types.PhysicsReport, ...]` | `()` | `static_checks` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

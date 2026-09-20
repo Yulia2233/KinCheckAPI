@@ -11,6 +11,9 @@ class MotionPackage:
     motion_result: MotionResult
     validation: Mapping[str, Any]
     mesh_members: Mapping[str, str]
+    dynamics_model: kincheckapi.physics_types.DynamicsModel | None
+    static_results: tuple[kincheckapi.physics_types.StaticResult, ...]
+    static_checks: tuple[kincheckapi.physics_types.PhysicsReport, ...]
 ```
 
 Source: `src/kincheckapi/export.py`.
@@ -23,7 +26,7 @@ from kincheckapi.export import MotionPackage
 
 ## Purpose
 
-MotionPackage(*, path: 'Path', manifest: 'Mapping[str, Any]', assembly: 'AssemblyModel', motion_result: 'MotionResult', validation: 'Mapping[str, Any]', mesh_members: 'Mapping[str, str]')
+MotionPackage(*, path: 'Path', manifest: 'Mapping[str, Any]', assembly: 'AssemblyModel', motion_result: 'MotionResult', validation: 'Mapping[str, Any]', mesh_members: 'Mapping[str, str]', dynamics_model: 'DynamicsModel | None' = None, static_results: 'tuple[StaticResult, ...]' = (), static_checks: 'tuple[PhysicsReport, ...]' = ())
 
 ## Parameters and Fields
 
@@ -35,6 +38,9 @@ MotionPackage(*, path: 'Path', manifest: 'Mapping[str, Any]', assembly: 'Assembl
 | `motion_result` | `MotionResult` | required | The public `MotionResult` to query or check. |
 | `validation` | `Mapping[str, Any]` | required | Public input or data field `validation`. |
 | `mesh_members` | `Mapping[str, str]` | required | Public input or data field `mesh_members`. |
+| `dynamics_model` | `kincheckapi.physics_types.DynamicsModel | None` | `None` | Public input or data field `dynamics_model`. |
+| `static_results` | `tuple[kincheckapi.physics_types.StaticResult, ...]` | `()` | Public input or data field `static_results`. |
+| `static_checks` | `tuple[kincheckapi.physics_types.PhysicsReport, ...]` | `()` | Public input or data field `static_checks`. |
 
 ## Returns and Failures
 

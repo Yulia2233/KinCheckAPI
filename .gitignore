@@ -70,3 +70,13 @@ examples/*/model_*/source/state/
 !examples/guided_four_bar_actuator/output/verification.json
 examples/guided_four_bar_actuator/model/out/.cache/
 examples/guided_four_bar_actuator/model/out/state/
+
+# v0.6.0 ships the independently checked E01 products and static evidence.
+!examples/dynamics_loaded_arm/model/*.scadpkg
+!examples/dynamics_loaded_arm/model/variants/*/*.scadpkg
+!examples/dynamics_loaded_arm/output/*.kincheck
+!examples/dynamics_loaded_arm/output/variants/*/*.kincheck
+examples/dynamics_loaded_arm/output/**/viewer/
+examples/dynamics_loaded_arm/model/variants/*/.kincheckapi-stl/
+
+!examples/dynamics_loaded_arm/model/faults/*/*.scadpkg

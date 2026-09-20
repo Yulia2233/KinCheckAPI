@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "manifest": true,
+  "static_results": true,
+  "static_checks": true,
+  "package": "/Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/dynamics_loaded_arm/output/variants/overload/dynamics_loaded_arm.kincheck",
+  "actuator_limits_passed": false
+}

@@ -788,6 +788,7 @@ def _build_xml(
     constraint_expressions: tuple[_ConstraintExpression, ...],
     solver_iterations: int | None = None,
     solver_tolerance: float | None = None,
+    rigid_body_properties: Mapping[str, Any] | None = None,
 ) -> tuple[str, Mapping[str, str], tuple[_ComponentSite, ...], tuple[_ConnectorSite, ...]]:
     root = ET.Element("mujoco", {"model": "kincheckapi"})
     ET.SubElement(root, "compiler", {"angle": "radian", "autolimits": "true"})
@@ -851,6 +852,10 @@ def _build_xml(
             },
         )
         body_elements[body_name] = body
+        if rigid_body_properties is not None:
+            physical = rigid_body_properties[group_id]
+            from ..physics_backend import _principal_inertial_attributes
+            ET.SubElement(body, "inertial", _principal_inertial_attributes(physical))
         if group_id in group_modes and group_id not in grounded_groups:
             mode = group_modes[group_id]
             joint_name = f"group_joint_{group_index}"
@@ -886,17 +891,18 @@ def _build_xml(
                 "pos": _fmt(endpoint_group_pose.position_m),
                 "axis": _fmt(axis),
                 "damping": "0",
-                "armature": "1e-8",
+                "armature": "0" if rigid_body_properties is not None else "1e-8",
             }
             if group_id in group_joint_limits:
                 joint_attributes["limited"] = "true"
                 joint_attributes["range"] = _fmt(group_joint_limits[group_id])
             ET.SubElement(body, "joint", joint_attributes)
-            ET.SubElement(
-                body,
-                "inertial",
-                {"pos": "0 0 0", "mass": "1", "diaginertia": "0.001 0.001 0.001"},
-            )
+            if rigid_body_properties is None:
+                ET.SubElement(
+                    body,
+                    "inertial",
+                    {"pos": "0 0 0", "mass": "1", "diaginertia": "0.001 0.001 0.001"},
+                )
         for component_id in member_ids:
             component = assembly.get_component(component_id=component_id)
             if component is None:  # pragma: no cover - AssemblyModel invariant
@@ -1076,6 +1082,7 @@ def _build_xml(
 def compile_assembly(
     *, assembly: AssemblyModel, disabled_constraint_ids: Iterable[str] = (),
     solver_iterations: int | None = None, solver_tolerance: float | None = None,
+    rigid_body_properties: Mapping[str, Any] | None = None,
 ) -> _CompiledAssembly:
     """Compile an AssemblyModel into a private physics backend model.
 
@@ -1281,6 +1288,7 @@ def compile_assembly(
         constraint_expressions=tuple(expressions),
         solver_iterations=solver_iterations,
         solver_tolerance=solver_tolerance,
+        rigid_body_properties=rigid_body_properties,
     )
     try:
         model = runtime.MjModel.from_xml_string(model_xml)

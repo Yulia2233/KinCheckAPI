@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-Current version: **0.5.7**. [v0.5.7 release notes](doc/updates/v0.5.7.en.md) cover continuous collision/TOI evidence, review fixes, containment-query optimization, and the fully checked four-bar actuator. Bounded numerical inverse kinematics is documented separately in [v0.5.6](doc/updates/v0.5.6.en.md).
+Current version: **0.6.0**. [v0.6.0 update](doc/updates/v0.6.0.en.md). [v0.5.7 release notes](doc/updates/v0.5.7.en.md) cover continuous collision/TOI evidence, review fixes, containment-query optimization, and the fully checked four-bar actuator. Bounded numerical inverse kinematics is documented separately in [v0.5.6](doc/updates/v0.5.6.en.md).
 
 English | [简体中文](README_zh.md)
 
@@ -178,3 +178,9 @@ package = export.motion_package(
 )
 loaded = export.read_package(path=package.path)
 ```
+
+## v0.6.0 physical statics
+
+This release adds the [E01 loaded-arm physical/static workflow](examples/dynamics_loaded_arm/README.md): CADIR density and closed-BREP integration, occurrence-preserving tensors, explicit backend inertials, tree static equilibrium, local BREP contact regions, and hash-indexed physics result packages. It does not claim inverse/forward dynamics, contact response, structural strength, vibration, or fatigue.
+
+See [physical statics](skill/doc/guides/physical-statics.md), the [E01 requirements](examples/dynamics_loaded_arm/requirements.md), [verification program](examples/dynamics_loaded_arm/verification/verify.py), and [static evidence](examples/dynamics_loaded_arm/output/verification.json).

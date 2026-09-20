@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-export_motion_package(*, assembly: AssemblyModel, motion_result: MotionResult, output_path: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, require_meshes: bool = False, metadata: Optional[Mapping[str, Any]] = None) -> MotionPackageArtifact
+export_motion_package(*, assembly: AssemblyModel, motion_result: MotionResult, output_path: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, require_meshes: bool = False, metadata: Optional[Mapping[str, Any]] = None, dynamics_model: kincheckapi.physics_types.DynamicsModel | None = None, static_results: tuple[kincheckapi.physics_types.StaticResult, ...] = (), static_checks: tuple[kincheckapi.physics_types.PhysicsReport, ...] = ()) -> MotionPackageArtifact
 ```
 
 Source: `src/kincheckapi/export.py`.
@@ -29,6 +29,9 @@ Write the assembly, motion result, validation information, and optional meshes t
 | `title` | `str | None` | `None` | Public input or data field `title`. |
 | `require_meshes` | `bool` | `False` | Public input or data field `require_meshes`. |
 | `metadata` | `Optional[Mapping[str, Any]]` | `None` | Additional read-only structured metadata. |
+| `dynamics_model` | `kincheckapi.physics_types.DynamicsModel | None` | `None` | Public input or data field `dynamics_model`. |
+| `static_results` | `tuple[kincheckapi.physics_types.StaticResult, ...]` | `()` | Public input or data field `static_results`. |
+| `static_checks` | `tuple[kincheckapi.physics_types.PhysicsReport, ...]` | `()` | Public input or data field `static_checks`. |
 
 ## Returns and Failures
 

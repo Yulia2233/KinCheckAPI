@@ -94,7 +94,7 @@ MODULES: dict[str, dict[str, str]] = {
     },
     "dynamics": {
         "title": "Dynamics Namespace",
-        "summary": "Reserved dynamics namespace; v0.5.0 exposes no public dynamics operations.",
+        "summary": "Real BREP mass properties, typed loads/supports, scalar tree statics and compiled inertia validation.",
     },
 }
 
@@ -193,9 +193,9 @@ MODULE_RULES: dict[str, tuple[str, ...]] = {
         "Tolerance must be finite and non-negative.",
     ),
     "dynamics": (
-        "Do not call or invent dynamics APIs in this release.",
+        "Use typed SI physics contracts after mass coverage and compiled inertia validation.",
         "Kinematic results cannot support force, torque, contact force, impact, fatigue, or vibration claims.",
-        "Report dynamics requests as outside the current capability boundary.",
+        "Inverse/forward dynamics, contact response, structural analysis, vibration and fatigue are not implemented.",
     ),
 }
 

@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-export_motion_viewer(*, assembly: AssemblyModel, motion_result: MotionResult, output_dir: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, input_joint_id: str | None = None, output_joint_id: str | None = None, expected_ratio: float | None = None) -> ViewerArtifact
+export_motion_viewer(*, assembly: AssemblyModel, motion_result: MotionResult, output_dir: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, input_joint_id: str | None = None, output_joint_id: str | None = None, expected_ratio: float | None = None, static_results: tuple[typing.Any, ...] = (), static_checks: tuple[typing.Any, ...] = ()) -> ViewerArtifact
 ```
 
 源码：`src/kincheckapi/visualization.py`。
@@ -30,6 +30,8 @@ from kincheckapi.visualization import export_motion_viewer
 | `input_joint_id` | `str | None` | `None` | 稳定且可解析的 `input_joint_id`。 |
 | `output_joint_id` | `str | None` | `None` | 稳定且可解析的 `output_joint_id`。 |
 | `expected_ratio` | `float | None` | `None` | 期望传动比的正幅值；方向由 `expected_direction` 单独表达。 |
+| `static_results` | `tuple[Any, ...]` | `()` | `static_results` 的公开输入或数据字段。 |
+| `static_checks` | `tuple[Any, ...]` | `()` | `static_checks` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

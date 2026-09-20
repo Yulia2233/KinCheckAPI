@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-export_motion_package(*, assembly: AssemblyModel, motion_result: MotionResult, output_path: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, require_meshes: bool = False, metadata: Optional[Mapping[str, Any]] = None) -> MotionPackageArtifact
+export_motion_package(*, assembly: AssemblyModel, motion_result: MotionResult, output_path: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, require_meshes: bool = False, metadata: Optional[Mapping[str, Any]] = None, dynamics_model: kincheckapi.physics_types.DynamicsModel | None = None, static_results: tuple[kincheckapi.physics_types.StaticResult, ...] = (), static_checks: tuple[kincheckapi.physics_types.PhysicsReport, ...] = ()) -> MotionPackageArtifact
 ```
 
 源码：`src/kincheckapi/export.py`。
@@ -29,6 +29,9 @@ from kincheckapi.export import export_motion_package
 | `title` | `str | None` | `None` | `title` 的公开输入或数据字段。 |
 | `require_meshes` | `bool` | `False` | `require_meshes` 的公开输入或数据字段。 |
 | `metadata` | `Optional[Mapping[str, Any]]` | `None` | 附加的只读结构化元数据。 |
+| `dynamics_model` | `kincheckapi.physics_types.DynamicsModel | None` | `None` | `dynamics_model` 的公开输入或数据字段。 |
+| `static_results` | `tuple[kincheckapi.physics_types.StaticResult, ...]` | `()` | `static_results` 的公开输入或数据字段。 |
+| `static_checks` | `tuple[kincheckapi.physics_types.PhysicsReport, ...]` | `()` | `static_checks` 的公开输入或数据字段。 |
 
 ## 返回与失败
 
