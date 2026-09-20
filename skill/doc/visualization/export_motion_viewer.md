@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-export_motion_viewer(*, assembly: AssemblyModel, motion_result: MotionResult, output_dir: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, input_joint_id: str | None = None, output_joint_id: str | None = None, expected_ratio: float | None = None) -> ViewerArtifact
+export_motion_viewer(*, assembly: AssemblyModel, motion_result: MotionResult, output_dir: str | pathlib.Path, asset_root: str | pathlib.Path | None = None, title: str | None = None, input_joint_id: str | None = None, output_joint_id: str | None = None, expected_ratio: float | None = None, static_results: tuple[typing.Any, ...] = (), static_checks: tuple[typing.Any, ...] = ()) -> ViewerArtifact
 ```
 
 Source: `src/kincheckapi/visualization.py`.
@@ -30,6 +30,8 @@ Export motion playback assets for an offline Three.js viewer.
 | `input_joint_id` | `str | None` | `None` | Stable, resolvable `input_joint_id`. |
 | `output_joint_id` | `str | None` | `None` | Stable, resolvable `output_joint_id`. |
 | `expected_ratio` | `float | None` | `None` | Positive expected transmission-ratio magnitude; direction is separate. |
+| `static_results` | `tuple[Any, ...]` | `()` | Public input or data field `static_results`. |
+| `static_checks` | `tuple[Any, ...]` | `()` | Public input or data field `static_checks`. |
 
 ## Returns and Failures
 

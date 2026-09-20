@@ -74,7 +74,7 @@ from .result import IntegrationSample, record_verification_reports
 from .clearance import ClearanceReport, EnvelopeSample, MinimumClearance, MotionEnvelope, SamplingScope
 from .checks import AssemblyIntegrityReport, ContainmentRelation, IntegrityRelationResult, check_assembly_integrity
 
-__version__ = "0.5.7"
+__version__ = "0.6.0"
 
 __all__ = [
     "AssemblyModel",

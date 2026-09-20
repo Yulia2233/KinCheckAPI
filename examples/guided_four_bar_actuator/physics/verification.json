@@ -1,0 +1,365 @@
+{
+  "passed": true,
+  "operation": "verify_four_bar_physics_conversion",
+  "scope": "all 9 leaf masses and compiled tensors; no closed-loop support reaction claim",
+  "current_sdk_expected_failure": {
+    "passed": false,
+    "what_happened": "KinCheckAPI error: KINCHECK-PACKAGE-INVALID\nOperation: prepare_package\nWhat happened: Invalid product package /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg: definition 'definitions/assembly/912e1b92831327d49e8e5549c160b07226242e4677ccff56f831b5654094dd85.json' is invalid: frame_invalid at /instance/placement: x_axis must be a unit direction in tick form\nStage: api\nSources: /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg\nHow to fix:\n- Re-capture the model with SimpleCADAPI; do not edit archive members.\nTechnical details: PackageInputError",
+    "cause": "FRAME-INCOMPATIBLE",
+    "how_to_fix": [
+      "Use an explicitly supported SDK matching this package schema, or re-capture the owning CAD source. Do not rescale or skip invalid frames."
+    ],
+    "code": "KINCHECK-PHYSICS-FRAME-INCOMPATIBLE",
+    "stage": "api",
+    "object_ids": [
+      "/Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg"
+    ],
+    "source_paths": [],
+    "failure_time_s": null,
+    "evidence": [],
+    "last_valid_result": null,
+    "suggested_actions": [
+      "Use an explicitly supported SDK matching this package schema, or re-capture the owning CAD source. Do not rescale or skip invalid frames."
+    ],
+    "native_error_type": "PhysicsError",
+    "error_type": "PhysicsError",
+    "message": "KinCheckAPI error: KINCHECK-PACKAGE-INVALID\nOperation: prepare_package\nWhat happened: Invalid product package /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg: definition 'definitions/assembly/912e1b92831327d49e8e5549c160b07226242e4677ccff56f831b5654094dd85.json' is invalid: frame_invalid at /instance/placement: x_axis must be a unit direction in tick form\nStage: api\nSources: /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg\nHow to fix:\n- Re-capture the model with SimpleCADAPI; do not edit archive members.\nTechnical details: PackageInputError",
+    "operation": "measure_package_physics",
+    "status": "validation_failed",
+    "details": {
+      "what_happened": "KinCheckAPI error: KINCHECK-PACKAGE-INVALID\nOperation: prepare_package\nWhat happened: Invalid product package /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg: definition 'definitions/assembly/912e1b92831327d49e8e5549c160b07226242e4677ccff56f831b5654094dd85.json' is invalid: frame_invalid at /instance/placement: x_axis must be a unit direction in tick form\nStage: api\nSources: /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg\nHow to fix:\n- Re-capture the model with SimpleCADAPI; do not edit archive members.\nTechnical details: PackageInputError",
+      "cause": "FRAME-INCOMPATIBLE",
+      "evidence": {}
+    },
+    "report": {
+      "passed": false,
+      "what_happened": "KinCheckAPI error: KINCHECK-PACKAGE-INVALID\nOperation: prepare_package\nWhat happened: Invalid product package /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg: definition 'definitions/assembly/912e1b92831327d49e8e5549c160b07226242e4677ccff56f831b5654094dd85.json' is invalid: frame_invalid at /instance/placement: x_axis must be a unit direction in tick form\nStage: api\nSources: /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg\nHow to fix:\n- Re-capture the model with SimpleCADAPI; do not edit archive members.\nTechnical details: PackageInputError",
+      "cause": "KinCheckAPI error: KINCHECK-PACKAGE-INVALID\nOperation: prepare_package\nWhat happened: Invalid product package /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg: definition 'definitions/assembly/912e1b92831327d49e8e5549c160b07226242e4677ccff56f831b5654094dd85.json' is invalid: frame_invalid at /instance/placement: x_axis must be a unit direction in tick form\nStage: api\nSources: /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg\nHow to fix:\n- Re-capture the model with SimpleCADAPI; do not edit archive members.\nTechnical details: PackageInputError",
+      "how_to_fix": [
+        "Use an explicitly supported SDK matching this package schema, or re-capture the owning CAD source. Do not rescale or skip invalid frames."
+      ],
+      "code": "KINCHECK-PHYSICS-FRAME-INCOMPATIBLE",
+      "stage": "api",
+      "object_ids": [
+        "/Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg"
+      ],
+      "source_paths": [],
+      "failure_time_s": null,
+      "evidence": [],
+      "last_valid_result": null,
+      "suggested_actions": [
+        "Use an explicitly supported SDK matching this package schema, or re-capture the owning CAD source. Do not rescale or skip invalid frames."
+      ],
+      "native_error_type": null,
+      "operation": "measure_package_physics",
+      "status": "validation_failed",
+      "issues": [
+        {
+          "code": "KINCHECK-PHYSICS-FRAME-INCOMPATIBLE",
+          "severity": "error",
+          "stage": "api",
+          "message": "KinCheckAPI error: KINCHECK-PACKAGE-INVALID\nOperation: prepare_package\nWhat happened: Invalid product package /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg: definition 'definitions/assembly/912e1b92831327d49e8e5549c160b07226242e4677ccff56f831b5654094dd85.json' is invalid: frame_invalid at /instance/placement: x_axis must be a unit direction in tick form\nStage: api\nSources: /Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg\nHow to fix:\n- Re-capture the model with SimpleCADAPI; do not edit archive members.\nTechnical details: PackageInputError",
+          "object_ids": [
+            "/Users/liuyu/Documents/mypapers/CADJ/KinCheckAPI-dynamics/examples/guided_four_bar_actuator/model/out/guided_four_bar_actuator.scadpkg"
+          ],
+          "source_paths": [],
+          "evidence": [],
+          "suggested_actions": [
+            "Use an explicitly supported SDK matching this package schema, or re-capture the owning CAD source. Do not rescale or skip invalid frames."
+          ],
+          "failure_time_s": null
+        }
+      ],
+      "backend_failure": null,
+      "metadata": {}
+    }
+  },
+  "conversion": {
+    "operation": "validate_physics_conversion",
+    "status": "passed",
+    "issues": [],
+    "evidence": {
+      "component_count": 4,
+      "body_count": 4,
+      "total_mass_kg": 0.2556548596740012,
+      "includes_ground": true,
+      "backend": {
+        "backend": "mujoco",
+        "backend_version": "3.11.0",
+        "xml_sha256": "fcf700efcb5209d463f47e9b690b510ab05144828b096d668cad1f85841c20be",
+        "body_properties": {
+          "node/guided_four_bar_actuator": {
+            "mass_kg": 0.23322657544521821,
+            "com_m": [
+              0.020291615138069777,
+              -0.0012688826281270487,
+              -0.006389798231461495
+            ],
+            "inertia_com_kg_m2": [
+              [
+                3.9018679199427696e-05,
+                1.187378447142773e-06,
+                -8.782675132374493e-07
+              ],
+              [
+                1.1873784471427732e-06,
+                0.00011432314685126743,
+                3.346133177693755e-06
+              ],
+              [
+                -8.782675132374492e-07,
+                3.346133177693755e-06,
+                0.00014313432678289185
+              ]
+            ],
+            "frame_id": "node/guided_four_bar_actuator",
+            "source_kind": "mjcf_explicit",
+            "source_ids": [
+              "node/guided_four_bar_actuator/base",
+              "node/guided_four_bar_actuator/guard",
+              "node/guided_four_bar_actuator/pin_a",
+              "node/guided_four_bar_actuator/pin_d"
+            ],
+            "provenance": {
+              "backend": "mujoco",
+              "version": "3.11.0",
+              "body_id": 1,
+              "body_iquat_wxyz": [
+                0.9983404474178111,
+                -0.05684234318041234,
+                -0.004009213840657403,
+                -0.0083201728194002
+              ],
+              "principal_inertia_kg_m2": [
+                3.899162880792909e-05,
+                0.00011396147685320902,
+                0.00014352304717244884
+              ]
+            }
+          },
+          "node/guided_four_bar_actuator/coupler": {
+            "mass_kg": 0.00845756965721357,
+            "com_m": [
+              0.025000000000000137,
+              -1.0932227345605838e-14,
+              0.01
+            ],
+            "inertia_com_kg_m2": [
+              [
+                5.114280696675147e-08,
+                1.0375156893881954e-18,
+                -4.569301381707199e-22
+              ],
+              [
+                1.0375156893881954e-18,
+                3.1163128261651717e-06,
+                -1.145078648535261e-24
+              ],
+              [
+                -4.569301381707199e-22,
+                -1.145078648535261e-24,
+                3.14202409136575e-06
+              ]
+            ],
+            "frame_id": "node/guided_four_bar_actuator/coupler",
+            "source_kind": "mjcf_explicit",
+            "source_ids": [
+              "node/guided_four_bar_actuator/coupler"
+            ],
+            "provenance": {
+              "backend": "mujoco",
+              "version": "3.11.0",
+              "body_id": 3,
+              "body_iquat_wxyz": [
+                0.9999999999999999,
+                2.226803387068523e-17,
+                -7.391583437336543e-17,
+                -1.6924276351553225e-13
+              ],
+              "principal_inertia_kg_m2": [
+                5.114280696675147e-08,
+                3.1163128261651717e-06,
+                3.14202409136575e-06
+              ]
+            }
+          },
+          "node/guided_four_bar_actuator/crank": {
+            "mass_kg": 0.005975062285784672,
+            "com_m": [
+              0.012608629925547768,
+              -2.995663712079794e-17,
+              0.006311759341454369
+            ],
+            "inertia_com_kg_m2": [
+              [
+                8.716894603953855e-08,
+                -6.566871750765893e-20,
+                -5.7932403883525646e-08
+              ],
+              [
+                -6.566871750765892e-20,
+                5.987600172068033e-07,
+                -2.122237601789018e-22
+              ],
+              [
+                -5.793240388352564e-08,
+                -2.122237601788324e-22,
+                5.768106550460307e-07
+              ]
+            ],
+            "frame_id": "node/guided_four_bar_actuator/crank",
+            "source_kind": "mjcf_explicit",
+            "source_ids": [
+              "node/guided_four_bar_actuator/crank",
+              "node/guided_four_bar_actuator/pin_b"
+            ],
+            "provenance": {
+              "backend": "mujoco",
+              "version": "3.11.0",
+              "body_id": 2,
+              "body_iquat_wxyz": [
+                0.705914091501321,
+                0.7059140915016623,
+                -0.041052349745406586,
+                0.04105234974551558
+              ],
+              "principal_inertia_kg_m2": [
+                8.040797643892866e-08,
+                5.835716246466407e-07,
+                5.987600172068035e-07
+              ]
+            }
+          },
+          "node/guided_four_bar_actuator/rocker": {
+            "mass_kg": 0.007995652285784761,
+            "com_m": [
+              -0.008805343514743118,
+              -0.010997870524963264,
+              0.005980263209179868
+            ],
+            "inertia_com_kg_m2": [
+              [
+                1.144111342258896e-06,
+                -8.381552761661081e-07,
+                -6.901490680225314e-08
+              ],
+              [
+                -8.381552761661081e-07,
+                7.683170227333606e-07,
+                -8.619959096794484e-08
+              ],
+              [
+                -6.901490680225312e-08,
+                -8.619959096794484e-08,
+                1.7914487886022549e-06
+              ]
+            ],
+            "frame_id": "node/guided_four_bar_actuator/rocker",
+            "source_kind": "mjcf_explicit",
+            "source_ids": [
+              "node/guided_four_bar_actuator/pin_c",
+              "node/guided_four_bar_actuator/rocker"
+            ],
+            "provenance": {
+              "backend": "mujoco",
+              "version": "3.11.0",
+              "body_id": 4,
+              "body_iquat_wxyz": [
+                0.6271222013587313,
+                0.6469633865332116,
+                0.2853740991797555,
+                0.3266768197558565
+              ],
+              "principal_inertia_kg_m2": [
+                9.008886700015096e-08,
+                1.7986156594619383e-06,
+                1.815172627132421e-06
+              ]
+            }
+          }
+        },
+        "source_sha256": "29fd6630fc2613f1369bb75fae7bbbb5ab71f08b4f444fc13426aaa5a07ffdd7",
+        "inertia_source": "explicit-principal-inertia-with-reconstruction",
+        "backend_quaternion_order": "wxyz",
+        "public_quaternion_order": "xyzw"
+      },
+      "occurrence_components": {
+        "node/guided_four_bar_actuator/base": "node/guided_four_bar_actuator",
+        "node/guided_four_bar_actuator/guard": "node/guided_four_bar_actuator",
+        "node/guided_four_bar_actuator/pin_a": "node/guided_four_bar_actuator",
+        "node/guided_four_bar_actuator/pin_d": "node/guided_four_bar_actuator",
+        "node/guided_four_bar_actuator/coupler": "node/guided_four_bar_actuator/coupler",
+        "node/guided_four_bar_actuator/crank": "node/guided_four_bar_actuator/crank",
+        "node/guided_four_bar_actuator/pin_b": "node/guided_four_bar_actuator/crank",
+        "node/guided_four_bar_actuator/pin_c": "node/guided_four_bar_actuator/rocker",
+        "node/guided_four_bar_actuator/rocker": "node/guided_four_bar_actuator/rocker"
+      },
+      "mass_atol_kg": 1e-10,
+      "com_atol_m": 1e-10,
+      "inertia_atol_kg_m2": 1e-14,
+      "relative_tolerance": 1e-08
+    },
+    "passed": true,
+    "what_happened": "Requested claim established.",
+    "cause": "All requested checks passed.",
+    "how_to_fix": []
+  },
+  "pin_masses_kg": {
+    "node/guided_four_bar_actuator/pin_a": 0.0024662159143399574,
+    "node/guided_four_bar_actuator/pin_b": 0.0015586726285709385,
+    "node/guided_four_bar_actuator/pin_c": 0.0015586726285709385,
+    "node/guided_four_bar_actuator/pin_d": 0.0024662159143399574
+  },
+  "total_mass_kg": 0.2556548596740012,
+  "default_mjcf_coupler_mass_kg": 0.020575503688623036,
+  "brep_coupler_mass_kg": 0.00845756965721357,
+  "static_capability": {
+    "operation": "probe_dynamics_capabilities",
+    "status": "capability_failed",
+    "issues": [
+      {
+        "code": "KINCHECK-PHYSICS-TOPOLOGY-UNSUPPORTED",
+        "severity": "error",
+        "stage": "solve_static_equilibrium",
+        "message": "Static per-joint solution requires a tree with no closure/coupling constraints.",
+        "object_ids": [
+          "joint/guided_four_bar_actuator/coupler_to_rocker"
+        ],
+        "source_paths": [],
+        "evidence": [
+          {
+            "key": "TOPOLOGY-UNSUPPORTED",
+            "actual": null,
+            "expected": null,
+            "unit": null,
+            "description": null
+          }
+        ],
+        "suggested_actions": [
+          "Request mass conversion only, or provide a future closed-loop reaction model."
+        ],
+        "failure_time_s": null
+      }
+    ],
+    "evidence": {
+      "requested_operation": "solve_static_equilibrium",
+      "backend": "analytic_tree",
+      "versions": {},
+      "static_topology": "tree",
+      "joints": [
+        "fixed",
+        "revolute",
+        "prismatic"
+      ],
+      "contact_response": false,
+      "inverse_dynamics": false,
+      "forward_dynamics": false
+    },
+    "passed": false,
+    "what_happened": "Static per-joint solution requires a tree with no closure/coupling constraints.",
+    "cause": "KINCHECK-PHYSICS-TOPOLOGY-UNSUPPORTED",
+    "how_to_fix": [
+      "Request mass conversion only, or provide a future closed-loop reaction model."
+    ]
+  }
+}

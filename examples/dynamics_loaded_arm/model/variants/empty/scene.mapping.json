@@ -1,0 +1,558 @@
+{
+  "closures": [],
+  "default_density_count": 0,
+  "equalities": [],
+  "grounded_group_id": "node/dynamics_loaded_arm",
+  "groups": [
+    {
+      "body_name": null,
+      "grounded": true,
+      "group_id": "node/dynamics_loaded_arm",
+      "members": [
+        "node/dynamics_loaded_arm",
+        "node/dynamics_loaded_arm/base",
+        "node/dynamics_loaded_arm/bushing_left",
+        "node/dynamics_loaded_arm/bushing_right",
+        "node/dynamics_loaded_arm/foot_left_33_18",
+        "node/dynamics_loaded_arm/foot_left_33_18_washer",
+        "node/dynamics_loaded_arm/foot_left_33_n18",
+        "node/dynamics_loaded_arm/foot_left_33_n18_washer",
+        "node/dynamics_loaded_arm/foot_left_n33_18",
+        "node/dynamics_loaded_arm/foot_left_n33_18_washer",
+        "node/dynamics_loaded_arm/foot_left_n33_n18",
+        "node/dynamics_loaded_arm/foot_left_n33_n18_washer",
+        "node/dynamics_loaded_arm/foot_right_33_18",
+        "node/dynamics_loaded_arm/foot_right_33_18_washer",
+        "node/dynamics_loaded_arm/foot_right_33_n18",
+        "node/dynamics_loaded_arm/foot_right_33_n18_washer",
+        "node/dynamics_loaded_arm/foot_right_n33_18",
+        "node/dynamics_loaded_arm/foot_right_n33_18_washer",
+        "node/dynamics_loaded_arm/foot_right_n33_n18",
+        "node/dynamics_loaded_arm/foot_right_n33_n18_washer",
+        "node/dynamics_loaded_arm/foundation_300_85",
+        "node/dynamics_loaded_arm/foundation_300_85_washer",
+        "node/dynamics_loaded_arm/foundation_300_n85",
+        "node/dynamics_loaded_arm/foundation_300_n85_washer",
+        "node/dynamics_loaded_arm/foundation_n25_85",
+        "node/dynamics_loaded_arm/foundation_n25_85_washer",
+        "node/dynamics_loaded_arm/foundation_n25_n85",
+        "node/dynamics_loaded_arm/foundation_n25_n85_washer",
+        "node/dynamics_loaded_arm/guard",
+        "node/dynamics_loaded_arm/motor_bearing_0",
+        "node/dynamics_loaded_arm/motor_bearing_1",
+        "node/dynamics_loaded_arm/motor_foot_50_n100",
+        "node/dynamics_loaded_arm/motor_foot_50_n100_washer",
+        "node/dynamics_loaded_arm/motor_foot_50_n84",
+        "node/dynamics_loaded_arm/motor_foot_50_n84_washer",
+        "node/dynamics_loaded_arm/motor_foot_n36_n100",
+        "node/dynamics_loaded_arm/motor_foot_n36_n100_washer",
+        "node/dynamics_loaded_arm/motor_foot_n36_n84",
+        "node/dynamics_loaded_arm/motor_foot_n36_n84_washer",
+        "node/dynamics_loaded_arm/motor_guard_20_240",
+        "node/dynamics_loaded_arm/motor_guard_20_280",
+        "node/dynamics_loaded_arm/motor_guard_n20_240",
+        "node/dynamics_loaded_arm/motor_guard_n20_280",
+        "node/dynamics_loaded_arm/motor_mount",
+        "node/dynamics_loaded_arm/motor_stator",
+        "node/dynamics_loaded_arm/support_left",
+        "node/dynamics_loaded_arm/support_right"
+      ],
+      "parent_group": null,
+      "representative": "node/dynamics_loaded_arm",
+      "tree_joint": null
+    },
+    {
+      "body_name": "body_arm",
+      "grounded": false,
+      "group_id": "node/dynamics_loaded_arm/arm",
+      "members": [
+        "node/dynamics_loaded_arm/arm",
+        "node/dynamics_loaded_arm/coupling",
+        "node/dynamics_loaded_arm/coupling_screw_n81",
+        "node/dynamics_loaded_arm/coupling_screw_n94",
+        "node/dynamics_loaded_arm/ear_screw_290",
+        "node/dynamics_loaded_arm/ear_screw_310",
+        "node/dynamics_loaded_arm/hub_clamp",
+        "node/dynamics_loaded_arm/hub_nut",
+        "node/dynamics_loaded_arm/key",
+        "node/dynamics_loaded_arm/load_ear",
+        "node/dynamics_loaded_arm/lock_ring",
+        "node/dynamics_loaded_arm/motor_rotor",
+        "node/dynamics_loaded_arm/platform",
+        "node/dynamics_loaded_arm/platform_screw_282_10",
+        "node/dynamics_loaded_arm/platform_screw_282_n10",
+        "node/dynamics_loaded_arm/platform_screw_294_10",
+        "node/dynamics_loaded_arm/platform_screw_294_n10",
+        "node/dynamics_loaded_arm/ring_screw",
+        "node/dynamics_loaded_arm/shaft",
+        "node/dynamics_loaded_arm/thrust_left",
+        "node/dynamics_loaded_arm/thrust_right"
+      ],
+      "parent_group": "node/dynamics_loaded_arm",
+      "representative": "node/dynamics_loaded_arm/arm",
+      "tree_joint": "joint_joint_dynamics_loaded_arm_support_left_to_arm_685164ca01d9"
+    }
+  ],
+  "mesh_constraints": [],
+  "meshes": {
+    "arm": "mesh_arm",
+    "base": "mesh_base",
+    "bushing_left": "mesh_bushing_left",
+    "bushing_right": "mesh_bushing_right",
+    "coupling": "mesh_coupling",
+    "coupling_screw_n94": "mesh_coupling_screw_n94",
+    "ear_screw_290": "mesh_ear_screw_290",
+    "foot_left_33_18_washer": "mesh_foot_left_33_18_washer",
+    "foot_left_33_n18_washer": "mesh_foot_left_33_n18_washer",
+    "foot_left_n33_18_washer": "mesh_foot_left_n33_18_washer",
+    "foot_left_n33_n18": "mesh_foot_left_n33_n18",
+    "foot_left_n33_n18_washer": "mesh_foot_left_n33_n18_washer",
+    "foot_right_33_18_washer": "mesh_foot_right_33_18_washer",
+    "foot_right_33_n18_washer": "mesh_foot_right_33_n18_washer",
+    "foot_right_n33_18_washer": "mesh_foot_right_n33_18_washer",
+    "foot_right_n33_n18_washer": "mesh_foot_right_n33_n18_washer",
+    "foundation_300_85_washer": "mesh_foundation_300_85_washer",
+    "foundation_300_n85_washer": "mesh_foundation_300_n85_washer",
+    "foundation_n25_85_washer": "mesh_foundation_n25_85_washer",
+    "foundation_n25_n85": "mesh_foundation_n25_n85",
+    "foundation_n25_n85_washer": "mesh_foundation_n25_n85_washer",
+    "guard": "mesh_guard",
+    "hub_clamp": "mesh_hub_clamp",
+    "hub_nut": "mesh_hub_nut",
+    "key": "mesh_key",
+    "load_ear": "mesh_load_ear",
+    "lock_ring": "mesh_lock_ring",
+    "motor_bearing_0": "mesh_motor_bearing_0",
+    "motor_foot_50_n100_washer": "mesh_motor_foot_50_n100_washer",
+    "motor_foot_50_n84_washer": "mesh_motor_foot_50_n84_washer",
+    "motor_foot_n36_n100": "mesh_motor_foot_n36_n100",
+    "motor_foot_n36_n100_washer": "mesh_motor_foot_n36_n100_washer",
+    "motor_foot_n36_n84_washer": "mesh_motor_foot_n36_n84_washer",
+    "motor_guard_n20_240": "mesh_motor_guard_n20_240",
+    "motor_mount": "mesh_motor_mount",
+    "motor_rotor": "mesh_motor_rotor",
+    "motor_stator": "mesh_motor_stator",
+    "platform": "mesh_platform",
+    "platform_screw_282_n10": "mesh_platform_screw_282_n10",
+    "ring_screw": "mesh_ring_screw",
+    "shaft": "mesh_shaft",
+    "support_left": "mesh_support_left",
+    "support_right": "mesh_support_right",
+    "thrust_right": "mesh_thrust_right"
+  },
+  "pruned_structure_nodes": [],
+  "redundant_movable_joints": [],
+  "rigid_edges": [
+    {
+      "a": "node/dynamics_loaded_arm",
+      "b": "node/dynamics_loaded_arm/base",
+      "kind": "ground"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/arm",
+      "b": "node/dynamics_loaded_arm/hub_clamp",
+      "joint_id": "joint/dynamics_loaded_arm/arm_to_hub_clamp",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/arm",
+      "b": "node/dynamics_loaded_arm/hub_nut",
+      "joint_id": "joint/dynamics_loaded_arm/arm_to_hub_nut",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/arm",
+      "b": "node/dynamics_loaded_arm/platform",
+      "joint_id": "joint/dynamics_loaded_arm/arm_to_platform",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/arm",
+      "b": "node/dynamics_loaded_arm/shaft",
+      "joint_id": "joint/dynamics_loaded_arm/arm_to_shaft",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/base",
+      "b": "node/dynamics_loaded_arm/foundation_300_85_washer",
+      "joint_id": "joint/dynamics_loaded_arm/base_to_foundation_300_85_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/base",
+      "b": "node/dynamics_loaded_arm/foundation_300_n85_washer",
+      "joint_id": "joint/dynamics_loaded_arm/base_to_foundation_300_n85_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/base",
+      "b": "node/dynamics_loaded_arm/foundation_n25_85_washer",
+      "joint_id": "joint/dynamics_loaded_arm/base_to_foundation_n25_85_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/base",
+      "b": "node/dynamics_loaded_arm/foundation_n25_n85_washer",
+      "joint_id": "joint/dynamics_loaded_arm/base_to_foundation_n25_n85_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/base",
+      "b": "node/dynamics_loaded_arm/motor_mount",
+      "joint_id": "joint/dynamics_loaded_arm/base_to_motor_mount",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/base",
+      "b": "node/dynamics_loaded_arm/support_left",
+      "joint_id": "joint/dynamics_loaded_arm/base_to_support_left",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/base",
+      "b": "node/dynamics_loaded_arm/support_right",
+      "joint_id": "joint/dynamics_loaded_arm/base_to_support_right",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/coupling",
+      "b": "node/dynamics_loaded_arm/coupling_screw_n81",
+      "joint_id": "joint/dynamics_loaded_arm/coupling_to_coupling_screw_n81",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/coupling",
+      "b": "node/dynamics_loaded_arm/coupling_screw_n94",
+      "joint_id": "joint/dynamics_loaded_arm/coupling_to_coupling_screw_n94",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/coupling",
+      "b": "node/dynamics_loaded_arm/motor_rotor",
+      "joint_id": "joint/dynamics_loaded_arm/coupling_to_motor_rotor",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_left_33_18_washer",
+      "b": "node/dynamics_loaded_arm/foot_left_33_18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_left_33_18_washer_to_foot_left_33_18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_left_33_n18_washer",
+      "b": "node/dynamics_loaded_arm/foot_left_33_n18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_left_33_n18_washer_to_foot_left_33_n18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_left_n33_18_washer",
+      "b": "node/dynamics_loaded_arm/foot_left_n33_18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_left_n33_18_washer_to_foot_left_n33_18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_left_n33_n18_washer",
+      "b": "node/dynamics_loaded_arm/foot_left_n33_n18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_left_n33_n18_washer_to_foot_left_n33_n18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_right_33_18_washer",
+      "b": "node/dynamics_loaded_arm/foot_right_33_18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_right_33_18_washer_to_foot_right_33_18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_right_33_n18_washer",
+      "b": "node/dynamics_loaded_arm/foot_right_33_n18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_right_33_n18_washer_to_foot_right_33_n18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_right_n33_18_washer",
+      "b": "node/dynamics_loaded_arm/foot_right_n33_18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_right_n33_18_washer_to_foot_right_n33_18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foot_right_n33_n18_washer",
+      "b": "node/dynamics_loaded_arm/foot_right_n33_n18",
+      "joint_id": "joint/dynamics_loaded_arm/foot_right_n33_n18_washer_to_foot_right_n33_n18",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foundation_300_85_washer",
+      "b": "node/dynamics_loaded_arm/foundation_300_85",
+      "joint_id": "joint/dynamics_loaded_arm/foundation_300_85_washer_to_foundation_300_85",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foundation_300_n85_washer",
+      "b": "node/dynamics_loaded_arm/foundation_300_n85",
+      "joint_id": "joint/dynamics_loaded_arm/foundation_300_n85_washer_to_foundation_300_n85",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foundation_n25_85_washer",
+      "b": "node/dynamics_loaded_arm/foundation_n25_85",
+      "joint_id": "joint/dynamics_loaded_arm/foundation_n25_85_washer_to_foundation_n25_85",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/foundation_n25_n85_washer",
+      "b": "node/dynamics_loaded_arm/foundation_n25_n85",
+      "joint_id": "joint/dynamics_loaded_arm/foundation_n25_n85_washer_to_foundation_n25_n85",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/guard",
+      "b": "node/dynamics_loaded_arm/motor_guard_20_240",
+      "joint_id": "joint/dynamics_loaded_arm/guard_to_motor_guard_20_240",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/guard",
+      "b": "node/dynamics_loaded_arm/motor_guard_20_280",
+      "joint_id": "joint/dynamics_loaded_arm/guard_to_motor_guard_20_280",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/guard",
+      "b": "node/dynamics_loaded_arm/motor_guard_n20_240",
+      "joint_id": "joint/dynamics_loaded_arm/guard_to_motor_guard_n20_240",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/guard",
+      "b": "node/dynamics_loaded_arm/motor_guard_n20_280",
+      "joint_id": "joint/dynamics_loaded_arm/guard_to_motor_guard_n20_280",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/load_ear",
+      "b": "node/dynamics_loaded_arm/ear_screw_290",
+      "joint_id": "joint/dynamics_loaded_arm/load_ear_to_ear_screw_290",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/load_ear",
+      "b": "node/dynamics_loaded_arm/ear_screw_310",
+      "joint_id": "joint/dynamics_loaded_arm/load_ear_to_ear_screw_310",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/lock_ring",
+      "b": "node/dynamics_loaded_arm/ring_screw",
+      "joint_id": "joint/dynamics_loaded_arm/lock_ring_to_ring_screw",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_foot_50_n100_washer",
+      "b": "node/dynamics_loaded_arm/motor_foot_50_n100",
+      "joint_id": "joint/dynamics_loaded_arm/motor_foot_50_n100_washer_to_motor_foot_50_n100",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_foot_50_n84_washer",
+      "b": "node/dynamics_loaded_arm/motor_foot_50_n84",
+      "joint_id": "joint/dynamics_loaded_arm/motor_foot_50_n84_washer_to_motor_foot_50_n84",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_foot_n36_n100_washer",
+      "b": "node/dynamics_loaded_arm/motor_foot_n36_n100",
+      "joint_id": "joint/dynamics_loaded_arm/motor_foot_n36_n100_washer_to_motor_foot_n36_n100",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_foot_n36_n84_washer",
+      "b": "node/dynamics_loaded_arm/motor_foot_n36_n84",
+      "joint_id": "joint/dynamics_loaded_arm/motor_foot_n36_n84_washer_to_motor_foot_n36_n84",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_mount",
+      "b": "node/dynamics_loaded_arm/guard",
+      "joint_id": "joint/dynamics_loaded_arm/motor_mount_to_guard",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_mount",
+      "b": "node/dynamics_loaded_arm/motor_foot_50_n100_washer",
+      "joint_id": "joint/dynamics_loaded_arm/motor_mount_to_motor_foot_50_n100_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_mount",
+      "b": "node/dynamics_loaded_arm/motor_foot_50_n84_washer",
+      "joint_id": "joint/dynamics_loaded_arm/motor_mount_to_motor_foot_50_n84_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_mount",
+      "b": "node/dynamics_loaded_arm/motor_foot_n36_n100_washer",
+      "joint_id": "joint/dynamics_loaded_arm/motor_mount_to_motor_foot_n36_n100_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_mount",
+      "b": "node/dynamics_loaded_arm/motor_foot_n36_n84_washer",
+      "joint_id": "joint/dynamics_loaded_arm/motor_mount_to_motor_foot_n36_n84_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_mount",
+      "b": "node/dynamics_loaded_arm/motor_stator",
+      "joint_id": "joint/dynamics_loaded_arm/motor_mount_to_motor_stator",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_stator",
+      "b": "node/dynamics_loaded_arm/motor_bearing_0",
+      "joint_id": "joint/dynamics_loaded_arm/motor_stator_to_motor_bearing_0",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/motor_stator",
+      "b": "node/dynamics_loaded_arm/motor_bearing_1",
+      "joint_id": "joint/dynamics_loaded_arm/motor_stator_to_motor_bearing_1",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/platform",
+      "b": "node/dynamics_loaded_arm/load_ear",
+      "joint_id": "joint/dynamics_loaded_arm/platform_to_load_ear",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/platform",
+      "b": "node/dynamics_loaded_arm/platform_screw_282_10",
+      "joint_id": "joint/dynamics_loaded_arm/platform_to_platform_screw_282_10",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/platform",
+      "b": "node/dynamics_loaded_arm/platform_screw_282_n10",
+      "joint_id": "joint/dynamics_loaded_arm/platform_to_platform_screw_282_n10",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/platform",
+      "b": "node/dynamics_loaded_arm/platform_screw_294_10",
+      "joint_id": "joint/dynamics_loaded_arm/platform_to_platform_screw_294_10",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/platform",
+      "b": "node/dynamics_loaded_arm/platform_screw_294_n10",
+      "joint_id": "joint/dynamics_loaded_arm/platform_to_platform_screw_294_n10",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/shaft",
+      "b": "node/dynamics_loaded_arm/coupling",
+      "joint_id": "joint/dynamics_loaded_arm/shaft_to_coupling",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/shaft",
+      "b": "node/dynamics_loaded_arm/key",
+      "joint_id": "joint/dynamics_loaded_arm/shaft_to_key",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/shaft",
+      "b": "node/dynamics_loaded_arm/lock_ring",
+      "joint_id": "joint/dynamics_loaded_arm/shaft_to_lock_ring",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/shaft",
+      "b": "node/dynamics_loaded_arm/thrust_left",
+      "joint_id": "joint/dynamics_loaded_arm/shaft_to_thrust_left",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/shaft",
+      "b": "node/dynamics_loaded_arm/thrust_right",
+      "joint_id": "joint/dynamics_loaded_arm/shaft_to_thrust_right",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_left",
+      "b": "node/dynamics_loaded_arm/bushing_left",
+      "joint_id": "joint/dynamics_loaded_arm/support_left_to_bushing_left",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_left",
+      "b": "node/dynamics_loaded_arm/foot_left_33_18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_left_to_foot_left_33_18_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_left",
+      "b": "node/dynamics_loaded_arm/foot_left_33_n18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_left_to_foot_left_33_n18_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_left",
+      "b": "node/dynamics_loaded_arm/foot_left_n33_18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_left_to_foot_left_n33_18_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_left",
+      "b": "node/dynamics_loaded_arm/foot_left_n33_n18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_left_to_foot_left_n33_n18_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_right",
+      "b": "node/dynamics_loaded_arm/bushing_right",
+      "joint_id": "joint/dynamics_loaded_arm/support_right_to_bushing_right",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_right",
+      "b": "node/dynamics_loaded_arm/foot_right_33_18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_right_to_foot_right_33_18_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_right",
+      "b": "node/dynamics_loaded_arm/foot_right_33_n18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_right_to_foot_right_33_n18_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_right",
+      "b": "node/dynamics_loaded_arm/foot_right_n33_18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_right_to_foot_right_n33_18_washer",
+      "kind": "fixed"
+    },
+    {
+      "a": "node/dynamics_loaded_arm/support_right",
+      "b": "node/dynamics_loaded_arm/foot_right_n33_n18_washer",
+      "joint_id": "joint/dynamics_loaded_arm/support_right_to_foot_right_n33_n18_washer",
+      "kind": "fixed"
+    }
+  ],
+  "root_definition_id": "dynamics_loaded_arm",
+  "schema_version": "1.0",
+  "sites": [],
+  "tree_joints": [
+    {
+      "group": "node/dynamics_loaded_arm/arm",
+      "joint_id": "joint/dynamics_loaded_arm/support_left_to_arm",
+      "joint_name": "joint_joint_dynamics_loaded_arm_support_left_to_arm_685164ca01d9",
+      "parent_group": "node/dynamics_loaded_arm"
+    }
+  ],
+  "units": {
+    "mjcf_angle": "radian",
+    "mjcf_length": "m",
+    "source": "mm"
+  }
+}

@@ -59,6 +59,7 @@ let workspacePathObject = null;
 
 let manifest;
 let currentTime = 0;
+let currentCaseIndex = 0;
 let playing = false;
 let playbackSpeed = 1;
 let selectedComponentId = null;
@@ -155,7 +156,72 @@ function updateMetrics() {
     ratio === null ? "--" : `${ratio.toFixed(3)}${ratioUnit === ":1" ? ":1" : ` ${ratioUnit}`}`;
 }
 
+const physicsArrows = new THREE.Group();
+scene.add(physicsArrows);
+let physicsPanel;
+function physicsCaseCount() {
+  return manifest?.physics_case_count ?? manifest?.physics?.static_results?.length ?? 0;
+}
+
+function updateStaticCase(index) {
+  const count = physicsCaseCount();
+  if (!count) return;
+  currentCaseIndex = Math.max(0, Math.min(count - 1, Math.round(index)));
+  const record = manifest.physics.static_results[currentCaseIndex];
+  for (const component of manifest.components) {
+    const object = componentObjects.get(component.component_id);
+    const pose = record.component_poses[component.component_id];
+    if (object && pose) {
+      object.position.fromArray(pose.position_m);
+      object.quaternion.fromArray(pose.orientation_xyzw);
+    }
+  }
+  timeline.value = count > 1 ? String(currentCaseIndex / (count - 1)) : "0";
+  document.querySelector("#time-readout").textContent = String(currentCaseIndex + 1);
+  document.querySelector("#time-readout").parentElement.lastChild.textContent = " (static case)";
+  document.querySelector("#sample-readout").textContent = `Static case ${currentCaseIndex + 1} / ${count}`;
+  updatePhysics(currentCaseIndex);
+}
+
+function expectedRatioLabel(metrics) {
+  const unit = metrics.ratio_unit || ":1";
+  return metrics.expected_ratio == null ? "--" : `${metrics.expected_ratio.toFixed(3)}${unit === ":1" ? ":1" : ` ${unit}`}`;
+}
+
+function updatePhysics(caseIndex) {
+  const cases = manifest.physics?.static_results;
+  if (!cases?.length) return;
+  const record = cases[Math.max(0, Math.min(cases.length - 1, caseIndex))];
+  for (const arrow of [...physicsArrows.children]) {
+    physicsArrows.remove(arrow);
+    arrow.line?.geometry.dispose(); arrow.cone?.geometry.dispose();
+    arrow.line?.material.dispose(); arrow.cone?.material.dispose();
+  }
+  for (const load of record.load_wrenches || []) {
+    const force = new THREE.Vector3(...load.force_n);
+    const magnitude = force.length();
+    if (magnitude <= 1e-12) continue;
+    const arrow = new THREE.ArrowHelper(force.normalize(), new THREE.Vector3(...load.point_m),
+      Math.min(0.12, 0.025 + magnitude * 0.0007), load.applied_by === "gravity" ? 0x436fa0 : 0xe55f2b, 0.012, 0.006);
+    physicsArrows.add(arrow);
+  }
+  if (!physicsPanel) {
+    physicsPanel = document.createElement("details");
+    physicsPanel.style.cssText = "padding:12px;max-height:38vh;overflow:auto;font-size:12px";
+    const summary = document.createElement("summary"); summary.textContent = "Static forces, frames and evidence";
+    physicsPanel.append(summary); physicsPanel.append(document.createElement("pre"));
+    sidePanel.append(physicsPanel);
+  }
+  physicsPanel.querySelector("pre").textContent = JSON.stringify({
+    case: caseIndex + 1, status: record.status, acceptance_passed: manifest.physics.acceptance_passed, checks: manifest.physics.checks, scope: "Discrete static cases; no dynamic trajectory",
+    holding: record.generalized_holding, units: record.generalized_units,
+    support: record.support_wrench, loads: record.load_wrenches,
+    source_sha256: record.evidence?.source_sha256,
+  }, null, 2);
+}
+
 function updateTime(time) {
+  if (physicsCaseCount()) return updateStaticCase(time);
   currentTime = Math.max(manifest.start_time_s, Math.min(manifest.end_time_s, time));
   for (const component of manifest.components) applyComponentPose(component, currentTime);
   const duration = manifest.end_time_s - manifest.start_time_s;
@@ -165,12 +231,12 @@ function updateTime(time) {
     manifest.sample_count,
     Math.max(1, Math.round(Number(timeline.value) * (manifest.sample_count - 1)) + 1),
   );
-  document.querySelector("#sample-readout").textContent = `Frame ${frame} / ${manifest.sample_count}`;
+  document.querySelector("#sample-readout").textContent = manifest.physics ? `Static case ${frame} / ${manifest.sample_count}` : `Frame ${frame} / ${manifest.sample_count}`;
   updateMetrics();
 }
 
 function setPlaying(value) {
-  playing = value;
+  playing = physicsCaseCount() ? false : value;
   playPause.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;";
   playPause.title = playing ? "Pause" : "Play";
   playPause.setAttribute("aria-label", playPause.title);
@@ -319,7 +385,7 @@ async function initialize() {
     status.classList.toggle("warning", manifest.motion_status !== "completed");
     document.querySelector("#backend-label").textContent = [manifest.backend.id, manifest.backend.version].filter(Boolean).join(" ");
     document.querySelector("#expected-ratio").textContent =
-      manifest.metrics.expected_ratio === null ? "--" : `${manifest.metrics.expected_ratio.toFixed(3)}${manifest.metrics.ratio_unit === ":1" ? ":1" : ` ${manifest.metrics.ratio_unit}`}`;
+      expectedRatioLabel(manifest.metrics);
     document.querySelector("#timeline-start").textContent = `${manifest.start_time_s.toFixed(3)} s`;
     document.querySelector("#timeline-end").textContent = `${manifest.end_time_s.toFixed(3)} s`;
 
@@ -331,7 +397,13 @@ async function initialize() {
     }
     createWorkspacePath();
     populateIssues();
-    updateTime(manifest.start_time_s);
+    if (physicsCaseCount()) {
+      playPause.disabled = true; speedSelect.disabled = true;
+      document.querySelector("#viewer-subtitle").textContent += " · static cases, no time integration";
+      document.querySelector("#timeline-start").textContent = "Case 1";
+      document.querySelector("#timeline-end").textContent = `Case ${physicsCaseCount()}`;
+    }
+    updateTime(physicsCaseCount() ? 0 : manifest.start_time_s);
     fitView();
     loadingState.hidden = true;
   } catch (error) {
@@ -341,12 +413,14 @@ async function initialize() {
 }
 
 playPause.addEventListener("click", () => setPlaying(!playing));
-restart.addEventListener("click", () => { setPlaying(false); updateTime(manifest.start_time_s); });
+restart.addEventListener("click", () => { setPlaying(false); updateTime(physicsCaseCount() ? 0 : manifest.start_time_s); });
 fitViewButton.addEventListener("click", fitView);
 speedSelect.addEventListener("change", () => { playbackSpeed = Number(speedSelect.value); });
 timeline.addEventListener("input", () => {
   setPlaying(false);
-  updateTime(manifest.start_time_s + Number(timeline.value) * (manifest.end_time_s - manifest.start_time_s));
+  updateTime(physicsCaseCount()
+    ? Number(timeline.value) * (physicsCaseCount() - 1)
+    : manifest.start_time_s + Number(timeline.value) * (manifest.end_time_s - manifest.start_time_s));
 });
 showAll.addEventListener("change", () => {
   for (const [id, row] of componentRows) {

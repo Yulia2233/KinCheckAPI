@@ -1,0 +1,2526 @@
+{
+  "variant": "empty",
+  "supports": [
+    {
+      "support_id": "foundation_0",
+      "component_id": "node/dynamics_loaded_arm",
+      "occurrence_id": "node/dynamics_loaded_arm/base",
+      "interface_name": "interface.mount",
+      "point_m": [
+        -0.025,
+        -0.085,
+        0.0
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "kind": "fixed"
+    },
+    {
+      "support_id": "foundation_1",
+      "component_id": "node/dynamics_loaded_arm",
+      "occurrence_id": "node/dynamics_loaded_arm/base",
+      "interface_name": "interface.mount",
+      "point_m": [
+        -0.025,
+        0.085,
+        0.0
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "kind": "fixed"
+    },
+    {
+      "support_id": "foundation_2",
+      "component_id": "node/dynamics_loaded_arm",
+      "occurrence_id": "node/dynamics_loaded_arm/base",
+      "interface_name": "interface.mount",
+      "point_m": [
+        0.3,
+        -0.085,
+        0.0
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "kind": "fixed"
+    },
+    {
+      "support_id": "foundation_3",
+      "component_id": "node/dynamics_loaded_arm",
+      "occurrence_id": "node/dynamics_loaded_arm/base",
+      "interface_name": "interface.mount",
+      "point_m": [
+        0.3,
+        0.085,
+        0.0
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "kind": "fixed"
+    }
+  ],
+  "contacts": [
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/support_left",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.04020000000000001,
+        0.024800000000000003,
+        0.015790000000000002
+      ],
+      "upper_m": [
+        0.04020000000000001,
+        0.0752,
+        0.016210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/bushing_left",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0153,
+        0.033699999999999994,
+        0.24470000000000003
+      ],
+      "upper_m": [
+        0.0153,
+        0.0693,
+        0.27530000000000004
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "bore plus flange; ideal bonded bushing",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/support_right",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.04020000000000001,
+        -0.0752,
+        0.015790000000000002
+      ],
+      "upper_m": [
+        0.04020000000000001,
+        -0.024800000000000003,
+        0.016210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/bushing_right",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0153,
+        -0.0693,
+        0.24470000000000003
+      ],
+      "upper_m": [
+        0.0153,
+        -0.033699999999999994,
+        0.27530000000000004
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "bore plus flange; ideal bonded bushing",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/shaft",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        -0.014299999999999998,
+        0.25160000000000005
+      ],
+      "upper_m": [
+        0.0084,
+        0.014299999999999998,
+        0.26839999999999997
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "keyed ideal hub bore",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/key",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0057,
+        -0.0125,
+        0.2575
+      ],
+      "upper_m": [
+        0.010299999999999998,
+        0.0125,
+        0.2625
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "keyway flanks",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/shaft",
+      "occurrence_b": "node/dynamics_loaded_arm/key",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0057,
+        -0.0125,
+        0.2575
+      ],
+      "upper_m": [
+        0.010299999999999998,
+        0.0125,
+        0.2625
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "shaft keyway",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/platform",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2597,
+        -0.020300000000000002,
+        0.28979000000000005
+      ],
+      "upper_m": [
+        0.3003,
+        0.020300000000000002,
+        0.29020999999999997
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/platform",
+      "occurrence_b": "node/dynamics_loaded_arm/load_ear",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2837,
+        0.029900000000000003,
+        0.29979
+      ],
+      "upper_m": [
+        0.3163,
+        0.0403,
+        0.30021
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_mount",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0403,
+        -0.1083,
+        0.015790000000000002
+      ],
+      "upper_m": [
+        0.060300000000000006,
+        -0.0767,
+        0.016210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_stator",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0263,
+        -0.10721000000000001,
+        0.23370000000000002
+      ],
+      "upper_m": [
+        0.0263,
+        -0.10679,
+        0.2863
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/guard",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.028300000000000002,
+        -0.10321000000000001,
+        0.23170000000000002
+      ],
+      "upper_m": [
+        0.028300000000000002,
+        -0.10278999999999999,
+        0.2883
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/shaft",
+      "occurrence_b": "node/dynamics_loaded_arm/coupling",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        -0.0853,
+        0.25160000000000005
+      ],
+      "upper_m": [
+        0.0084,
+        -0.0777,
+        0.26839999999999997
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/coupling",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_rotor",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        -0.0983,
+        0.25160000000000005
+      ],
+      "upper_m": [
+        0.0084,
+        -0.0897,
+        0.26839999999999997
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/shaft",
+      "occurrence_b": "node/dynamics_loaded_arm/lock_ring",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        0.0707,
+        0.25160000000000005
+      ],
+      "upper_m": [
+        0.0084,
+        0.07629999999999999,
+        0.26839999999999997
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/bushing_left",
+      "occurrence_b": "node/dynamics_loaded_arm/shaft",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        -0.00030000000000000144,
+        -0.008399999999999987
+      ],
+      "upper_m": [
+        0.0084,
+        0.0353,
+        0.008399999999999987
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "journal clearance fit",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/bushing_left",
+      "occurrence_b": "node/dynamics_loaded_arm/thrust_right",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0113,
+        0.034789999999999995,
+        -0.011299999999999994
+      ],
+      "upper_m": [
+        0.0113,
+        0.03521000000000001,
+        0.011300000000000022
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "axial bushing/thrust face",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/shaft",
+      "occurrence_b": "node/dynamics_loaded_arm/thrust_right",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0113,
+        0.06878999999999999,
+        0.24870000000000003
+      ],
+      "upper_m": [
+        0.0113,
+        0.07121000000000001,
+        0.27130000000000004
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/bushing_right",
+      "occurrence_b": "node/dynamics_loaded_arm/shaft",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        -0.00030000000000000144,
+        -0.008399999999999987
+      ],
+      "upper_m": [
+        0.0084,
+        0.0353,
+        0.008399999999999987
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "journal clearance fit",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/bushing_right",
+      "occurrence_b": "node/dynamics_loaded_arm/thrust_left",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0113,
+        0.034789999999999995,
+        -0.011299999999999994
+      ],
+      "upper_m": [
+        0.0113,
+        0.03521000000000001,
+        0.011300000000000022
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "axial bushing/thrust face",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/shaft",
+      "occurrence_b": "node/dynamics_loaded_arm/thrust_left",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0113,
+        -0.07121000000000001,
+        0.24870000000000003
+      ],
+      "upper_m": [
+        0.0113,
+        -0.06878999999999999,
+        0.27130000000000004
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/lock_ring",
+      "occurrence_b": "node/dynamics_loaded_arm/thrust_right",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0113,
+        0.07078999999999999,
+        0.24870000000000003
+      ],
+      "upper_m": [
+        0.0113,
+        0.07121000000000001,
+        0.27130000000000004
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_stator",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_bearing_0",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.010299999999999998,
+        -0.1533,
+        0.24970000000000003
+      ],
+      "upper_m": [
+        0.010299999999999998,
+        -0.14770000000000003,
+        0.27030000000000004
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "motor bearing outer seat",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_bearing_0",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_rotor",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        -0.008399999999999987,
+        -0.00029999999999999434
+      ],
+      "upper_m": [
+        0.0084,
+        0.008399999999999987,
+        0.005299999999999995
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "motor journal clearance",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_stator",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_bearing_1",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.010299999999999998,
+        -0.1153,
+        0.24970000000000003
+      ],
+      "upper_m": [
+        0.010299999999999998,
+        -0.1097,
+        0.27030000000000004
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "motor bearing outer seat",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_bearing_1",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_rotor",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0084,
+        -0.008399999999999987,
+        -0.00029999999999999434
+      ],
+      "upper_m": [
+        0.0084,
+        0.008399999999999987,
+        0.005299999999999995
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "motor journal clearance",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_n25_n85_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0333,
+        -0.0933,
+        0.015790000000000002
+      ],
+      "upper_m": [
+        -0.0167,
+        -0.0767,
+        0.016210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foundation_n25_n85_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_n25_n85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000001,
+        -0.0066800000000000045,
+        -0.028300000000000002
+      ],
+      "upper_m": [
+        0.006680000000000001,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_n25_n85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03168,
+        -0.09168000000000001,
+        -0.0123
+      ],
+      "upper_m": [
+        -0.01832,
+        -0.07832,
+        0.0231
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_n25_85_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0333,
+        0.0767,
+        0.015790000000000002
+      ],
+      "upper_m": [
+        -0.0167,
+        0.0933,
+        0.016210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foundation_n25_85_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_n25_85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000001,
+        -0.0066800000000000045,
+        -0.028300000000000002
+      ],
+      "upper_m": [
+        0.006680000000000001,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_n25_85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03168,
+        0.07832,
+        -0.0123
+      ],
+      "upper_m": [
+        -0.01832,
+        0.09168000000000001,
+        0.0231
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_300_n85_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2917,
+        -0.0933,
+        0.015790000000000002
+      ],
+      "upper_m": [
+        0.3083,
+        -0.0767,
+        0.016210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foundation_300_n85_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_300_n85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000018,
+        -0.0066800000000000045,
+        -0.028300000000000002
+      ],
+      "upper_m": [
+        0.006680000000000018,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_300_n85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.29332,
+        -0.09168000000000001,
+        -0.0123
+      ],
+      "upper_m": [
+        0.30668,
+        -0.07832,
+        0.0231
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_300_85_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2917,
+        0.0767,
+        0.015790000000000002
+      ],
+      "upper_m": [
+        0.3083,
+        0.0933,
+        0.016210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foundation_300_85_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_300_85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000018,
+        -0.0066800000000000045,
+        -0.028300000000000002
+      ],
+      "upper_m": [
+        0.006680000000000018,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foundation_300_85",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.29332,
+        0.07832,
+        -0.0123
+      ],
+      "upper_m": [
+        0.30668,
+        0.09168000000000001,
+        0.0231
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_n18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0413,
+        0.0237,
+        0.02779
+      ],
+      "upper_m": [
+        -0.0247,
+        0.0403,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_left_n33_n18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0066800000000000045,
+        -0.006680000000000001,
+        -0.0223
+      ],
+      "upper_m": [
+        0.006680000000000001,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        0.025320000000000002,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        0.038680000000000006,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        0.025320000000000002,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        0.038680000000000006,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0413,
+        0.059699999999999996,
+        0.02779
+      ],
+      "upper_m": [
+        -0.0247,
+        0.07629999999999999,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_left_n33_18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0066800000000000045,
+        -0.0066800000000000045,
+        -0.0223
+      ],
+      "upper_m": [
+        0.006680000000000001,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        0.06131999999999999,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        0.07468000000000001,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_n33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        0.06131999999999999,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        0.07468000000000001,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_n18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0247,
+        0.0237,
+        0.02779
+      ],
+      "upper_m": [
+        0.0413,
+        0.0403,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_left_33_n18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000001,
+        -0.006680000000000001,
+        -0.0223
+      ],
+      "upper_m": [
+        0.0066800000000000045,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        0.025320000000000002,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        0.038680000000000006,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        0.025320000000000002,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        0.038680000000000006,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0247,
+        0.059699999999999996,
+        0.02779
+      ],
+      "upper_m": [
+        0.0413,
+        0.07629999999999999,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_left_33_18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000001,
+        -0.0066800000000000045,
+        -0.0223
+      ],
+      "upper_m": [
+        0.0066800000000000045,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_left",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        0.06131999999999999,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        0.07468000000000001,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_left_33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        0.06131999999999999,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        0.07468000000000001,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_n18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0413,
+        -0.07629999999999999,
+        0.02779
+      ],
+      "upper_m": [
+        -0.0247,
+        -0.059699999999999996,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_right_n33_n18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0066800000000000045,
+        -0.0066800000000000045,
+        -0.0223
+      ],
+      "upper_m": [
+        0.006680000000000001,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        -0.07468000000000001,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        -0.06131999999999999,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        -0.07468000000000001,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        -0.06131999999999999,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0413,
+        -0.0403,
+        0.02779
+      ],
+      "upper_m": [
+        -0.0247,
+        -0.0237,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_right_n33_18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0066800000000000045,
+        -0.0066800000000000045,
+        -0.0223
+      ],
+      "upper_m": [
+        0.006680000000000001,
+        0.006680000000000001,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        -0.038680000000000006,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        -0.025320000000000002,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_n33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03968000000000001,
+        -0.038680000000000006,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.02632,
+        -0.025320000000000002,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_n18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0247,
+        -0.07629999999999999,
+        0.02779
+      ],
+      "upper_m": [
+        0.0413,
+        -0.059699999999999996,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_right_33_n18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000001,
+        -0.0066800000000000045,
+        -0.0223
+      ],
+      "upper_m": [
+        0.0066800000000000045,
+        0.0066800000000000045,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        -0.07468000000000001,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        -0.06131999999999999,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_n18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        -0.07468000000000001,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        -0.06131999999999999,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_18_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0247,
+        -0.0403,
+        0.02779
+      ],
+      "upper_m": [
+        0.0413,
+        -0.0237,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/foot_right_33_18_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.006680000000000001,
+        -0.0066800000000000045,
+        -0.0223
+      ],
+      "upper_m": [
+        0.0066800000000000045,
+        0.006680000000000001,
+        0.007099999999999999
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/support_right",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        -0.038680000000000006,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        -0.025320000000000002,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/foot_right_33_18",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.02632,
+        -0.038680000000000006,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.03968000000000001,
+        -0.025320000000000002,
+        0.0351
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n100_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.042300000000000004,
+        -0.1063,
+        0.02779
+      ],
+      "upper_m": [
+        -0.0297,
+        -0.0937,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_foot_n36_n100_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n100",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.005059999999999999,
+        -0.005059999999999999,
+        -0.0223
+      ],
+      "upper_m": [
+        0.005059999999999999,
+        0.005059999999999999,
+        0.005900000000000003
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n100",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.041060000000000006,
+        -0.10506,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.030940000000000002,
+        -0.09494,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n100",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.041060000000000006,
+        -0.10506,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.030940000000000002,
+        -0.09494,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n84_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.042300000000000004,
+        -0.0903,
+        0.02779
+      ],
+      "upper_m": [
+        -0.0297,
+        -0.0777,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_foot_n36_n84_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n84",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.005059999999999999,
+        -0.005059999999999999,
+        -0.0223
+      ],
+      "upper_m": [
+        0.005059999999999999,
+        0.005059999999999999,
+        0.005900000000000003
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n84",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.041060000000000006,
+        -0.08906,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.030940000000000002,
+        -0.07894,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_n36_n84",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.041060000000000006,
+        -0.08906,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        -0.030940000000000002,
+        -0.07894,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n100_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.043699999999999996,
+        -0.1063,
+        0.02779
+      ],
+      "upper_m": [
+        0.0563,
+        -0.0937,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_foot_50_n100_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n100",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.005059999999999999,
+        -0.005059999999999999,
+        -0.0223
+      ],
+      "upper_m": [
+        0.005059999999999999,
+        0.005059999999999999,
+        0.005900000000000003
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n100",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.04494,
+        -0.10506,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.055060000000000005,
+        -0.09494,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n100",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.04494,
+        -0.10506,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.055060000000000005,
+        -0.09494,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n84_washer",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.043699999999999996,
+        -0.0903,
+        0.02779
+      ],
+      "upper_m": [
+        0.0563,
+        -0.0777,
+        0.028210000000000002
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_foot_50_n84_washer",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n84",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.005059999999999999,
+        -0.005059999999999999,
+        -0.0223
+      ],
+      "upper_m": [
+        0.005059999999999999,
+        0.005059999999999999,
+        0.005900000000000003
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n84",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.04494,
+        -0.08906,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.055060000000000005,
+        -0.07894,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/base",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_foot_50_n84",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.04494,
+        -0.08906,
+        0.0056999999999999985
+      ],
+      "upper_m": [
+        0.055060000000000005,
+        -0.07894,
+        0.033900000000000007
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/platform",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_282_n10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2758,
+        -0.0162,
+        0.2817
+      ],
+      "upper_m": [
+        0.2882,
+        -0.0038,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_282_n10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2758,
+        -0.0162,
+        0.2817
+      ],
+      "upper_m": [
+        0.2882,
+        -0.0038,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/platform",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_282_10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2758,
+        0.0038,
+        0.2817
+      ],
+      "upper_m": [
+        0.2882,
+        0.0162,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_282_10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2758,
+        0.0038,
+        0.2817
+      ],
+      "upper_m": [
+        0.2882,
+        0.0162,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/platform",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_294_n10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2878,
+        -0.0162,
+        0.2817
+      ],
+      "upper_m": [
+        0.3002,
+        -0.0038,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_294_n10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2878,
+        -0.0162,
+        0.2817
+      ],
+      "upper_m": [
+        0.3002,
+        -0.0038,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/platform",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_294_10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2878,
+        0.0038,
+        0.2817
+      ],
+      "upper_m": [
+        0.3002,
+        0.0162,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/platform_screw_294_10",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.2878,
+        0.0038,
+        0.2817
+      ],
+      "upper_m": [
+        0.3002,
+        0.0162,
+        0.3039
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/load_ear",
+      "occurrence_b": "node/dynamics_loaded_arm/ear_screw_290",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.28494,
+        0.02994,
+        0.2937
+      ],
+      "upper_m": [
+        0.29506,
+        0.040060000000000005,
+        0.3079
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/platform",
+      "occurrence_b": "node/dynamics_loaded_arm/ear_screw_290",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.28494,
+        0.02994,
+        0.2937
+      ],
+      "upper_m": [
+        0.29506,
+        0.040060000000000005,
+        0.3079
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/load_ear",
+      "occurrence_b": "node/dynamics_loaded_arm/ear_screw_310",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.30494,
+        0.02994,
+        0.2937
+      ],
+      "upper_m": [
+        0.31506,
+        0.040060000000000005,
+        0.3079
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/platform",
+      "occurrence_b": "node/dynamics_loaded_arm/ear_screw_310",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.30494,
+        0.02994,
+        0.2937
+      ],
+      "upper_m": [
+        0.31506,
+        0.040060000000000005,
+        0.3079
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/hub_clamp",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.03106,
+        -0.00506,
+        0.24570000000000003
+      ],
+      "upper_m": [
+        -0.02094,
+        0.00506,
+        0.2719
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/arm",
+      "occurrence_b": "node/dynamics_loaded_arm/hub_nut",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0313,
+        -0.0053,
+        0.25179
+      ],
+      "upper_m": [
+        -0.0207,
+        0.0053,
+        0.25221
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.00021,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/hub_nut",
+      "occurrence_b": "node/dynamics_loaded_arm/hub_clamp",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.0033999999999999994,
+        -0.0034000000000000002,
+        -0.00029999999999999434
+      ],
+      "upper_m": [
+        0.0033999999999999994,
+        0.0034000000000000002,
+        0.006299999999999995
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0003,
+      "purpose": "local mating faces",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/guard",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_n20_240",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.023440000000000003,
+        -0.1123,
+        0.23656000000000002
+      ],
+      "upper_m": [
+        -0.01656,
+        -0.0973,
+        0.24344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_n20_240",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.023440000000000003,
+        -0.1123,
+        0.23656000000000002
+      ],
+      "upper_m": [
+        -0.01656,
+        -0.0973,
+        0.24344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_stator",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_n20_240",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.023440000000000003,
+        -0.1123,
+        0.23656000000000002
+      ],
+      "upper_m": [
+        -0.01656,
+        -0.0973,
+        0.24344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/guard",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_n20_280",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.023440000000000003,
+        -0.1123,
+        0.27656000000000003
+      ],
+      "upper_m": [
+        -0.01656,
+        -0.0973,
+        0.28344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_n20_280",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.023440000000000003,
+        -0.1123,
+        0.27656000000000003
+      ],
+      "upper_m": [
+        -0.01656,
+        -0.0973,
+        0.28344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_stator",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_n20_280",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        -0.023440000000000003,
+        -0.1123,
+        0.27656000000000003
+      ],
+      "upper_m": [
+        -0.01656,
+        -0.0973,
+        0.28344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/guard",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_20_240",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.01656,
+        -0.1123,
+        0.23656000000000002
+      ],
+      "upper_m": [
+        0.023440000000000003,
+        -0.0973,
+        0.24344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_20_240",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.01656,
+        -0.1123,
+        0.23656000000000002
+      ],
+      "upper_m": [
+        0.023440000000000003,
+        -0.0973,
+        0.24344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_stator",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_20_240",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.01656,
+        -0.1123,
+        0.23656000000000002
+      ],
+      "upper_m": [
+        0.023440000000000003,
+        -0.0973,
+        0.24344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/guard",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_20_280",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.01656,
+        -0.1123,
+        0.27656000000000003
+      ],
+      "upper_m": [
+        0.023440000000000003,
+        -0.0973,
+        0.28344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_mount",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_20_280",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.01656,
+        -0.1123,
+        0.27656000000000003
+      ],
+      "upper_m": [
+        0.023440000000000003,
+        -0.0973,
+        0.28344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_stator",
+      "occurrence_b": "node/dynamics_loaded_arm/motor_guard_20_280",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.01656,
+        -0.1123,
+        0.27656000000000003
+      ],
+      "upper_m": [
+        0.023440000000000003,
+        -0.0973,
+        0.28344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/coupling",
+      "occurrence_b": "node/dynamics_loaded_arm/coupling_screw_n94",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0077,
+        -0.09744,
+        0.25656
+      ],
+      "upper_m": [
+        0.0167,
+        -0.09056,
+        0.26344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/motor_rotor",
+      "occurrence_b": "node/dynamics_loaded_arm/coupling_screw_n94",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0077,
+        -0.09744,
+        0.25656
+      ],
+      "upper_m": [
+        0.0167,
+        -0.09056,
+        0.26344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/coupling",
+      "occurrence_b": "node/dynamics_loaded_arm/coupling_screw_n81",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0077,
+        -0.08444,
+        0.25656
+      ],
+      "upper_m": [
+        0.0167,
+        -0.07756,
+        0.26344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/shaft",
+      "occurrence_b": "node/dynamics_loaded_arm/coupling_screw_n81",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0077,
+        -0.08444,
+        0.25656
+      ],
+      "upper_m": [
+        0.0167,
+        -0.07756,
+        0.26344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/lock_ring",
+      "occurrence_b": "node/dynamics_loaded_arm/ring_screw",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0077,
+        0.07006,
+        0.25656
+      ],
+      "upper_m": [
+        0.0157,
+        0.07694,
+        0.26344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": true
+    },
+    {
+      "occurrence_a": "node/dynamics_loaded_arm/shaft",
+      "occurrence_b": "node/dynamics_loaded_arm/ring_screw",
+      "interface_a": "interface.contact",
+      "interface_b": "interface.contact",
+      "lower_m": [
+        0.0077,
+        0.07006,
+        0.25656
+      ],
+      "upper_m": [
+        0.0157,
+        0.07694,
+        0.26344
+      ],
+      "minimum_gap_m": 0,
+      "maximum_gap_m": 0.0005,
+      "purpose": "fastener bore/head; declared tapped engagement",
+      "required_connection": false
+    }
+  ],
+  "bom": [
+    "arm",
+    "base",
+    "bushing_left",
+    "bushing_right",
+    "coupling",
+    "coupling_screw_n81",
+    "coupling_screw_n94",
+    "ear_screw_290",
+    "ear_screw_310",
+    "foot_left_33_18",
+    "foot_left_33_18_washer",
+    "foot_left_33_n18",
+    "foot_left_33_n18_washer",
+    "foot_left_n33_18",
+    "foot_left_n33_18_washer",
+    "foot_left_n33_n18",
+    "foot_left_n33_n18_washer",
+    "foot_right_33_18",
+    "foot_right_33_18_washer",
+    "foot_right_33_n18",
+    "foot_right_33_n18_washer",
+    "foot_right_n33_18",
+    "foot_right_n33_18_washer",
+    "foot_right_n33_n18",
+    "foot_right_n33_n18_washer",
+    "foundation_300_85",
+    "foundation_300_85_washer",
+    "foundation_300_n85",
+    "foundation_300_n85_washer",
+    "foundation_n25_85",
+    "foundation_n25_85_washer",
+    "foundation_n25_n85",
+    "foundation_n25_n85_washer",
+    "guard",
+    "hub_clamp",
+    "hub_nut",
+    "key",
+    "load_ear",
+    "lock_ring",
+    "motor_bearing_0",
+    "motor_bearing_1",
+    "motor_foot_50_n100",
+    "motor_foot_50_n100_washer",
+    "motor_foot_50_n84",
+    "motor_foot_50_n84_washer",
+    "motor_foot_n36_n100",
+    "motor_foot_n36_n100_washer",
+    "motor_foot_n36_n84",
+    "motor_foot_n36_n84_washer",
+    "motor_guard_20_240",
+    "motor_guard_20_280",
+    "motor_guard_n20_240",
+    "motor_guard_n20_280",
+    "motor_mount",
+    "motor_rotor",
+    "motor_stator",
+    "platform",
+    "platform_screw_282_10",
+    "platform_screw_282_n10",
+    "platform_screw_294_10",
+    "platform_screw_294_n10",
+    "ring_screw",
+    "shaft",
+    "support_left",
+    "support_right",
+    "thrust_left",
+    "thrust_right"
+  ],
+  "environment": "ideal fixed plane Z=0; four foundation bolt holes",
+  "fastener_thread_model": "nominal screw envelopes plus declared blind tap depth; no screw drive"
+}

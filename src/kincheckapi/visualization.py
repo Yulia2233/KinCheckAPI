@@ -51,14 +51,20 @@ class ViewerArtifact:
 
 
 def _fail(
-    *, code: str, message: str, object_ids: tuple[str, ...] = (), paths: tuple[str, ...] = ()
+    *,
+    code: str,
+    message: str,
+    object_ids: tuple[str, ...] = (),
+    paths: tuple[str, ...] = (),
 ) -> None:
     raise VisualizationExportError(
         code=code,
         message=message,
         object_ids=object_ids,
         source_paths=paths,
-        suggested_actions=("Provide matching public AssemblyModel and MotionResult data, then retry.",),
+        suggested_actions=(
+            "Provide matching public AssemblyModel and MotionResult data, then retry.",
+        ),
     )
 
 
@@ -76,7 +82,8 @@ def _trajectory_payload(trajectory: Trajectory) -> dict[str, Any]:
             [float(value) for value in pose.position_m] for pose in trajectory.poses
         ],
         "orientations_xyzw": [
-            [float(value) for value in pose.orientation_xyzw] for pose in trajectory.poses
+            [float(value) for value in pose.orientation_xyzw]
+            for pose in trajectory.poses
         ],
     }
 
@@ -127,7 +134,9 @@ def _material_color(*, part: Part, index: int) -> str:
         raw = material.get("color")
         if isinstance(raw, (tuple, list)) and len(raw) == 3:
             try:
-                channels = tuple(max(0, min(255, round(float(value) * 255))) for value in raw)
+                channels = tuple(
+                    max(0, min(255, round(float(value) * 255))) for value in raw
+                )
             except (TypeError, ValueError):
                 channels = ()
             if len(channels) == 3:
@@ -150,13 +159,21 @@ def export_motion_viewer(
     input_joint_id: str | None = None,
     output_joint_id: str | None = None,
     expected_ratio: float | None = None,
+    static_results: tuple[Any, ...] = (),
+    static_checks: tuple[Any, ...] = (),
 ) -> ViewerArtifact:
     """Export a Three.js motion viewer without exposing backend-native objects."""
 
     if not isinstance(assembly, AssemblyModel):
-        _fail(code="KINCHECK-VIEWER-ASSEMBLY-INVALID", message="assembly must be an AssemblyModel")
+        _fail(
+            code="KINCHECK-VIEWER-ASSEMBLY-INVALID",
+            message="assembly must be an AssemblyModel",
+        )
     if not isinstance(motion_result, MotionResult):
-        _fail(code="KINCHECK-VIEWER-MOTION-INVALID", message="motion_result must be a MotionResult")
+        _fail(
+            code="KINCHECK-VIEWER-MOTION-INVALID",
+            message="motion_result must be a MotionResult",
+        )
     if motion_result.assembly_id != assembly.assembly_id:
         _fail(
             code="KINCHECK-VIEWER-ASSEMBLY-MISMATCH",
@@ -196,12 +213,16 @@ def export_motion_viewer(
 
     for index, component in enumerate(assembly.components):
         part = parts.get(component.part_id)
-        source = _resolve_asset(part=part, asset_root=root) if part is not None else None
+        source = (
+            _resolve_asset(part=part, asset_root=root) if part is not None else None
+        )
         asset_url: str | None = None
         if source is not None:
             asset_url = copied_assets.get(source)
             if asset_url is None:
-                target = assets_dir / _safe_asset_name(part_id=component.part_id, source=source)
+                target = assets_dir / _safe_asset_name(
+                    part_id=component.part_id, source=source
+                )
                 shutil.copy2(source, target)
                 asset_url = f"assets/{target.name}"
                 copied_assets[source] = asset_url
@@ -215,10 +236,14 @@ def export_motion_viewer(
                 "display_name": component.display_name or component.component_id,
                 "part_id": component.part_id,
                 "asset_url": asset_url,
-                "color": _material_color(part=part, index=index) if part is not None else _PALETTE[index % len(_PALETTE)],
+                "color": _material_color(part=part, index=index)
+                if part is not None
+                else _PALETTE[index % len(_PALETTE)],
                 "grounded": component.component_id in grounds,
                 "initial_pose": _pose_payload(component.initial_pose),
-                "trajectory": _trajectory_payload(trajectory) if trajectory is not None else None,
+                "trajectory": _trajectory_payload(trajectory)
+                if trajectory is not None
+                else None,
             }
         )
 
@@ -226,10 +251,14 @@ def export_motion_viewer(
     length_unit = units.get("length", "m") if isinstance(units, Mapping) else "m"
     asset_scale_m = _LENGTH_SCALES_M.get(str(length_unit), 1.0)
     input_trajectory = (
-        motion_result.get_joint_trajectory(joint_id=input_joint_id) if input_joint_id else None
+        motion_result.get_joint_trajectory(joint_id=input_joint_id)
+        if input_joint_id
+        else None
     )
     output_trajectory = (
-        motion_result.get_joint_trajectory(joint_id=output_joint_id) if output_joint_id else None
+        motion_result.get_joint_trajectory(joint_id=output_joint_id)
+        if output_joint_id
+        else None
     )
     if input_joint_id and input_trajectory is None:
         _fail(
@@ -244,8 +273,31 @@ def export_motion_viewer(
             object_ids=(output_joint_id,),
         )
 
+    input_joint = (
+        assembly.get_joint(joint_id=input_joint_id) if input_joint_id else None
+    )
+    output_joint = (
+        assembly.get_joint(joint_id=output_joint_id) if output_joint_id else None
+    )
+    input_type = input_joint.joint_type.value if input_joint else None
+    output_type = output_joint.joint_type.value if output_joint else None
+    input_unit = "m/s" if input_type == "prismatic" else "rad/s"
+    output_unit = "m/s" if output_type == "prismatic" else "rad/s"
+    ratio_mode, ratio_unit = "input_over_output", ":1"
+    if (input_type, output_type) == ("revolute", "prismatic"):
+        ratio_mode, ratio_unit = "output_over_input", "m/rad"
+    elif (input_type, output_type) == ("prismatic", "revolute"):
+        ratio_mode, ratio_unit = "output_over_input", "rad/m"
     manifest = {
         "schema_version": VIEWER_SCHEMA_VERSION,
+        "physics": {
+            "static_results": [r.to_dict() for r in static_results],
+            "checks": [r.to_dict() for r in static_checks],
+            "acceptance_passed": all(r.passed for r in static_results)
+            and all(r.passed for r in static_checks),
+        }
+        if static_results
+        else None,
         "title": title or assembly.display_name or assembly.assembly_id,
         "assembly_id": assembly.assembly_id,
         "scenario_id": motion_result.scenario_id,
@@ -253,6 +305,7 @@ def export_motion_viewer(
         "start_time_s": motion_result.start_time_s,
         "end_time_s": motion_result.end_time_s,
         "sample_count": len(motion_result.sample_times_s),
+        "physics_case_count": len(static_results),
         "component_result_scope": motion_result.metadata.get(
             "component_result_scope", "requested"
         ),
@@ -266,13 +319,25 @@ def export_motion_viewer(
         "metrics": {
             "input": _joint_payload(input_trajectory),
             "output": _joint_payload(output_trajectory),
-            "expected_ratio": float(expected_ratio) if expected_ratio is not None else None,
+            "expected_ratio": float(expected_ratio)
+            if expected_ratio is not None
+            else None,
+            "input_unit": input_unit,
+            "output_unit": output_unit,
+            "ratio_mode": ratio_mode,
+            "ratio_unit": ratio_unit,
             "maximum_position_residual_m": max(
-                (item.position_residual_m for item in motion_result.constraint_residuals),
+                (
+                    item.position_residual_m
+                    for item in motion_result.constraint_residuals
+                ),
                 default=0.0,
             ),
             "maximum_orientation_residual_rad": max(
-                (item.orientation_residual_rad for item in motion_result.constraint_residuals),
+                (
+                    item.orientation_residual_rad
+                    for item in motion_result.constraint_residuals
+                ),
                 default=0.0,
             ),
         },
