@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-solve_buckling_screening(*, model: kincheckapi.structural.StructuralModel, compressive_load_n: float | None = None, mode_count: int = 3, effective_length_factor: float = 1.0) -> kincheckapi.structural.BucklingResult
+solve_buckling_screening(*, model: kincheckapi.structural.StructuralModel, compressive_load_n: float | None = None, mode_count: int = 3, effective_length_factor: float = 1.0, geometric_stiffness_matrix: Optional[Sequence[Sequence[float]]] = None) -> kincheckapi.structural.BucklingResult
 ```
 
 源码：`src/kincheckapi/structural.py`。
@@ -26,6 +26,7 @@ from kincheckapi.dynamics import solve_buckling_screening
 | `compressive_load_n` | `float | None` | `None` | `compressive_load_n` 的公开输入或数据字段。 |
 | `mode_count` | `int` | `3` | `mode_count` 的公开输入或数据字段。 |
 | `effective_length_factor` | `float` | `1.0` | `effective_length_factor` 的公开输入或数据字段。 |
+| `geometric_stiffness_matrix` | `Optional[Sequence[Sequence[float]]]` | `None` | `geometric_stiffness_matrix` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

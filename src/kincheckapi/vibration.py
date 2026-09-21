@@ -102,6 +102,39 @@ class FrequencyResponseResult(PhysicsReport):
         object.__setattr__(self, "response", tuple(tuple(complex(v) for v in row) for row in self.response))
         object.__setattr__(self, "peak_amplitude", {str(k): _finite(v, "peak_amplitude", self.operation) for k, v in self.peak_amplitude.items()})
 
+    def to_dict(self) -> dict[str, Any]:
+        payload = PhysicsReport.to_dict(self)
+        payload["response"] = [
+            [{"real": float(value.real), "imag": float(value.imag)} for value in row]
+            for row in self.response
+        ]
+        return payload
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "FrequencyResponseResult":
+        response = []
+        for row in value.get("response", ()):
+            parsed = []
+            for item in row:
+                if isinstance(item, Mapping):
+                    parsed.append(complex(float(item["real"]), float(item["imag"])))
+                elif isinstance(item, (list, tuple)) and len(item) == 2:
+                    parsed.append(complex(float(item[0]), float(item[1])))
+                else:
+                    parsed.append(complex(item))
+            response.append(tuple(parsed))
+        return cls(
+            operation=value.get("operation", "solve_frequency_response"),
+            status=value.get("status", "failed"),
+            issues=tuple(),
+            evidence=value.get("evidence", {}),
+            model_sha256=value.get("model_sha256"),
+            frequencies_hz=tuple(value.get("frequencies_hz", ())),
+            response=tuple(response),
+            peak_amplitude=value.get("peak_amplitude", {}),
+            damping=None if value.get("damping") is None else DampingSpec(**value["damping"]),
+        )
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class TransientResult(PhysicsReport):
@@ -161,6 +194,8 @@ class PSDResult(PhysicsReport):
 
 def _reduced(model: StructuralModel, fixed_dofs: Sequence[int]) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     fixed = set(model.fixed_dofs) | {int(i) for i in fixed_dofs}
+    if any(i < 0 or i >= model.dof_count for i in fixed):
+        raise ValueError("fixed_dofs contains an invalid structural DOF")
     free = np.array([i for i in range(model.dof_count) if i not in fixed], dtype=int)
     return np.asarray(model.stiffness_matrix, dtype=float)[np.ix_(free, free)], np.asarray(model.mass_matrix, dtype=float)[np.ix_(free, free)], free
 
@@ -181,10 +216,18 @@ def solve_modes(*, model: StructuralModel, request: ModalRequest = ModalRequest(
         shapes = np.zeros((len(frequencies), model.dof_count))
         shapes[:, free] = vectors.T
         masses = tuple(float(v.T @ M @ v) for v in vectors.T)
-        omitted = float(math.sqrt(max(values[-1], 0.0)) / (2 * math.pi)) if len(frequencies) < len(free) else None
-        evidence = {"free_dofs": free.tolist(), "mass_normalized": True, "rigid_body_modes": int(np.count_nonzero(frequencies < 1e-8)), "frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz]}
-        return ModalResult(status="completed", model_sha256=model.content_hash, frequencies_hz=tuple(float(v) for v in frequencies), mode_shapes=tuple(tuple(float(v) for v in row) for row in shapes), effective_modal_mass=masses, omitted_frequency_hz=omitted, evidence=evidence)
-    except (np.linalg.LinAlgError, ValueError) as exc:
+        mask = frequencies >= request.frequency_min_hz
+        if request.frequency_max_hz is not None:
+            mask &= frequencies <= request.frequency_max_hz
+        if not np.any(mask):
+            return ModalResult(status="indeterminate", issues=(_issue("FREQUENCY-BAND-EMPTY", "No computed mode lies inside the requested frequency band.", op),), model_sha256=model.content_hash, evidence={"frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz]})
+        omitted = float(frequencies[np.flatnonzero(~mask)[0]]) if np.any(~mask) else None
+        evidence = {"free_dofs": free.tolist(), "mass_normalized": True, "rigid_body_modes": int(np.count_nonzero(frequencies < 1e-8)), "frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz], "band_filtered": True}
+        selected = np.flatnonzero(mask)
+        return ModalResult(status="completed", model_sha256=model.content_hash, frequencies_hz=tuple(float(frequencies[i]) for i in selected), mode_shapes=tuple(tuple(float(v) for v in shapes[i]) for i in selected), effective_modal_mass=tuple(masses[i] for i in selected), omitted_frequency_hz=omitted, evidence=evidence)
+    except ValueError as exc:
+        return ModalResult(status="validation_failed", issues=(_issue("BOUNDARY-INVALID", str(exc), op),), model_sha256=model.content_hash)
+    except np.linalg.LinAlgError as exc:
         return ModalResult(status="indeterminate", issues=(_issue("MODAL-SOLVE-FAILED", str(exc), op),), model_sha256=model.content_hash)
 
 
@@ -289,6 +332,9 @@ def estimate_psd(*, times_s: Sequence[float], values: Sequence[float], unit: str
 
 
 def compute_rms(*, frequency_hz: Sequence[float], psd: Sequence[float], mean: float = 0.0) -> float:
+    mean = float(mean)
+    if not math.isfinite(mean):
+        raise ValueError("mean must be finite")
     f = np.asarray(frequency_hz, dtype=float); p = np.asarray(psd, dtype=float)
     if f.ndim != 1 or p.shape != f.shape or len(f) < 2 or np.any(~np.isfinite(f)) or np.any(~np.isfinite(p)) or np.any(p < 0) or np.any(np.diff(f) <= 0):
         raise ValueError("frequency_hz and psd must be finite, increasing, nonnegative arrays of equal length")
@@ -306,17 +352,26 @@ def check_resonance_margin(*, natural_frequencies_hz: Sequence[float], excitatio
     if not natural or not excitation:
         return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("FREQUENCY-MISSING", "Both natural and excitation frequencies are required.", op),))
     closest = min(abs(a - b) for a in natural for b in excitation)
-    passed = closest >= margin or damping > 0.2
+    passed = closest >= margin
     return PhysicsReport(operation=op, status="passed" if passed else "failed", issues=() if passed else (_issue("RESONANCE-MARGIN-LOW", "Excitation lies within the declared resonance margin.", op, actual=closest, expected=margin, unit="Hz"),), evidence={"closest_margin_hz": closest, "minimum_margin_hz": margin, "damping_ratio": damping})
 
 
 def check_vibration_limits(*, values: Sequence[float], limit: float, metric: str = "peak", unit: str = "") -> PhysicsReport:
     op = "check_vibration_limits"
+    if metric not in ("peak", "rms", "mean", "peak_to_peak"):
+        return PhysicsReport(operation=op, status="validation_failed", issues=(_issue("METRIC-INVALID", "metric must be peak, rms, mean, or peak_to_peak.", op),), evidence={"metric": metric})
     bound = _positive(limit, "limit", op)
     samples = tuple(_finite(v, "value", op) for v in values)
     if not samples:
         return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("VIBRATION-MISSING", "At least one vibration value is required.", op),))
-    actual = max(abs(v) for v in samples)
+    if metric == "peak":
+        actual = max(abs(v) for v in samples)
+    elif metric == "rms":
+        actual = math.sqrt(sum(v * v for v in samples) / len(samples))
+    elif metric == "mean":
+        actual = abs(sum(samples) / len(samples))
+    else:
+        actual = max(samples) - min(samples)
     status = "passed" if actual <= bound else "failed"
     return PhysicsReport(operation=op, status=status, issues=() if status == "passed" else (_issue("VIBRATION-LIMIT-EXCEEDED", "Vibration value exceeds the declared limit.", op, actual=actual, expected=bound, unit=unit or None),), evidence={"metric": metric, "actual": actual, "limit": bound, "unit": unit})
 

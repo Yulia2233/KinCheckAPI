@@ -112,6 +112,8 @@ class StructuralLoad:
             fail("LOAD-INVALID", "Structural load values cannot be empty.", operation="StructuralLoad")
         object.__setattr__(self, "values", values)
         target = tuple(int(i) for i in self.target_dofs)
+        if target and len(values) != len(target):
+            fail("LOAD-INVALID", "values and target_dofs must have equal lengths.", operation="StructuralLoad")
         if any(i < 0 for i in target):
             fail("LOAD-INVALID", "target_dofs must be nonnegative.", operation="StructuralLoad")
         object.__setattr__(self, "target_dofs", target)
@@ -187,7 +189,10 @@ class LoadTransferMap:
             fail("LOAD-MAP-INVALID", "source_id is required.", operation="LoadTransferMap")
         if len(self.target_dofs) != len(self.force_components) or not self.target_dofs:
             fail("LOAD-MAP-INVALID", "target_dofs and force_components must have equal nonzero length.", operation="LoadTransferMap")
-        object.__setattr__(self, "target_dofs", tuple(int(i) for i in self.target_dofs))
+        target = tuple(int(i) for i in self.target_dofs)
+        if any(i < 0 for i in target):
+            fail("LOAD-MAP-INVALID", "target_dofs must be nonnegative.", operation="LoadTransferMap")
+        object.__setattr__(self, "target_dofs", target)
         object.__setattr__(self, "force_components", tuple(_finite(v, "force_component", "LoadTransferMap") for v in self.force_components))
         object.__setattr__(self, "reference_point_m", tuple(_finite(v, "reference_point_m", "LoadTransferMap") for v in self.reference_point_m))
 
@@ -262,7 +267,7 @@ def transfer_loads(*, model: StructuralModel, loads: Sequence[StructuralLoad] = 
 def solve_static_structure(*, model: StructuralModel, loads: Sequence[StructuralLoad] = (), load_vector: Sequence[float] | None = None, fixed_dofs: Sequence[int] | None = None, maps: Sequence[LoadTransferMap] = (), roi: Sequence[str] = ()) -> StructuralResult:
     """Solve K u = f for a declared linear model with explicit supports."""
     op = "solve_static_structure"
-    fixed = tuple(model.fixed_dofs if fixed_dofs is None else int(i) for i in (fixed_dofs if fixed_dofs is not None else model.fixed_dofs))
+    fixed = model.fixed_dofs if fixed_dofs is None else tuple(int(i) for i in fixed_dofs)
     if any(i < 0 or i >= model.dof_count for i in fixed):
         return StructuralResult(status="validation_failed", issues=(_issue("BOUNDARY-INVALID", "A fixed DOF is outside the structural model.", op),), model_sha256=model.content_hash)
     if load_vector is None:
@@ -285,10 +290,14 @@ def solve_static_structure(*, model: StructuralModel, loads: Sequence[Structural
         cond = float(np.linalg.cond(Kff))
         if not math.isfinite(cond) or cond > 1e12:
             return StructuralResult(status="indeterminate", issues=(_issue("MATRIX-SINGULAR", "Free structural stiffness is singular or ill-conditioned.", op, actual=cond, expected="<= 1e12"),), model_sha256=model.content_hash)
+        eigenvalues = np.linalg.eigvalsh(Kff)
+        if eigenvalues[0] <= max(abs(eigenvalues[-1]) * 1e-12, 1e-15):
+            return StructuralResult(status="indeterminate", issues=(_issue("STIFFNESS-NOT-POSITIVE", "Free structural stiffness must be positive definite for a stable linear static solve.", op, actual=float(eigenvalues[0]), expected="> 0", unit="N/m"),), model_sha256=model.content_hash)
         u = np.zeros(model.dof_count, dtype=float)
         u[free] = np.linalg.solve(Kff, vector[free])
-        residual = K @ u - vector
-        reactions = K @ u - vector
+        full_residual = K @ u - vector
+        residual = full_residual[free]
+        reactions = full_residual
     except np.linalg.LinAlgError as exc:
         return StructuralResult(status="indeterminate", issues=(_issue("MATRIX-SINGULAR", str(exc), op),), model_sha256=model.content_hash)
     stresses: dict[str, float] = {}
@@ -298,11 +307,11 @@ def solve_static_structure(*, model: StructuralModel, loads: Sequence[Structural
         stress = axial / model.area_m2
         stresses["axial"] = stress
         strains["axial"] = stress / model.material.youngs_modulus_pa
-    evidence = {"backend": "kincheck-linear-reference", "condition_number": cond, "load_vector": vector.tolist(), "fixed_dofs": list(fixed), "residual_norm": float(np.linalg.norm(residual)), "mesh_hash": model.mesh_hash, "roi": list(roi)}
+    evidence = {"backend": "kincheck-linear-reference", "condition_number": cond, "load_vector": vector.tolist(), "fixed_dofs": list(fixed), "residual_norm": float(np.linalg.norm(residual)), "support_reactions": {model.dof_ids[i]: float(reactions[i]) for i in fixed}, "mesh_hash": model.mesh_hash, "roi": list(roi)}
     return StructuralResult(status="completed", model_sha256=model.content_hash, displacements_m={dof: float(u[i]) for i, dof in enumerate(model.dof_ids)}, reactions_n={dof: float(reactions[i]) for i, dof in enumerate(model.dof_ids) if i in fixed}, stresses_pa=stresses, strains=strains, load_resultant=tuple(float(v) for v in vector), residual_norm=float(np.linalg.norm(residual)), converged=True, roi=tuple(roi), evidence=evidence)
 
 
-def solve_buckling_screening(*, model: StructuralModel, compressive_load_n: float | None = None, mode_count: int = 3, effective_length_factor: float = 1.0) -> BucklingResult:
+def solve_buckling_screening(*, model: StructuralModel, compressive_load_n: float | None = None, mode_count: int = 3, effective_length_factor: float = 1.0, geometric_stiffness_matrix: Sequence[Sequence[float]] | None = None) -> BucklingResult:
     """Return generalized eigenvalue screening or Euler load for a beam model."""
     op = "solve_buckling_screening"
     if mode_count < 1 or effective_length_factor <= 0:
@@ -313,24 +322,32 @@ def solve_buckling_screening(*, model: StructuralModel, compressive_load_n: floa
         base = math.pi**2 * model.material.youngs_modulus_pa * model.second_moment_m4 / (effective_length_factor * model.length_m) ** 2
         eigenvalues = tuple(base * n * n for n in range(1, mode_count + 1))
         evidence = {"method": "euler-column-screening", "effective_length_m": effective_length_factor * model.length_m, "assumptions": ["small deflection", "linear elastic", "declared end-condition factor"]}
-    elif model.mass_matrix is not None:
+    elif geometric_stiffness_matrix is not None:
         try:
             free = np.array([i for i in range(model.dof_count) if i not in model.fixed_dofs], dtype=int)
             K = np.asarray(model.stiffness_matrix)[np.ix_(free, free)]
-            G = np.eye(len(free))
+            G_full = np.asarray(_matrix(geometric_stiffness_matrix, "geometric_stiffness_matrix", op, symmetric=True), dtype=float)
+            if G_full.shape != np.asarray(model.stiffness_matrix).shape:
+                return BucklingResult(status="validation_failed", issues=(_issue("MATRIX-INVALID", "geometric_stiffness_matrix must match stiffness_matrix dimensions.", op),), model_sha256=model.content_hash)
+            G = G_full[np.ix_(free, free)]
+            if np.min(np.linalg.eigvalsh(G)) <= 0:
+                return BucklingResult(status="validation_failed", issues=(_issue("MATRIX-INVALID", "geometric_stiffness_matrix must be positive definite on free DOFs.", op),), model_sha256=model.content_hash)
             values, vectors = eigh(K, G)
             values = np.maximum(values[:mode_count], 0.0)
-            return BucklingResult(status="completed", model_sha256=model.content_hash, eigenvalues=tuple(float(v) for v in values), mode_shapes=tuple(tuple(float(x) for x in vectors[:, i]) for i in range(len(values))), reference_load_n=float(compressive_load_n or 1.0), converged=True, evidence={"method": "linearized-eigenvalue-screening"})
+            reference = float(compressive_load_n or 1.0)
+            return BucklingResult(status="completed", model_sha256=model.content_hash, eigenvalues=tuple(float(v) for v in values), mode_shapes=tuple(tuple(float(x) for x in vectors[:, i]) for i in range(len(values))), reference_load_n=reference, converged=True, evidence={"method": "linearized-eigenvalue-screening", "reference_load_n": reference, "critical_loads_n": [float(v * reference) for v in values]})
         except Exception as exc:
             return BucklingResult(status="indeterminate", issues=(_issue("BUCKLING-SOLVE-FAILED", str(exc), op),), model_sha256=model.content_hash)
     else:
-        return BucklingResult(status="capability_failed", issues=(_issue("MODEL-DATA-MISSING", "Buckling screening requires beam geometry/material or an explicit mass model.", op),), model_sha256=model.content_hash)
+        return BucklingResult(status="capability_failed", issues=(_issue("GEOMETRIC-STIFFNESS-MISSING", "Matrix buckling screening requires an explicit geometric stiffness matrix; a mass matrix cannot substitute for it.", op),), model_sha256=model.content_hash)
     reference = float(compressive_load_n or 1.0)
     return BucklingResult(status="completed", model_sha256=model.content_hash, eigenvalues=eigenvalues, reference_load_n=reference, converged=True, evidence=evidence)
 
 
 def check_stress(*, result: StructuralResult, allowable_stress_pa: float | None = None, material: ElasticMaterial | None = None, criterion: FailureCriterion = FailureCriterion()) -> PhysicsReport:
     op = "check_stress"
+    if result.status not in ("completed", "completed_with_warnings") or not result.converged or any(item.severity == "error" for item in result.issues):
+        return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("RESULT-UNRESOLVED", "Stress checks require a completed, converged structural result without errors.", op),), evidence={"result_status": result.status, "converged": result.converged})
     allowable = allowable_stress_pa if allowable_stress_pa is not None else (material.yield_strength_pa if material else None)
     if allowable is None or allowable <= 0:
         return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("ALLOWABLE-MISSING", "A positive allowable or material yield strength is required.", op),), evidence={"stress_pa": dict(result.stresses_pa)})
@@ -345,6 +362,8 @@ def check_stress(*, result: StructuralResult, allowable_stress_pa: float | None 
 
 def check_deflection(*, result: StructuralResult, allowable_displacement_m: float) -> PhysicsReport:
     op = "check_deflection"
+    if result.status not in ("completed", "completed_with_warnings") or not result.converged or any(item.severity == "error" for item in result.issues):
+        return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("RESULT-UNRESOLVED", "Deflection checks require a completed, converged structural result without errors.", op),), evidence={"result_status": result.status, "converged": result.converged})
     allowable = _positive(allowable_displacement_m, "allowable_displacement_m", op)
     maximum = max((abs(v) for v in result.displacements_m.values()), default=math.nan)
     if not math.isfinite(maximum):

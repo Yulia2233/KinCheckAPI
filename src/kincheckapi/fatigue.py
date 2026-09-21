@@ -138,6 +138,19 @@ class FatigueReport(PhysicsReport):
         object.__setattr__(self, "allowable_damage", _positive(self.allowable_damage, "allowable_damage", self.operation))
         object.__setattr__(self, "life_repeats", _finite(self.life_repeats, "life_repeats", self.operation) if math.isfinite(self.life_repeats) else math.inf)
 
+    def to_dict(self) -> dict[str, Any]:
+        payload = PhysicsReport.to_dict(self)
+        if math.isinf(self.life_repeats):
+            payload["life_repeats"] = None
+            payload["life_repeats_is_infinite"] = True
+        return payload
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "FatigueReport":
+        cycles = tuple(FatigueCycle(**item) for item in value.get("cycles", ()))
+        life = math.inf if value.get("life_repeats_is_infinite") or value.get("life_repeats") is None else value.get("life_repeats")
+        return cls(operation=value.get("operation", "evaluate_fatigue"), status=value.get("status", "failed"), evidence=value.get("evidence", {}), history_id=value.get("history_id", ""), material_id=value.get("material_id", ""), cycles=cycles, damage=value.get("damage", 0.0), allowable_damage=value.get("allowable_damage", 1.0), life_repeats=life, correction=value.get("correction", "none"), residual_indices=tuple(value.get("residual_indices", ())))
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DutyCycle:
@@ -178,6 +191,11 @@ class OperatingEnvelopeReport(PhysicsReport):
         PhysicsReport.__post_init__(self)
         object.__setattr__(self, "case_reports", dict(self.case_reports))
         object.__setattr__(self, "worst_damage", _finite(self.worst_damage, "worst_damage", self.operation))
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = PhysicsReport.to_dict(self)
+        payload["case_reports"] = {case_id: report.to_dict() for case_id, report in self.case_reports.items()}
+        return payload
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -236,22 +254,24 @@ def evaluate_fatigue(*, history: StressHistory, material: FatigueMaterial, corre
         return FatigueReport(status="validation_failed", issues=(_issue("DUTY-INVALID", "repeat_count must be a positive integer.", op),), history_id=history.history_id, material_id=material.material_id)
     allowable = _positive(allowable_damage, "allowable_damage", op)
     cycles = count_cycles(stress_pa=history.stress_pa)
-    damage = 0.0; extrapolated = 0; unsupported = []
+    damage = 0.0; extrapolated = 0; mean_unsupported = False; sn_unsupported = False
     for cycle in cycles:
         adjusted = correction.corrected_amplitude(cycle.amplitude_pa, cycle.mean_stress_pa)
         if not math.isfinite(adjusted):
-            unsupported.append("mean_stress_domain"); continue
+            mean_unsupported = True; continue
         life = material.cycles_at(adjusted)
         if not math.isfinite(life) and life != math.inf:
-            unsupported.append("sn_curve_domain"); continue
+            sn_unsupported = True; continue
         if adjusted > material.sn_points[0][0] or adjusted < material.sn_points[-1][0]:
             extrapolated += 1
         if math.isfinite(life):
             damage += cycle.count * repeat_count / life
-    status = "failed" if damage > allowable else ("indeterminate" if unsupported else "passed")
+    status = "failed" if damage > allowable else ("indeterminate" if mean_unsupported or sn_unsupported else "passed")
     issues = ()
-    if unsupported:
+    if mean_unsupported:
         issues += (_issue("MEAN-STRESS-OUT-OF-DOMAIN", "Mean-stress correction leaves the material domain.", op),)
+    if sn_unsupported:
+        issues += (_issue("SN-CURVE-OUT-OF-DOMAIN", "A corrected stress amplitude lies outside the declared S-N curve domain.", op),)
     if status == "failed":
         issues += (_issue("FATIGUE-DAMAGE-EXCEEDED", "Miner cumulative damage exceeds the declared allowable.", op, actual=damage, expected=allowable),)
     life_repeats = math.inf if damage == 0 else allowable / damage
@@ -261,10 +281,20 @@ def evaluate_fatigue(*, history: StressHistory, material: FatigueMaterial, corre
 def evaluate_operating_envelope(*, cases: Mapping[str, tuple[StressHistory, FatigueMaterial]], correction: MeanStressCorrection = MeanStressCorrection(method="none"), allowable_damage: float = 1.0, scenario_matrix: ScenarioMatrix | None = None) -> OperatingEnvelopeReport:
     reports = {case_id: evaluate_fatigue(history=history, material=material, correction=correction, allowable_damage=allowable_damage) for case_id, (history, material) in cases.items()}
     worst_id, worst = (max(reports.items(), key=lambda item: item[1].damage) if reports else (None, None))
-    requested = len(scenario_matrix.cases) if scenario_matrix else len(cases)
-    status = "failed" if any(not report.passed for report in reports.values()) else ("indeterminate" if len(reports) < requested else "passed")
-    issues = tuple(issue for report in reports.values() for issue in report.issues)
-    return OperatingEnvelopeReport(status=status, issues=issues, case_reports=reports, worst_case_id=worst_id, worst_damage=worst.damage if worst else 0.0, evaluated_count=len(reports), requested_count=requested, evidence={"search_strategy": scenario_matrix.search_strategy if scenario_matrix else "declared", "coverage_fraction": len(reports) / requested if requested else 0.0})
+    requested_ids = set(scenario_matrix.cases) if scenario_matrix else set(cases)
+    actual_ids = set(cases)
+    missing = sorted(requested_ids - actual_ids)
+    extra = sorted(actual_ids - requested_ids) if scenario_matrix else []
+    requested = len(requested_ids)
+    reports_failed = any(report.status == "failed" for report in reports.values())
+    reports_unresolved = any(report.status in {"indeterminate", "capability_failed", "validation_failed"} for report in reports.values())
+    status = "failed" if reports_failed else ("indeterminate" if missing or extra or reports_unresolved or len(reports) < requested else "passed")
+    issues = tuple(item for report in reports.values() for item in report.issues)
+    if missing:
+        issues += (_issue("SCENARIO-COVERAGE-MISSING", "Scenario matrix cases were not evaluated.", "evaluate_operating_envelope", actual=sorted(actual_ids), expected=sorted(requested_ids)),)
+    if extra:
+        issues += (_issue("SCENARIO-UNREQUESTED", "Evaluation contains case IDs absent from the requested scenario matrix.", "evaluate_operating_envelope", actual=sorted(actual_ids), expected=sorted(requested_ids)),)
+    return OperatingEnvelopeReport(status=status, issues=issues, case_reports=reports, worst_case_id=worst_id, worst_damage=worst.damage if worst else 0.0, evaluated_count=len(reports), requested_count=requested, evidence={"search_strategy": scenario_matrix.search_strategy if scenario_matrix else "declared", "coverage_fraction": len(reports) / requested if requested else 0.0, "missing_case_ids": missing, "extra_case_ids": extra})
 
 
 def summarize_drive_duty(*, times_s: Sequence[float], torque_nm: Sequence[float], speed_rad_s: Sequence[float]) -> DriveDutySummary:
@@ -272,9 +302,11 @@ def summarize_drive_duty(*, times_s: Sequence[float], torque_nm: Sequence[float]
     t = np.asarray(times_s, dtype=float); torque = np.asarray(torque_nm, dtype=float); speed = np.asarray(speed_rad_s, dtype=float)
     if t.ndim != 1 or len(t) < 2 or torque.shape != t.shape or speed.shape != t.shape or not np.isfinite(np.concatenate((t, torque, speed))).all() or np.any(np.diff(t) <= 0):
         return DriveDutySummary(status="validation_failed", issues=(_issue("TIME-INVALID", "Drive duty arrays must be finite, aligned and strictly time ordered.", op),))
-    dt = np.diff(t); tq = torque[:-1]; sp = speed[:-1]; power = tq * sp
-    duration = float(t[-1] - t[0]); rms = math.sqrt(float(np.sum(tq * tq * dt) / duration)); positive_energy = float(np.sum(np.maximum(power, 0) * dt)); negative_energy = float(np.sum(np.minimum(power, 0) * dt));
-    return DriveDutySummary(status="completed", torque_peak_nm=float(np.max(np.abs(torque))), torque_rms_nm=rms, speed_peak_rad_s=float(np.max(np.abs(speed))), power_peak_w=float(np.max(np.abs(power))), energy_positive_j=positive_energy, energy_negative_j=negative_energy, energy_net_j=positive_energy + negative_energy, evidence={"duration_s": duration, "integration": "trapezoid-left-sample", "thermal_model": "not evaluated"})
+    power = torque * speed
+    duration = float(t[-1] - t[0]); square = torque * torque
+    trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
+    rms = math.sqrt(float(trapz(square, t) / duration)); positive_energy = float(trapz(np.maximum(power, 0), t)); negative_energy = float(trapz(np.minimum(power, 0), t));
+    return DriveDutySummary(status="completed", torque_peak_nm=float(np.max(np.abs(torque))), torque_rms_nm=rms, speed_peak_rad_s=float(np.max(np.abs(speed))), power_peak_w=float(np.max(np.abs(power))), energy_positive_j=positive_energy, energy_negative_j=negative_energy, energy_net_j=positive_energy + negative_energy, evidence={"duration_s": duration, "integration": "trapezoid", "thermal_model": "not evaluated"})
 
 
 def summarize_energy(*, times_s: Sequence[float], torque_nm: Sequence[float], speed_rad_s: Sequence[float]) -> PhysicsReport:
