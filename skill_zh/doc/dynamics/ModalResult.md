@@ -14,6 +14,7 @@ class ModalResult:
     frequencies_hz: tuple[float, ...]
     mode_shapes: tuple[tuple[float, ...], ...]
     effective_modal_mass: tuple[float, ...]
+    normalization_mass: tuple[float, ...]
     omitted_frequency_hz: float | None
     normalized: str
 ```
@@ -43,6 +44,7 @@ from kincheckapi.dynamics import ModalResult
 | `frequencies_hz` | `tuple[float, ...]` | `()` | `frequencies_hz` 的公开输入或数据字段。 |
 | `mode_shapes` | `tuple[tuple[float, ...], ...]` | `()` | `mode_shapes` 的公开输入或数据字段。 |
 | `effective_modal_mass` | `tuple[float, ...]` | `()` | `effective_modal_mass` 的公开输入或数据字段。 |
+| `normalization_mass` | `tuple[float, ...]` | `()` | `normalization_mass` 的公开输入或数据字段。 |
 | `omitted_frequency_hz` | `float | None` | `None` | `omitted_frequency_hz` 的公开输入或数据字段。 |
 | `normalized` | `str` | `'mass'` | `normalized` 的公开输入或数据字段。 |
 

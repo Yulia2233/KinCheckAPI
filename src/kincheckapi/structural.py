@@ -16,7 +16,7 @@ import numpy as np
 from scipy.linalg import eigh
 
 from .diagnostics import Evidence, SimIssue
-from .physics_types import PhysicsReport, digest, fail, issue, plain
+from .physics_types import PhysicsError, PhysicsReport, digest, fail, issue, plain
 
 
 def _finite(value: Any, name: str, operation: str) -> float:
@@ -259,7 +259,7 @@ def transfer_loads(*, model: StructuralModel, loads: Sequence[StructuralLoad] = 
             continue
         for dof, value in zip(mapping.target_dofs, mapping.force_components):
             vector[dof] += value
-        records.append({"load_id": load.load_id, "source": load.source, "target_dofs": list(mapping.target_dofs), "values": list(mapping.force_components)})
+        records.append({"load_id": load.load_id, "source": load.source, "mapping": {"source_id": mapping.source_id, "target_dofs": list(mapping.target_dofs), "force_components": list(mapping.force_components), "reference_point_m": list(mapping.reference_point_m), "coordinate_frame": mapping.coordinate_frame}})
     status = "passed" if not issues else "validation_failed"
     return vector, PhysicsReport(operation=op, status=status, issues=tuple(issues), evidence={"load_records": records, "resultant": vector.tolist()})
 
@@ -333,9 +333,14 @@ def solve_buckling_screening(*, model: StructuralModel, compressive_load_n: floa
             if np.min(np.linalg.eigvalsh(G)) <= 0:
                 return BucklingResult(status="validation_failed", issues=(_issue("MATRIX-INVALID", "geometric_stiffness_matrix must be positive definite on free DOFs.", op),), model_sha256=model.content_hash)
             values, vectors = eigh(K, G)
-            values = np.maximum(values[:mode_count], 0.0)
+            raw_values = values[:mode_count]
+            if np.any(raw_values <= 0):
+                return BucklingResult(status="indeterminate", model_sha256=model.content_hash, eigenvalues=tuple(float(v) for v in raw_values), mode_shapes=tuple(tuple(float(x) for x in vectors[:, i]) for i in range(len(raw_values))), reference_load_n=float(compressive_load_n or 1.0), converged=False, evidence={"method": "linearized-eigenvalue-screening", "raw_eigenvalues": [float(v) for v in raw_values], "critical_loads_n": [float(v * float(compressive_load_n or 1.0)) for v in raw_values]})
+            values = raw_values
             reference = float(compressive_load_n or 1.0)
             return BucklingResult(status="completed", model_sha256=model.content_hash, eigenvalues=tuple(float(v) for v in values), mode_shapes=tuple(tuple(float(x) for x in vectors[:, i]) for i in range(len(values))), reference_load_n=reference, converged=True, evidence={"method": "linearized-eigenvalue-screening", "reference_load_n": reference, "critical_loads_n": [float(v * reference) for v in values]})
+        except PhysicsError as exc:
+            return BucklingResult(status="validation_failed", issues=(issue("MATRIX-INVALID", exc.message, op),), model_sha256=model.content_hash)
         except Exception as exc:
             return BucklingResult(status="indeterminate", issues=(_issue("BUCKLING-SOLVE-FAILED", str(exc), op),), model_sha256=model.content_hash)
     else:
@@ -344,10 +349,12 @@ def solve_buckling_screening(*, model: StructuralModel, compressive_load_n: floa
     return BucklingResult(status="completed", model_sha256=model.content_hash, eigenvalues=eigenvalues, reference_load_n=reference, converged=True, evidence=evidence)
 
 
-def check_stress(*, result: StructuralResult, allowable_stress_pa: float | None = None, material: ElasticMaterial | None = None, criterion: FailureCriterion = FailureCriterion()) -> PhysicsReport:
+def check_stress(*, result: StructuralResult, allowable_stress_pa: float | None = None, material: ElasticMaterial | None = None, criterion: FailureCriterion = FailureCriterion(name="maximum_normal")) -> PhysicsReport:
     op = "check_stress"
     if result.status not in ("completed", "completed_with_warnings") or not result.converged or any(item.severity == "error" for item in result.issues):
         return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("RESULT-UNRESOLVED", "Stress checks require a completed, converged structural result without errors.", op),), evidence={"result_status": result.status, "converged": result.converged})
+    if criterion.name != "maximum_normal":
+        return PhysicsReport(operation=op, status="capability_failed", issues=(_issue("STRESS-TENSOR-MISSING", f"The {criterion.name} criterion requires a stress tensor; this reference result contains scalar stress only.", op),), evidence={"criterion": criterion.name, "available_stress_representation": "scalar"})
     allowable = allowable_stress_pa if allowable_stress_pa is not None else (material.yield_strength_pa if material else None)
     if allowable is None or allowable <= 0:
         return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("ALLOWABLE-MISSING", "A positive allowable or material yield strength is required.", op),), evidence={"stress_pa": dict(result.stresses_pa)})

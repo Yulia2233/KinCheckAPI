@@ -9,6 +9,7 @@ class ModalRequest:
     fixed_dofs: tuple[int, ...]
     frequency_min_hz: float
     frequency_max_hz: float | None
+    participation_vector: tuple[float, ...]
 ```
 
 源码：`src/kincheckapi/vibration.py`。
@@ -31,6 +32,7 @@ from kincheckapi.dynamics import ModalRequest
 | `fixed_dofs` | `tuple[int, ...]` | `()` | `fixed_dofs` 的公开输入或数据字段。 |
 | `frequency_min_hz` | `float` | `0.0` | `frequency_min_hz` 的公开输入或数据字段。 |
 | `frequency_max_hz` | `float | None` | `None` | `frequency_max_hz` 的公开输入或数据字段。 |
+| `participation_vector` | `tuple[float, ...]` | `()` | `participation_vector` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

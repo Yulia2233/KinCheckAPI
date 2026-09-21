@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-check_stress(*, result: kincheckapi.structural.StructuralResult, allowable_stress_pa: float | None = None, material: kincheckapi.structural.ElasticMaterial | None = None, criterion: kincheckapi.structural.FailureCriterion = FailureCriterion(name='von_mises', allowable_factor=1.0)) -> kincheckapi.physics_types.PhysicsReport
+check_stress(*, result: kincheckapi.structural.StructuralResult, allowable_stress_pa: float | None = None, material: kincheckapi.structural.ElasticMaterial | None = None, criterion: kincheckapi.structural.FailureCriterion = FailureCriterion(name='maximum_normal', allowable_factor=1.0)) -> kincheckapi.physics_types.PhysicsReport
 ```
 
 源码：`src/kincheckapi/structural.py`。
@@ -25,7 +25,7 @@ from kincheckapi.dynamics import check_stress
 | `result` | `kincheckapi.structural.StructuralResult` | 必填 | `result` 的公开输入或数据字段。 |
 | `allowable_stress_pa` | `float | None` | `None` | `allowable_stress_pa` 的公开输入或数据字段。 |
 | `material` | `kincheckapi.structural.ElasticMaterial | None` | `None` | `material` 的公开输入或数据字段。 |
-| `criterion` | `kincheckapi.structural.FailureCriterion` | `FailureCriterion(name='von_mises', allowable_factor=1.0)` | `criterion` 的公开输入或数据字段。 |
+| `criterion` | `kincheckapi.structural.FailureCriterion` | `FailureCriterion(name='maximum_normal', allowable_factor=1.0)` | `criterion` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

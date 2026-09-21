@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-check_stress(*, result: kincheckapi.structural.StructuralResult, allowable_stress_pa: float | None = None, material: kincheckapi.structural.ElasticMaterial | None = None, criterion: kincheckapi.structural.FailureCriterion = FailureCriterion(name='von_mises', allowable_factor=1.0)) -> kincheckapi.physics_types.PhysicsReport
+check_stress(*, result: kincheckapi.structural.StructuralResult, allowable_stress_pa: float | None = None, material: kincheckapi.structural.ElasticMaterial | None = None, criterion: kincheckapi.structural.FailureCriterion = FailureCriterion(name='maximum_normal', allowable_factor=1.0)) -> kincheckapi.physics_types.PhysicsReport
 ```
 
 Source: `src/kincheckapi/structural.py`.
@@ -25,7 +25,7 @@ Execute a structured check: `check_stress`.
 | `result` | `kincheckapi.structural.StructuralResult` | required | Public input or data field `result`. |
 | `allowable_stress_pa` | `float | None` | `None` | Public input or data field `allowable_stress_pa`. |
 | `material` | `kincheckapi.structural.ElasticMaterial | None` | `None` | Public input or data field `material`. |
-| `criterion` | `kincheckapi.structural.FailureCriterion` | `FailureCriterion(name='von_mises', allowable_factor=1.0)` | Public input or data field `criterion`. |
+| `criterion` | `kincheckapi.structural.FailureCriterion` | `FailureCriterion(name='maximum_normal', allowable_factor=1.0)` | Public input or data field `criterion`. |
 
 ## Returns and Failures
 

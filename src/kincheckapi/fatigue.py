@@ -8,8 +8,21 @@ from typing import Any, Callable, Mapping, Sequence
 
 import numpy as np
 
+from .diagnostics import Evidence, SimIssue
 from .physics_types import PhysicsReport, fail, plain
 from .structural import _finite, _issue, _positive
+
+
+def _parse_issues(value: Mapping[str, Any]) -> tuple[SimIssue, ...]:
+    return tuple(
+        SimIssue(
+            **{
+                **item,
+                "evidence": tuple(Evidence(**evidence) for evidence in item.get("evidence", ())),
+            }
+        )
+        for item in value.get("issues", ())
+    )
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -149,7 +162,7 @@ class FatigueReport(PhysicsReport):
     def from_dict(cls, value: Mapping[str, Any]) -> "FatigueReport":
         cycles = tuple(FatigueCycle(**item) for item in value.get("cycles", ()))
         life = math.inf if value.get("life_repeats_is_infinite") or value.get("life_repeats") is None else value.get("life_repeats")
-        return cls(operation=value.get("operation", "evaluate_fatigue"), status=value.get("status", "failed"), evidence=value.get("evidence", {}), history_id=value.get("history_id", ""), material_id=value.get("material_id", ""), cycles=cycles, damage=value.get("damage", 0.0), allowable_damage=value.get("allowable_damage", 1.0), life_repeats=life, correction=value.get("correction", "none"), residual_indices=tuple(value.get("residual_indices", ())))
+        return cls(operation=value.get("operation", "evaluate_fatigue"), status=value.get("status", "failed"), issues=_parse_issues(value), evidence=value.get("evidence", {}), model_sha256=value.get("model_sha256"), result_index=value.get("result_index"), history_id=value.get("history_id", ""), material_id=value.get("material_id", ""), cycles=cycles, damage=value.get("damage", 0.0), allowable_damage=value.get("allowable_damage", 1.0), life_repeats=life, correction=value.get("correction", "none"), residual_indices=tuple(value.get("residual_indices", ())))
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -196,6 +209,22 @@ class OperatingEnvelopeReport(PhysicsReport):
         payload = PhysicsReport.to_dict(self)
         payload["case_reports"] = {case_id: report.to_dict() for case_id, report in self.case_reports.items()}
         return payload
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "OperatingEnvelopeReport":
+        return cls(
+            operation=value.get("operation", "evaluate_operating_envelope"),
+            status=value.get("status", "failed"),
+            issues=_parse_issues(value),
+            evidence=value.get("evidence", {}),
+            model_sha256=value.get("model_sha256"),
+            result_index=value.get("result_index"),
+            case_reports={case_id: FatigueReport.from_dict(report) for case_id, report in value.get("case_reports", {}).items()},
+            worst_case_id=value.get("worst_case_id"),
+            worst_damage=value.get("worst_damage", 0.0),
+            evaluated_count=value.get("evaluated_count", 0),
+            requested_count=value.get("requested_count", 0),
+        )
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -279,6 +308,8 @@ def evaluate_fatigue(*, history: StressHistory, material: FatigueMaterial, corre
 
 
 def evaluate_operating_envelope(*, cases: Mapping[str, tuple[StressHistory, FatigueMaterial]], correction: MeanStressCorrection = MeanStressCorrection(method="none"), allowable_damage: float = 1.0, scenario_matrix: ScenarioMatrix | None = None) -> OperatingEnvelopeReport:
+    if not cases:
+        return OperatingEnvelopeReport(status="validation_failed", issues=(_issue("SCENARIO-MISSING", "At least one operating case is required for an envelope evaluation.", "evaluate_operating_envelope"),), evidence={"coverage_fraction": 0.0})
     reports = {case_id: evaluate_fatigue(history=history, material=material, correction=correction, allowable_damage=allowable_damage) for case_id, (history, material) in cases.items()}
     worst_id, worst = (max(reports.items(), key=lambda item: item[1].damage) if reports else (None, None))
     requested_ids = set(scenario_matrix.cases) if scenario_matrix else set(cases)
@@ -317,7 +348,12 @@ def summarize_energy(*, times_s: Sequence[float], torque_nm: Sequence[float], sp
 def check_fatigue_limits(*, result: FatigueReport, allowable_damage: float | None = None) -> PhysicsReport:
     bound = result.allowable_damage if allowable_damage is None else _positive(allowable_damage, "allowable_damage", "check_fatigue_limits")
     status = "passed" if result.damage <= bound and result.status == "passed" else ("failed" if result.damage > bound else "indeterminate")
-    return PhysicsReport(operation="check_fatigue_limits", status=status, issues=() if status == "passed" else (_issue("FATIGUE-DAMAGE-EXCEEDED", "Fatigue damage is outside the declared limit or the input result is unresolved.", "check_fatigue_limits", actual=result.damage, expected=bound),), evidence={"damage": result.damage, "allowable_damage": bound, "life_repeats": result.life_repeats})
+    evidence = {"damage": result.damage, "allowable_damage": bound}
+    if math.isinf(result.life_repeats):
+        evidence.update({"life_repeats": None, "life_repeats_is_infinite": True})
+    else:
+        evidence["life_repeats"] = result.life_repeats
+    return PhysicsReport(operation="check_fatigue_limits", status=status, issues=() if status == "passed" else (_issue("FATIGUE-DAMAGE-EXCEEDED", "Fatigue damage is outside the declared limit or the input result is unresolved.", "check_fatigue_limits", actual=result.damage, expected=bound),), evidence=evidence)
 
 
 __all__ = ["StressHistory", "FatigueMaterial", "MeanStressCorrection", "FatigueCycle", "FatigueReport", "DutyCycle", "ScenarioMatrix", "OperatingEnvelopeReport", "DriveDutySummary", "count_cycles", "evaluate_fatigue", "evaluate_operating_envelope", "summarize_drive_duty", "summarize_energy", "check_fatigue_limits"]

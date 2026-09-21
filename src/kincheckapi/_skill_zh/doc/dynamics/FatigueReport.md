@@ -13,7 +13,7 @@ class FatigueReport:
     result_index: int | None
     history_id: str
     material_id: str
-    cycles: tuple[FatigueCycle, ...]
+    cycles: tuple[kincheckapi.fatigue.FatigueCycle, ...]
     damage: float
     allowable_damage: float
     life_repeats: float
@@ -45,7 +45,7 @@ from kincheckapi.dynamics import FatigueReport
 | `result_index` | `int | None` | `None` | `result_index` 的公开输入或数据字段。 |
 | `history_id` | `str` | `''` | 稳定且可解析的 `history_id`。 |
 | `material_id` | `str` | `''` | 稳定且可解析的 `material_id`。 |
-| `cycles` | `tuple[FatigueCycle, ...]` | `()` | `cycles` 的公开输入或数据字段。 |
+| `cycles` | `tuple[kincheckapi.fatigue.FatigueCycle, ...]` | `()` | `cycles` 的公开输入或数据字段。 |
 | `damage` | `float` | `0.0` | `damage` 的公开输入或数据字段。 |
 | `allowable_damage` | `float` | `1.0` | `allowable_damage` 的公开输入或数据字段。 |
 | `life_repeats` | `float` | `inf` | `life_repeats` 的公开输入或数据字段。 |

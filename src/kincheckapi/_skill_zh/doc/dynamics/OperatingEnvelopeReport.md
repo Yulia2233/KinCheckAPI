@@ -11,7 +11,7 @@ class OperatingEnvelopeReport:
     evidence: Mapping[str, Any]
     model_sha256: str | None
     result_index: int | None
-    case_reports: Mapping[str, FatigueReport]
+    case_reports: Mapping[str, kincheckapi.fatigue.FatigueReport]
     worst_case_id: str | None
     worst_damage: float
     evaluated_count: int
@@ -40,7 +40,7 @@ from kincheckapi.dynamics import OperatingEnvelopeReport
 | `evidence` | `Mapping[str, Any]` | default_factory | 支持结论的机器可读证据。 |
 | `model_sha256` | `str | None` | `None` | `model_sha256` 的公开输入或数据字段。 |
 | `result_index` | `int | None` | `None` | `result_index` 的公开输入或数据字段。 |
-| `case_reports` | `Mapping[str, FatigueReport]` | default_factory | `case_reports` 的公开输入或数据字段。 |
+| `case_reports` | `Mapping[str, kincheckapi.fatigue.FatigueReport]` | default_factory | `case_reports` 的公开输入或数据字段。 |
 | `worst_case_id` | `str | None` | `None` | 稳定且可解析的 `worst_case_id`。 |
 | `worst_damage` | `float` | `0.0` | `worst_damage` 的公开输入或数据字段。 |
 | `evaluated_count` | `int` | `0` | `evaluated_count` 的公开输入或数据字段。 |

@@ -11,7 +11,7 @@ class OperatingEnvelopeReport:
     evidence: Mapping[str, Any]
     model_sha256: str | None
     result_index: int | None
-    case_reports: Mapping[str, FatigueReport]
+    case_reports: Mapping[str, kincheckapi.fatigue.FatigueReport]
     worst_case_id: str | None
     worst_damage: float
     evaluated_count: int
@@ -40,7 +40,7 @@ OperatingEnvelopeReport(*, operation: 'str' = 'evaluate_operating_envelope', sta
 | `evidence` | `Mapping[str, Any]` | default_factory | Machine-readable evidence supporting the conclusion. |
 | `model_sha256` | `str | None` | `None` | Public input or data field `model_sha256`. |
 | `result_index` | `int | None` | `None` | Public input or data field `result_index`. |
-| `case_reports` | `Mapping[str, FatigueReport]` | default_factory | Public input or data field `case_reports`. |
+| `case_reports` | `Mapping[str, kincheckapi.fatigue.FatigueReport]` | default_factory | Public input or data field `case_reports`. |
 | `worst_case_id` | `str | None` | `None` | Stable, resolvable `worst_case_id`. |
 | `worst_damage` | `float` | `0.0` | Public input or data field `worst_damage`. |
 | `evaluated_count` | `int` | `0` | Public input or data field `evaluated_count`. |

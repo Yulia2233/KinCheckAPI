@@ -14,6 +14,7 @@ class ModalResult:
     frequencies_hz: tuple[float, ...]
     mode_shapes: tuple[tuple[float, ...], ...]
     effective_modal_mass: tuple[float, ...]
+    normalization_mass: tuple[float, ...]
     omitted_frequency_hz: float | None
     normalized: str
 ```
@@ -28,7 +29,7 @@ from kincheckapi.dynamics import ModalResult
 
 ## Purpose
 
-ModalResult(*, operation: 'str' = 'solve_modes', status: 'str' = 'passed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>, model_sha256: 'str | None' = None, result_index: 'int | None' = None, frequencies_hz: 'tuple[float, ...]' = (), mode_shapes: 'tuple[tuple[float, ...], ...]' = (), effective_modal_mass: 'tuple[float, ...]' = (), omitted_frequency_hz: 'float | None' = None, normalized: 'str' = 'mass')
+ModalResult(*, operation: 'str' = 'solve_modes', status: 'str' = 'passed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>, model_sha256: 'str | None' = None, result_index: 'int | None' = None, frequencies_hz: 'tuple[float, ...]' = (), mode_shapes: 'tuple[tuple[float, ...], ...]' = (), effective_modal_mass: 'tuple[float, ...]' = (), normalization_mass: 'tuple[float, ...]' = (), omitted_frequency_hz: 'float | None' = None, normalized: 'str' = 'mass')
 
 ## Parameters and Fields
 
@@ -43,6 +44,7 @@ ModalResult(*, operation: 'str' = 'solve_modes', status: 'str' = 'passed', issue
 | `frequencies_hz` | `tuple[float, ...]` | `()` | Public input or data field `frequencies_hz`. |
 | `mode_shapes` | `tuple[tuple[float, ...], ...]` | `()` | Public input or data field `mode_shapes`. |
 | `effective_modal_mass` | `tuple[float, ...]` | `()` | Public input or data field `effective_modal_mass`. |
+| `normalization_mass` | `tuple[float, ...]` | `()` | Public input or data field `normalization_mass`. |
 | `omitted_frequency_hz` | `float | None` | `None` | Public input or data field `omitted_frequency_hz`. |
 | `normalized` | `str` | `'mass'` | Public input or data field `normalized`. |
 

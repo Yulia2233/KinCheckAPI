@@ -11,9 +11,21 @@ from scipy.integrate import solve_ivp
 from scipy.linalg import eigh
 from scipy.signal import welch
 
-from .diagnostics import SimIssue
+from .diagnostics import Evidence, SimIssue
 from .physics_types import PhysicsReport, fail, issue, plain
 from .structural import StructuralModel, _finite, _issue, _matrix, _positive
+
+
+def _parse_issues(value: Mapping[str, Any]) -> tuple[SimIssue, ...]:
+    return tuple(
+        SimIssue(
+            **{
+                **item,
+                "evidence": tuple(Evidence(**evidence) for evidence in item.get("evidence", ())),
+            }
+        )
+        for item in value.get("issues", ())
+    )
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -22,6 +34,7 @@ class ModalRequest:
     fixed_dofs: tuple[int, ...] = ()
     frequency_min_hz: float = 0.0
     frequency_max_hz: float | None = None
+    participation_vector: tuple[float, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.mode_count, int) or self.mode_count < 1:
@@ -36,6 +49,7 @@ class ModalRequest:
             if hi <= lo:
                 fail("VALUE-INVALID", "frequency_max_hz must exceed frequency_min_hz.", operation="ModalRequest")
             object.__setattr__(self, "frequency_max_hz", hi)
+        object.__setattr__(self, "participation_vector", tuple(_finite(v, "participation_vector", "ModalRequest") for v in self.participation_vector))
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -75,6 +89,7 @@ class ModalResult(PhysicsReport):
     frequencies_hz: tuple[float, ...] = ()
     mode_shapes: tuple[tuple[float, ...], ...] = ()
     effective_modal_mass: tuple[float, ...] = ()
+    normalization_mass: tuple[float, ...] = ()
     omitted_frequency_hz: float | None = None
     normalized: str = "mass"
 
@@ -83,6 +98,7 @@ class ModalResult(PhysicsReport):
         object.__setattr__(self, "frequencies_hz", tuple(_finite(v, "frequency_hz", self.operation) for v in self.frequencies_hz))
         object.__setattr__(self, "mode_shapes", tuple(tuple(_finite(v, "mode_shape", self.operation) for v in row) for row in self.mode_shapes))
         object.__setattr__(self, "effective_modal_mass", tuple(_finite(v, "effective_modal_mass", self.operation) for v in self.effective_modal_mass))
+        object.__setattr__(self, "normalization_mass", tuple(_finite(v, "normalization_mass", self.operation) for v in self.normalization_mass))
         if self.omitted_frequency_hz is not None:
             object.__setattr__(self, "omitted_frequency_hz", _finite(self.omitted_frequency_hz, "omitted_frequency_hz", self.operation))
 
@@ -126,13 +142,14 @@ class FrequencyResponseResult(PhysicsReport):
         return cls(
             operation=value.get("operation", "solve_frequency_response"),
             status=value.get("status", "failed"),
-            issues=tuple(),
+            issues=_parse_issues(value),
             evidence=value.get("evidence", {}),
             model_sha256=value.get("model_sha256"),
             frequencies_hz=tuple(value.get("frequencies_hz", ())),
             response=tuple(response),
             peak_amplitude=value.get("peak_amplitude", {}),
             damping=None if value.get("damping") is None else DampingSpec(**value["damping"]),
+            result_index=value.get("result_index"),
         )
 
 
@@ -208,23 +225,38 @@ def solve_modes(*, model: StructuralModel, request: ModalRequest = ModalRequest(
         K, M, free = _reduced(model, request.fixed_dofs)
         if len(free) == 0:
             return ModalResult(status="validation_failed", issues=(_issue("BOUNDARY-INVALID", "All structural DOFs are constrained.", op),), model_sha256=model.content_hash)
-        values, vectors = eigh(K, M, subset_by_index=[0, min(request.mode_count, len(free)) - 1])
-        if values[0] < -1e-8:
-            return ModalResult(status="indeterminate", issues=(_issue("STIFFNESS-NOT-POSITIVE", "The constrained stiffness has a negative eigenvalue.", op, actual=float(values[0]), expected=">= 0"),), model_sha256=model.content_hash)
-        values = np.maximum(values, 0.0)
-        frequencies = np.sqrt(values) / (2 * math.pi)
+        solve_count = min(request.mode_count + 1, len(free))
+        values_all, vectors_all = eigh(K, M, subset_by_index=[0, solve_count - 1])
+        if np.any(values_all < -1e-12):
+            return ModalResult(status="indeterminate", issues=(_issue("STIFFNESS-NOT-POSITIVE", "The constrained stiffness has a negative eigenvalue.", op, actual=float(np.min(values_all)), expected=">= 0"),), model_sha256=model.content_hash, evidence={"raw_eigenvalues": values_all.tolist()})
+        values_all = np.maximum(values_all, 0.0)
+        frequencies_all = np.sqrt(values_all) / (2 * math.pi)
+        values = values_all[:request.mode_count]
+        frequencies = frequencies_all[:request.mode_count]
+        vectors = vectors_all[:, :request.mode_count]
         shapes = np.zeros((len(frequencies), model.dof_count))
         shapes[:, free] = vectors.T
-        masses = tuple(float(v.T @ M @ v) for v in vectors.T)
+        normalization_mass = tuple(float(v.T @ M @ v) for v in vectors.T)
+        effective_mass: tuple[float, ...] = ()
+        if request.participation_vector:
+            participation = np.asarray(request.participation_vector, dtype=float)
+            if participation.shape != (model.dof_count,):
+                return ModalResult(status="validation_failed", issues=(_issue("PARTICIPATION-VECTOR-INVALID", "participation_vector must cover every structural DOF.", op),), model_sha256=model.content_hash)
+            p = participation[free]
+            denominator = float(p.T @ M @ p)
+            if denominator <= 0:
+                return ModalResult(status="validation_failed", issues=(_issue("PARTICIPATION-VECTOR-INVALID", "participation_vector must have positive mass norm.", op),), model_sha256=model.content_hash)
+            effective_mass = tuple(float((v.T @ M @ p) ** 2 / denominator) for v in vectors.T)
         mask = frequencies >= request.frequency_min_hz
         if request.frequency_max_hz is not None:
             mask &= frequencies <= request.frequency_max_hz
         if not np.any(mask):
             return ModalResult(status="indeterminate", issues=(_issue("FREQUENCY-BAND-EMPTY", "No computed mode lies inside the requested frequency band.", op),), model_sha256=model.content_hash, evidence={"frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz]})
-        omitted = float(frequencies[np.flatnonzero(~mask)[0]]) if np.any(~mask) else None
-        evidence = {"free_dofs": free.tolist(), "mass_normalized": True, "rigid_body_modes": int(np.count_nonzero(frequencies < 1e-8)), "frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz], "band_filtered": True}
+        omitted = float(frequencies_all[request.mode_count]) if len(frequencies_all) > request.mode_count else None
+        evidence = {"free_dofs": free.tolist(), "mass_normalized": True, "normalization_mass": list(normalization_mass), "effective_modal_mass_available": bool(effective_mass), "rigid_body_modes": int(np.count_nonzero(frequencies < 1e-8)), "frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz], "band_filtered": True, "computed_mode_count": len(frequencies), "uncomputed_mode_lower_bound_hz": omitted}
         selected = np.flatnonzero(mask)
-        return ModalResult(status="completed", model_sha256=model.content_hash, frequencies_hz=tuple(float(frequencies[i]) for i in selected), mode_shapes=tuple(tuple(float(v) for v in shapes[i]) for i in selected), effective_modal_mass=tuple(masses[i] for i in selected), omitted_frequency_hz=omitted, evidence=evidence)
+        selected_effective_mass = tuple(effective_mass[i] for i in selected) if effective_mass else ()
+        return ModalResult(status="completed", model_sha256=model.content_hash, frequencies_hz=tuple(float(frequencies[i]) for i in selected), mode_shapes=tuple(tuple(float(v) for v in shapes[i]) for i in selected), effective_modal_mass=selected_effective_mass, normalization_mass=tuple(normalization_mass[i] for i in selected), omitted_frequency_hz=omitted, evidence=evidence)
     except ValueError as exc:
         return ModalResult(status="validation_failed", issues=(_issue("BOUNDARY-INVALID", str(exc), op),), model_sha256=model.content_hash)
     except np.linalg.LinAlgError as exc:
@@ -349,6 +381,8 @@ def check_resonance_margin(*, natural_frequencies_hz: Sequence[float], excitatio
     if damping < 0:
         return PhysicsReport(operation=op, status="validation_failed", issues=(_issue("DAMPING-INVALID", "damping_ratio cannot be negative.", op),))
     natural = tuple(_finite(v, "natural_frequency", op) for v in natural_frequencies_hz); excitation = tuple(_finite(v, "excitation_frequency", op) for v in excitation_frequencies_hz)
+    if any(v < 0 for v in (*natural, *excitation)):
+        return PhysicsReport(operation=op, status="validation_failed", issues=(_issue("FREQUENCY-INVALID", "Natural and excitation frequencies must be nonnegative.", op),), evidence={"natural_frequencies_hz": list(natural), "excitation_frequencies_hz": list(excitation)})
     if not natural or not excitation:
         return PhysicsReport(operation=op, status="indeterminate", issues=(_issue("FREQUENCY-MISSING", "Both natural and excitation frequencies are required.", op),))
     closest = min(abs(a - b) for a in natural for b in excitation)

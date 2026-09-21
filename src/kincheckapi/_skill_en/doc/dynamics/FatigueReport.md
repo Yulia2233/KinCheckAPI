@@ -13,7 +13,7 @@ class FatigueReport:
     result_index: int | None
     history_id: str
     material_id: str
-    cycles: tuple[FatigueCycle, ...]
+    cycles: tuple[kincheckapi.fatigue.FatigueCycle, ...]
     damage: float
     allowable_damage: float
     life_repeats: float
@@ -45,7 +45,7 @@ FatigueReport(*, operation: 'str' = 'evaluate_fatigue', status: 'str' = 'passed'
 | `result_index` | `int | None` | `None` | Public input or data field `result_index`. |
 | `history_id` | `str` | `''` | Stable, resolvable `history_id`. |
 | `material_id` | `str` | `''` | Stable, resolvable `material_id`. |
-| `cycles` | `tuple[FatigueCycle, ...]` | `()` | Public input or data field `cycles`. |
+| `cycles` | `tuple[kincheckapi.fatigue.FatigueCycle, ...]` | `()` | Public input or data field `cycles`. |
 | `damage` | `float` | `0.0` | Public input or data field `damage`. |
 | `allowable_damage` | `float` | `1.0` | Public input or data field `allowable_damage`. |
 | `life_repeats` | `float` | `inf` | Public input or data field `life_repeats`. |

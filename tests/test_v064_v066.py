@@ -9,6 +9,7 @@ import pytest
 from kincheckapi.dynamics import (
     DampingSpec,
     ElasticMaterial,
+    FailureCriterion,
     FatigueMaterial,
     MeanStressCorrection,
     ModalRequest,
@@ -32,6 +33,7 @@ from kincheckapi.dynamics import (
     solve_buckling_screening,
     solve_transient_response,
     summarize_drive_duty,
+    transfer_loads,
 )
 
 
@@ -61,6 +63,7 @@ def test_v064_static_stress_and_buckling_reference(sdof):
     assert result.passed
     assert result.displacements_m["dof_0"] == pytest.approx(1.0)
     assert check_stress(result=result, material=sdof.material).passed
+    assert check_stress(result=result, material=sdof.material, criterion=FailureCriterion(name="von_mises")).status == "capability_failed"
 
 
 def test_v064_model_supports_fixed_dofs_and_rejects_bad_load_maps():
@@ -73,6 +76,8 @@ def test_v064_model_supports_fixed_dofs_and_rejects_bad_load_maps():
         StructuralLoad(load_id="bad", values=(1.0,), target_dofs=(0, 1))
     with pytest.raises(Exception):
         LoadTransferMap(source_id="bad", target_dofs=(-1,), force_components=(1.0,))
+    _, transfer_report = transfer_loads(model=model, loads=(StructuralLoad(load_id="load", values=(4.0,), target_dofs=(1,)),))
+    assert transfer_report.evidence["load_records"][0]["mapping"]["coordinate_frame"] == "world"
 
 
 def test_v064_negative_stiffness_and_unresolved_checks_do_not_pass():
@@ -90,6 +95,10 @@ def test_v064_matrix_buckling_requires_geometric_stiffness(sdof):
     result = solve_buckling_screening(model=matrix_model, compressive_load_n=100.0, geometric_stiffness_matrix=((1.0,),))
     assert result.passed
     assert result.evidence["critical_loads_n"][0] == pytest.approx(10_000.0)
+    unstable = StructuralModel(model_id="unstable-buckle", stiffness_matrix=((-100.0,),), mass_matrix=((1.0,),))
+    result = solve_buckling_screening(model=unstable, compressive_load_n=1.0, geometric_stiffness_matrix=((1.0,),))
+    assert result.status == "indeterminate"
+    assert result.eigenvalues[0] < 0
 
 
 def test_v065_sdof_modes_frequency_response_and_transient(sdof):
@@ -121,6 +130,12 @@ def test_v065_frequency_response_json_and_modal_boundary_checks(sdof):
     assert decoded.response[0][0] == pytest.approx(frf.response[0][0])
     assert solve_modes(model=sdof, request=ModalRequest(mode_count=1, fixed_dofs=(99,))).status == "validation_failed"
     assert solve_modes(model=sdof, request=ModalRequest(mode_count=1, frequency_max_hz=0.1)).status == "indeterminate"
+    participation = solve_modes(model=sdof, request=ModalRequest(mode_count=1, participation_vector=(1.0,)))
+    assert participation.effective_modal_mass[0] == pytest.approx(1.0)
+    assert participation.omitted_frequency_hz is None
+    failed = solve_frequency_response(model=sdof, frequencies_hz=(1.0,), force_vector=(float("nan"),))
+    failed_round_trip = type(failed).from_dict(json.loads(json.dumps(failed.to_dict(), allow_nan=False)))
+    assert failed_round_trip.issues and failed_round_trip.issues[0].code == failed.issues[0].code
 
 
 def test_v065_psd_rms_and_resonance_checks():
@@ -132,6 +147,7 @@ def test_v065_psd_rms_and_resonance_checks():
     assert not check_resonance_margin(
         natural_frequencies_hz=(5.0,), excitation_frequencies_hz=(5.1,), minimum_margin_hz=0.5
     ).passed
+    assert check_resonance_margin(natural_frequencies_hz=(-1.0,), excitation_frequencies_hz=(1.0,), minimum_margin_hz=0.5).status == "validation_failed"
     assert check_vibration_limits(values=(3.0, 4.0), limit=3.6, metric="rms").passed
     assert not check_vibration_limits(values=(3.0, 4.0), limit=3.6, metric="unknown").passed
     with pytest.raises(ValueError):
@@ -161,6 +177,8 @@ def test_v066_fatigue_damage_and_envelope():
     assert envelope.passed
     assert envelope.worst_case_id == "nominal"
     json.dumps(envelope.to_dict(), allow_nan=False)
+    envelope_round_trip = type(envelope).from_dict(json.loads(json.dumps(envelope.to_dict(), allow_nan=False)))
+    assert envelope_round_trip.case_reports["nominal"].status == envelope.case_reports["nominal"].status
 
 
 def test_v066_fatigue_domain_codes_and_scenario_coverage():
@@ -172,6 +190,9 @@ def test_v066_fatigue_domain_codes_and_scenario_coverage():
     incomplete = evaluate_operating_envelope(cases={"x": (history, material)}, scenario_matrix=ScenarioMatrix(cases={"a": {}, "b": {}}))
     assert incomplete.status == "indeterminate"
     assert any(issue.code.endswith("SCENARIO-COVERAGE-MISSING") for issue in incomplete.issues)
+    incomplete_round_trip = type(incomplete).from_dict(json.loads(json.dumps(incomplete.to_dict(), allow_nan=False)))
+    assert any(issue.code.endswith("SCENARIO-COVERAGE-MISSING") for issue in incomplete_round_trip.issues)
+    assert evaluate_operating_envelope(cases={}).status == "validation_failed"
 
 
 def test_v066_zero_life_json_round_trip():
@@ -180,6 +201,10 @@ def test_v066_zero_life_json_round_trip():
     payload = json.loads(json.dumps(report.to_dict(), allow_nan=False))
     assert payload["life_repeats"] is None
     assert type(report).from_dict(payload).life_repeats == math.inf
+    assert json.dumps(check_fatigue_limits(result=report).to_dict(), allow_nan=False)
+    failed = evaluate_fatigue(history=StressHistory(history_id="bad", times_s=(0.0, 1.0, 2.0), stress_pa=(0.0, 300.0, 0.0)), material=FatigueMaterial(material_id="f2", sn_points=((100.0, 1e3), (50.0, 1e4)), source="test"))
+    failed_round_trip = type(failed).from_dict(json.loads(json.dumps(failed.to_dict(), allow_nan=False)))
+    assert failed_round_trip.issues and failed_round_trip.issues[0].code == failed.issues[0].code
 
 
 def test_v066_drive_duty_keeps_signed_energy():

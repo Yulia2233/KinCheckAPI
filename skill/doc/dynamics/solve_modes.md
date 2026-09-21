@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-solve_modes(*, model: kincheckapi.structural.StructuralModel, request: kincheckapi.vibration.ModalRequest = ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None)) -> kincheckapi.vibration.ModalResult
+solve_modes(*, model: kincheckapi.structural.StructuralModel, request: kincheckapi.vibration.ModalRequest = ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None, participation_vector=())) -> kincheckapi.vibration.ModalResult
 ```
 
 Source: `src/kincheckapi/vibration.py`.
@@ -23,7 +23,7 @@ Solve the specified kinematic problem: `solve_modes`.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `model` | `kincheckapi.structural.StructuralModel` | required | Public input or data field `model`. |
-| `request` | `kincheckapi.vibration.ModalRequest` | `ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None)` | Public input or data field `request`. |
+| `request` | `kincheckapi.vibration.ModalRequest` | `ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None, participation_vector=())` | Public input or data field `request`. |
 
 ## Returns and Failures
 
