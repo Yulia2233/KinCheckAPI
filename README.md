@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-Current version: **0.6.3**. [v0.6.3 update](doc/updates/v0.6.3.en.md) adds contact/friction capacity evidence; [v0.6.2](doc/updates/v0.6.2.en.md) adds finite-actuator forward dynamics; [v0.6.1](doc/updates/v0.6.1.en.md) adds CADIR-backed scalar-tree inverse dynamics. [v0.6.0](doc/updates/v0.6.0.en.md) introduced the physical-property and static-equilibrium bridge.
+Current version: **0.6.6**. [v0.6.6 update](doc/updates/v0.6.6.en.md) adds high-cycle fatigue, duty-cycle and envelope checks; [v0.6.5](doc/updates/v0.6.5.en.md) adds modal, frequency, transient and PSD/RMS reference response; [v0.6.4](doc/updates/v0.6.4.en.md) adds linear structural load transfer, stress, deflection and buckling screening. Earlier releases added contact/friction capacity, finite-actuator forward dynamics, scalar-tree inverse dynamics, and the physical-property/static-equilibrium bridge.
 
 English | [简体中文](README_zh.md)
 
@@ -93,6 +93,7 @@ The compact two-stage reducer and [four-bar example](examples/four_bar_linkage/v
 - A `partial` MotionResult preserves recorded trajectories, residuals, and geometric evidence, which may include samples that violate constraints; it can never produce a pass conclusion;
 - Discrete geometric checks use real triangle meshes at explicit sample times. `check_continuous_interference()` adds a conditional conservative interval proof for the declared piecewise rigid interpolation and velocity bound; it never claims arbitrary deformable or dynamic collision freedom, nor exact BREP/NURBS surface distances;
 - Dynamic inverse/forward integration currently supports scalar revolute/prismatic trees without closures, couplings, or general constraints. Contact capacity checks support supplied-force friction and pressure evidence; contact-force response, frictional stabilization, impact, and multi-dof joints (`cylindrical`, `spherical`, `planar`, `free`) remain outside backend support;
+- Structural, vibration and fatigue APIs provide auditable linear-reference calculations over explicit reduced matrices, beam properties, measured stress histories and declared S-N curves. Arbitrary BREP-to-FEA meshing, nonlinear contact, plasticity, fracture, nonlinear vibration and coupled thermo-mechanical fatigue remain capability boundaries and return structured indeterminate/capability-failed results;
 - `.scadpkg` is the persistent product source. The optional addon prepares validated packages for the unchanged MJCF conversion entry; raw CADIR XML is not an input.
 
 ## Running tests
@@ -186,6 +187,18 @@ package = export.motion_package(
 loaded = export.read_package(path=package.path)
 ```
 
+## v0.6.4–v0.6.6 structural dynamics
+
+`kincheckapi.dynamics` also exposes the staged structural chain. v0.6.4 provides
+`StructuralModel`, `transfer_loads()`, `solve_static_structure()`,
+`solve_buckling_screening()`, stress/deflection checks and material-aware
+structural margins. v0.6.5 adds `solve_modes()`, linear frequency and transient
+response, Welch PSD estimation, RMS integration, resonance and vibration-limit
+checks. v0.6.6 adds signed stress histories, ASTM-style rainflow counting,
+Goodman/Gerber mean-stress correction, Miner damage, duty summaries and
+operating-envelope coverage. These APIs preserve assumptions, units, model
+hashes, residuals and uncovered cases in their evidence.
+
 ## v0.6.1–v0.6.3 dynamics
 
 `kincheckapi.dynamics` exposes `solve_inverse_dynamics()` for prescribed
@@ -193,8 +206,8 @@ scalar joint states, `solve_forward_dynamics()` for finite actuator profiles,
 `check_dynamic_load_limits()` and `check_dynamic_tracking()`, and
 `check_contact_capacity()` for supplied-force Coulomb/pressure capacity. Every
 operation records model hashes, SI units, backend evidence, and structured
-failure guidance. Closed loops, contact response, impact, stress, vibration,
-and fatigue remain explicit capability boundaries.
+failure guidance. Closed-loop dynamics and contact response/impact remain
+explicit capability boundaries.
 
 ## v0.6.0 physical statics
 
