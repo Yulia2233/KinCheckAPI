@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-Current version: **0.6.0**. [v0.6.0 update](doc/updates/v0.6.0.en.md). [v0.5.7 release notes](doc/updates/v0.5.7.en.md) cover continuous collision/TOI evidence, review fixes, containment-query optimization, and the fully checked four-bar actuator. Bounded numerical inverse kinematics is documented separately in [v0.5.6](doc/updates/v0.5.6.en.md).
+Current version: **0.6.3**. [v0.6.3 update](doc/updates/v0.6.3.en.md) adds contact/friction capacity evidence; [v0.6.2](doc/updates/v0.6.2.en.md) adds finite-actuator forward dynamics; [v0.6.1](doc/updates/v0.6.1.en.md) adds CADIR-backed scalar-tree inverse dynamics. [v0.6.0](doc/updates/v0.6.0.en.md) introduced the physical-property and static-equilibrium bridge.
 
 English | [简体中文](README_zh.md)
 
@@ -92,7 +92,7 @@ The compact two-stage reducer and [four-bar example](examples/four_bar_linkage/v
 - No guarantee that arbitrary closed-loop mechanisms complete time-varying position solving stably; model errors, inconsistent initial states, or unsupported mechanisms raise explicit errors or return `partial` — never a disguised success;
 - A `partial` MotionResult preserves recorded trajectories, residuals, and geometric evidence, which may include samples that violate constraints; it can never produce a pass conclusion;
 - Discrete geometric checks use real triangle meshes at explicit sample times. `check_continuous_interference()` adds a conditional conservative interval proof for the declared piecewise rigid interpolation and velocity bound; it never claims arbitrary deformable or dynamic collision freedom, nor exact BREP/NURBS surface distances;
-- Full dynamics, contact forces, friction, and impact are not implemented; multi-dof joints (`cylindrical`, `spherical`, `planar`, `free`) are still outside backend support;
+- Dynamic inverse/forward integration currently supports scalar revolute/prismatic trees without closures, couplings, or general constraints. Contact capacity checks support supplied-force friction and pressure evidence; contact-force response, frictional stabilization, impact, and multi-dof joints (`cylindrical`, `spherical`, `planar`, `free`) remain outside backend support;
 - `.scadpkg` is the persistent product source. The optional addon prepares validated packages for the unchanged MJCF conversion entry; raw CADIR XML is not an input.
 
 ## Running tests
@@ -163,6 +163,13 @@ python viewer/kincheck_viewer.py path/to/result.kincheck --serve
 
 Then open `http://127.0.0.1:8767/`. The viewer only reads recorded meshes and trajectories.
 
+The E01 loaded-arm package also has staged dynamics verifiers:
+
+```bash
+uv run python examples/dynamics_loaded_arm/verification/verify_dynamic.py examples/dynamics_loaded_arm/model
+uv run python examples/dynamics_loaded_arm/verification/verify_contact.py examples/dynamics_loaded_arm/model
+```
+
 ## Result packages
 
 `.kincheck` is KinCheckAPI's motion-result format: result data and displayable meshes, without HTML, JavaScript, or solver runtime objects. Write, validate, and read through `kincheckapi.export`:
@@ -179,8 +186,18 @@ package = export.motion_package(
 loaded = export.read_package(path=package.path)
 ```
 
+## v0.6.1–v0.6.3 dynamics
+
+`kincheckapi.dynamics` exposes `solve_inverse_dynamics()` for prescribed
+scalar joint states, `solve_forward_dynamics()` for finite actuator profiles,
+`check_dynamic_load_limits()` and `check_dynamic_tracking()`, and
+`check_contact_capacity()` for supplied-force Coulomb/pressure capacity. Every
+operation records model hashes, SI units, backend evidence, and structured
+failure guidance. Closed loops, contact response, impact, stress, vibration,
+and fatigue remain explicit capability boundaries.
+
 ## v0.6.0 physical statics
 
-This release adds the [E01 loaded-arm physical/static workflow](examples/dynamics_loaded_arm/README.md): CADIR density and closed-BREP integration, occurrence-preserving tensors, explicit backend inertials, tree static equilibrium, local BREP contact regions, and hash-indexed physics result packages. It does not claim inverse/forward dynamics, contact response, structural strength, vibration, or fatigue.
+This release added the [E01 loaded-arm physical/static workflow](examples/dynamics_loaded_arm/README.md): CADIR density and closed-BREP integration, occurrence-preserving tensors, explicit backend inertials, tree static equilibrium, local BREP contact regions, and hash-indexed physics result packages. The dynamic capabilities and boundaries are defined by v0.6.1-v0.6.3 above.
 
 See [physical statics](skill/doc/guides/physical-statics.md), the [E01 requirements](examples/dynamics_loaded_arm/requirements.md), [verification program](examples/dynamics_loaded_arm/verification/verify.py), and [static evidence](examples/dynamics_loaded_arm/output/verification.json).

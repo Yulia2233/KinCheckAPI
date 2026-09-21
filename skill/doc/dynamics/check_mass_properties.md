@@ -31,8 +31,8 @@ Returns `PhysicsReport`.
 ## Module Constraints
 
 - Use typed SI physics contracts after mass coverage and compiled inertia validation.
-- Kinematic results cannot support force, torque, contact force, impact, fatigue, or vibration claims.
-- Inverse/forward dynamics, contact response, structural analysis, vibration and fatigue are not implemented.
+- Inverse/forward dynamics support scalar revolute/prismatic trees without closures, couplings, or general constraints.
+- Contact capacity is a supplied-force Coulomb/pressure check; contact response, impact, structural stress, vibration, and fatigue remain outside the capability contract.
 
 ## Related Documentation
 

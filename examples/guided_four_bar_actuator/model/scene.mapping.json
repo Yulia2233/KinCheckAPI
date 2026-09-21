@@ -71,6 +71,7 @@
       "tree_joint": "joint_joint_guided_four_bar_actuator_rocker_to_ground_44c094411452"
     }
   ],
+  "mesh_constraints": [],
   "meshes": {
     "base": "mesh_base",
     "coupler": "mesh_coupler",

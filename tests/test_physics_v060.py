@@ -176,7 +176,7 @@ def test_support_missing_nonunique_contact_and_modes():
 
 
 def test_no_future_dynamics_or_missing_physics():
-    assert not probe_dynamics_capabilities(
+    assert probe_dynamics_capabilities(
         model=arm(), operation="solve_inverse_dynamics"
     ).passed
     assert not probe_dynamics_capabilities(

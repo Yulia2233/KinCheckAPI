@@ -1,6 +1,6 @@
 # 动力学命名空间
 
-真实 BREP 物性、载荷与支承、树形标量关节静平衡及后端惯量核验。
+真实 BREP 物性、树形静力、标量树逆/正动力学，以及给定外力的接触摩擦容量检查。
 
 ## 公开 API
 
@@ -9,6 +9,21 @@
 | [`ContactRegion`](ContactRegion.md) | 类型 | 表示 `ContactRegion` 的公开、可序列化数据结构。 |
 | [`check_static_geometry`](check_static_geometry.md) | 函数 | 执行结构化检查：`check_static_geometry`。 |
 | [`check_occurrence_support`](check_occurrence_support.md) | 函数 | 执行结构化检查：`check_occurrence_support`。 |
+| [`DynamicState`](DynamicState.md) | 类型 | 表示 `DynamicState` 的公开、可序列化数据结构。 |
+| [`DynamicRequest`](DynamicRequest.md) | 类型 | 表示 `DynamicRequest` 的公开、可序列化数据结构。 |
+| [`InverseDynamicsResult`](InverseDynamicsResult.md) | 类型 | 表示 `InverseDynamicsResult` 的公开、可序列化数据结构。 |
+| [`ActuatorSpec`](ActuatorSpec.md) | 类型 | 表示 `ActuatorSpec` 的公开、可序列化数据结构。 |
+| [`ActuatorProfile`](ActuatorProfile.md) | 类型 | 表示 `ActuatorProfile` 的公开、可序列化数据结构。 |
+| [`ForwardDynamicsRequest`](ForwardDynamicsRequest.md) | 类型 | 表示 `ForwardDynamicsRequest` 的公开、可序列化数据结构。 |
+| [`DynamicSample`](DynamicSample.md) | 类型 | 表示 `DynamicSample` 的公开、可序列化数据结构。 |
+| [`ForwardDynamicsResult`](ForwardDynamicsResult.md) | 类型 | 表示 `ForwardDynamicsResult` 的公开、可序列化数据结构。 |
+| [`ContactSpec`](ContactSpec.md) | 类型 | 表示 `ContactSpec` 的公开、可序列化数据结构。 |
+| [`ContactReport`](ContactReport.md) | 类型 | 表示 `ContactReport` 的公开、可序列化数据结构。 |
+| [`solve_inverse_dynamics`](solve_inverse_dynamics.md) | 函数 | 求解指定运动学问题：`solve_inverse_dynamics`。 |
+| [`solve_forward_dynamics`](solve_forward_dynamics.md) | 函数 | 求解指定运动学问题：`solve_forward_dynamics`。 |
+| [`check_dynamic_load_limits`](check_dynamic_load_limits.md) | 函数 | 执行结构化检查：`check_dynamic_load_limits`。 |
+| [`check_dynamic_tracking`](check_dynamic_tracking.md) | 函数 | 执行结构化检查：`check_dynamic_tracking`。 |
+| [`check_contact_capacity`](check_contact_capacity.md) | 函数 | 执行结构化检查：`check_contact_capacity`。 |
 | [`read_mjcf_mass_properties`](read_mjcf_mass_properties.md) | 函数 | 读取并重建公开对象：`read_mjcf_mass_properties`。 |
 | [`measure_interface_centers`](measure_interface_centers.md) | 函数 | 执行公开操作 `measure_interface_centers`。 |
 | [`DynamicsModel`](DynamicsModel.md) | 类型 | 表示 `DynamicsModel` 的公开、可序列化数据结构。 |
@@ -43,4 +58,5 @@
 
 - 使用 dynamics 的强类型 SI 契约；先完成物性覆盖和编译反查。
 - 静力仅支持理想 fixed/revolute/prismatic 树；自由关节不能被静默锁定，多固定支点只输出唯一合量。
-- 逆/正动力学、接触响应、结构、振动和疲劳尚未实现，能力探针明确拒绝。
+- 逆/正动力学支持没有 closure、coupling 和一般约束的标量 revolute/prismatic 树；先探测 MuJoCo 能力并检查状态、驱动限值和采样证据。
+- 接触 API 只检查给定外力的法向、摩擦和压力容量，不提供接触响应、碰撞冲量、结构、振动或疲劳结论。

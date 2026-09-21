@@ -73,8 +73,25 @@ from .kinematics import KinematicSolveOptions, KinematicCapabilities, backend_ca
 from .result import IntegrationSample, record_verification_reports
 from .clearance import ClearanceReport, EnvelopeSample, MinimumClearance, MotionEnvelope, SamplingScope
 from .checks import AssemblyIntegrityReport, ContainmentRelation, IntegrityRelationResult, check_assembly_integrity
+from .dynamics import (
+    ActuatorProfile,
+    ActuatorSpec,
+    ContactReport,
+    ContactSpec,
+    DynamicRequest,
+    DynamicSample,
+    DynamicState,
+    ForwardDynamicsRequest,
+    ForwardDynamicsResult,
+    InverseDynamicsResult,
+    check_contact_capacity,
+    check_dynamic_load_limits,
+    check_dynamic_tracking,
+    solve_forward_dynamics,
+    solve_inverse_dynamics,
+)
 
-__version__ = "0.6.0"
+__version__ = "0.6.3"
 
 __all__ = [
     "AssemblyModel",
@@ -155,4 +172,19 @@ __all__ = [
     "scenario",
     "visualization",
     "validate_topology",
+    "DynamicState",
+    "DynamicRequest",
+    "InverseDynamicsResult",
+    "ActuatorSpec",
+    "ActuatorProfile",
+    "ForwardDynamicsRequest",
+    "DynamicSample",
+    "ForwardDynamicsResult",
+    "ContactSpec",
+    "ContactReport",
+    "solve_inverse_dynamics",
+    "solve_forward_dynamics",
+    "check_dynamic_load_limits",
+    "check_dynamic_tracking",
+    "check_contact_capacity",
 ]

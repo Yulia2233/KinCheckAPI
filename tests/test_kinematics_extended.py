@@ -47,9 +47,10 @@ def test_unimplemented_automatic_fixes_raise_stable_capability_error(apply_fix):
     assert caught.value.object_ids == ("joint.1",)
 
 
-def test_dynamics_namespace_exposes_only_v060_physics_contract():
+def test_dynamics_namespace_exposes_staged_dynamic_contract():
     public_names = {name for name in vars(dynamics) if not name.startswith("_")}
     assert public_names == set(dynamics.__all__)
     assert "solve_static_equilibrium" in public_names
-    assert "solve_inverse_dynamics" not in public_names
-    assert "solve_forward_dynamics" not in public_names
+    assert "solve_inverse_dynamics" in public_names
+    assert "solve_forward_dynamics" in public_names
+    assert "check_contact_capacity" in public_names

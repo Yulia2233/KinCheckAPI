@@ -1,8 +1,4 @@
-"""v0.6.0 real physical properties and tree static equilibrium.
-
-Time integration, inverse dynamics, contact response and structural analysis
-are intentionally outside this version's capability contract.
-"""
+"""Physical properties, statics and the staged v0.6.1-v0.6.3 dynamics API."""
 
 from .physics_types import (
     DynamicsModel,
@@ -49,11 +45,45 @@ from .physics_geometry import (
     check_static_geometry,
     check_occurrence_support,
 )
+from .dynamic_types import (
+    ActuatorProfile,
+    ActuatorSpec,
+    ContactReport,
+    ContactSpec,
+    DynamicRequest,
+    DynamicSample,
+    DynamicState,
+    ForwardDynamicsRequest,
+    ForwardDynamicsResult,
+    InverseDynamicsResult,
+)
+from .dynamic_solver import (
+    check_contact_capacity,
+    check_dynamic_load_limits,
+    check_dynamic_tracking,
+    solve_forward_dynamics,
+    solve_inverse_dynamics,
+)
 
 __all__ = [
     "ContactRegion",
     "check_static_geometry",
     "check_occurrence_support",
+    "DynamicState",
+    "DynamicRequest",
+    "InverseDynamicsResult",
+    "ActuatorSpec",
+    "ActuatorProfile",
+    "ForwardDynamicsRequest",
+    "DynamicSample",
+    "ForwardDynamicsResult",
+    "ContactSpec",
+    "ContactReport",
+    "solve_inverse_dynamics",
+    "solve_forward_dynamics",
+    "check_dynamic_load_limits",
+    "check_dynamic_tracking",
+    "check_contact_capacity",
     "read_mjcf_mass_properties",
     "measure_interface_centers",
     "DynamicsModel",

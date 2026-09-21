@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-当前版本：**0.6.0**。[v0.6.0 更新](doc/updates/v0.6.0.md)。[v0.5.7 更新说明](doc/updates/v0.5.7.md) 介绍连续碰撞/TOI、复审修复、网格包含检测优化和完整四连杆验证；有界数值逆运动学的范围与用法见 [v0.5.6 更新说明](doc/updates/v0.5.6.md)。
+当前版本：**0.6.3**。[v0.6.3 更新](doc/updates/v0.6.3.md) 增加接触/摩擦承载能力证据；[v0.6.2](doc/updates/v0.6.2.md) 增加有限驱动正动力学；[v0.6.1](doc/updates/v0.6.1.md) 增加 CADIR 标量树逆动力学。[v0.6.0](doc/updates/v0.6.0.md) 引入真实物性和树形静力转换层。
 
 [English](README.md) | 简体中文
 
@@ -88,7 +88,7 @@ skill 安装名称为 `sca-kincheckapi`。产品包命令强制运行时预检�
 - 不保证任意闭环机构都能稳定完成随时间变化的位置求解；模型错误、初态不一致或不支持的机构会明确报错或返回 `partial`，不会伪装为成功；
 - `partial` MotionResult 保留已记录的轨迹、残差和几何证据，其中可能包含违反约束的样本，不能据此给出通过结论；
 - 离散几何检查基于显式采样时刻的真实三角网格。`check_continuous_interference()` 在声明的分段刚体插值和速度上界下增加保守区间证明；它不覆盖任意变形体或动力学运动，也不等价于精确 BREP/NURBS 曲面距离；
-- 尚未实现完整动力学、接触力、摩擦和冲击；多自由度关节（`cylindrical`、`spherical`、`planar`、`free`）仍不在后端支持范围内；
+- 逆/正动力学目前支持没有 closure、coupling 和一般约束的标量 revolute/prismatic 树；接触 API 支持给定外力的摩擦和压力容量证据，接触力响应、摩擦稳定、碰撞冲量和多自由度关节（`cylindrical`、`spherical`、`planar`、`free`）仍不在后端支持范围内；
 - `.scadpkg` 是持久化产品源；可选 addon 校验并准备产品包，再交给原有 MJCF 转换入口，不接受原始 CADIR XML。
 
 ## 运行测试
@@ -175,6 +175,22 @@ package = export.motion_package(
 loaded = export.read_package(path=package.path)
 ```
 
+E01 带载摆臂还提供分阶段动力学验证：
+
+```bash
+uv run python examples/dynamics_loaded_arm/verification/verify_dynamic.py examples/dynamics_loaded_arm/model
+uv run python examples/dynamics_loaded_arm/verification/verify_contact.py examples/dynamics_loaded_arm/model
+```
+
+## v0.6.1–v0.6.3 动力学
+
+`kincheckapi.dynamics` 现在提供预设标量关节状态的
+`solve_inverse_dynamics()`、有限驱动输入的 `solve_forward_dynamics()`、
+`check_dynamic_load_limits()`、`check_dynamic_tracking()`，以及给定外力的
+库仑摩擦/压力容量 `check_contact_capacity()`。每项结果都会保存模型哈希、
+SI 单位、后端证据和结构化失败修复信息。闭环、接触响应、碰撞冲量、应力、
+振动和疲劳仍会明确报告为能力边界。
+
 ## v0.6.0 真实物性与静力
 
-本版交付 [E01 带载摆臂](examples/dynamics_loaded_arm/README.md)：CADIR 密度与封闭 BREP 积分、逐 occurrence 惯量、后端显式惯量、树形静力、局部 BREP 接触区域和带哈希物理结果包。未宣称逆/正动力学、接触响应、结构强度、振动或疲劳。详见[物性与静力](skill_zh/doc/guides/physical-statics.md)、[E01 requirements](examples/dynamics_loaded_arm/requirements.md)、[验证程序](examples/dynamics_loaded_arm/verification/verify.py)和[静力证据](examples/dynamics_loaded_arm/output/verification.json)。
+本版交付 [E01 带载摆臂](examples/dynamics_loaded_arm/README.md)：CADIR 密度与封闭 BREP 积分、逐 occurrence 惯量、后端显式惯量、树形静力、局部 BREP 接触区域和带哈希物理结果包。后续动力学能力与边界见上面的 v0.6.1-v0.6.3。详见[物性与静力](skill_zh/doc/guides/physical-statics.md)、[E01 requirements](examples/dynamics_loaded_arm/requirements.md)、[验证程序](examples/dynamics_loaded_arm/verification/verify.py)和[静力证据](examples/dynamics_loaded_arm/output/verification.json)。

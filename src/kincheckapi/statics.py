@@ -29,6 +29,9 @@ def probe_dynamics_capabilities(
     versions = {}
     supported = {
         "solve_static_equilibrium",
+        "solve_inverse_dynamics",
+        "solve_forward_dynamics",
+        "check_contact_capacity",
         "compile_dynamics_model",
         "validate_physics_conversion",
         "check_mass_properties",
@@ -37,12 +40,13 @@ def probe_dynamics_capabilities(
         problems.append(
             issue(
                 "CAPABILITY-UNAVAILABLE",
-                f"{operation} is outside v0.6.0.",
+                f"{operation} is outside the v0.6.3 dynamics capability contract.",
                 operation,
                 (operation,),
             )
         )
-    if model is None or not isinstance(model, DynamicsModel):
+    requires_model = operation != "check_contact_capacity"
+    if requires_model and (model is None or not isinstance(model, DynamicsModel)):
         problems.append(
             issue(
                 "OCCURRENCE-COVERAGE-INCOMPLETE",
@@ -50,9 +54,9 @@ def probe_dynamics_capabilities(
                 operation,
             )
         )
-    else:
+    elif requires_model:
         tree = build_kinematic_tree(assembly=model.assembly)
-        if operation == "solve_static_equilibrium":
+        if operation in ("solve_static_equilibrium", "solve_inverse_dynamics", "solve_forward_dynamics"):
             if (
                 tree.closure_edges
                 or model.assembly.closures
@@ -62,7 +66,11 @@ def probe_dynamics_capabilities(
                 problems.append(
                     issue(
                         "TOPOLOGY-UNSUPPORTED",
-                        "Static per-joint solution requires a tree with no closure/coupling constraints.",
+                        (
+                            "Static per-joint solution requires a tree with no closure/coupling constraints."
+                            if operation == "solve_static_equilibrium"
+                            else "This per-joint dynamic solution requires a tree with no closure/coupling constraints."
+                        ),
                         operation,
                         tuple(e.joint_id for e in tree.closure_edges),
                         fix="Request mass conversion only, or provide a future closed-loop reaction model.",
@@ -95,7 +103,12 @@ def probe_dynamics_capabilities(
             )
     expected_backend = (
         "mujoco"
-        if operation in ("compile_dynamics_model", "validate_physics_conversion")
+        if operation in (
+            "compile_dynamics_model",
+            "validate_physics_conversion",
+            "solve_inverse_dynamics",
+            "solve_forward_dynamics",
+        )
         else "analytic_tree"
     )
     backend = backend or expected_backend
@@ -133,8 +146,8 @@ def probe_dynamics_capabilities(
             "static_topology": "tree",
             "joints": ["fixed", "revolute", "prismatic"],
             "contact_response": False,
-            "inverse_dynamics": False,
-            "forward_dynamics": False,
+            "inverse_dynamics": operation == "solve_inverse_dynamics" and not problems,
+            "forward_dynamics": operation == "solve_forward_dynamics" and not problems,
         },
     )
 
