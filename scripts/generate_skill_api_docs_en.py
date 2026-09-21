@@ -94,7 +94,7 @@ MODULES: dict[str, dict[str, str]] = {
     },
     "dynamics": {
         "title": "Dynamics Namespace",
-        "summary": "Real BREP mass properties, typed loads/supports, scalar tree statics and compiled inertia validation.",
+        "summary": "Real BREP mass properties, tree statics, scalar-tree inverse/forward dynamics, and supplied-force contact/friction capacity checks.",
     },
 }
 
@@ -194,8 +194,8 @@ MODULE_RULES: dict[str, tuple[str, ...]] = {
     ),
     "dynamics": (
         "Use typed SI physics contracts after mass coverage and compiled inertia validation.",
-        "Kinematic results cannot support force, torque, contact force, impact, fatigue, or vibration claims.",
-        "Inverse/forward dynamics, contact response, structural analysis, vibration and fatigue are not implemented.",
+        "Inverse/forward dynamics support scalar revolute/prismatic trees without closures, couplings, or general constraints.",
+        "Contact capacity is a supplied-force Coulomb/pressure check; contact response, impact, structural stress, vibration, and fatigue remain outside the capability contract.",
     ),
 }
 

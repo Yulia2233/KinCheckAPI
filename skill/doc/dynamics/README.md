@@ -1,6 +1,6 @@
 # Dynamics Namespace
 
-Real BREP mass properties, typed loads/supports, scalar tree statics and compiled inertia validation.
+Real BREP mass properties, tree statics, scalar-tree inverse/forward dynamics, and supplied-force contact/friction capacity checks.
 
 ## Public API
 
@@ -9,6 +9,21 @@ Real BREP mass properties, typed loads/supports, scalar tree statics and compile
 | [`ContactRegion`](ContactRegion.md) | Type | Allowed local region in occurrence_a's definition frame, in SI metres. Both named interfaces must resolve to recorded topology. Every closest-point witness must lie inside the region; interpenetrating solids always fail. An ideal clearance fit is a geometric relation, not proof of load sharing. |
 | [`check_static_geometry`](check_static_geometry.md) | Function | Check every leaf pair using exact BREP, including fixed-group internals. Broad-phase boxes only prove separation; nearby pairs use BREP distances and solid intersections. No triangle approximation is used for acceptance. |
 | [`check_occurrence_support`](check_occurrence_support.md) | Function | Check the actual CAD joint/fastener graph, including every hardware leaf. Hierarchy placement alone is never a mounting relation. This topological gate complements, and cannot replace, geometric mounting/clearance checks. |
+| [`DynamicState`](DynamicState.md) | Type | One prescribed scalar joint state at an instant. Revolute values use rad/rad/s/rad/s2 and prismatic values use m/m/s/m/s2 according to the referenced Joint type. |
+| [`DynamicRequest`](DynamicRequest.md) | Type | Inputs for one inverse-dynamics evaluation. |
+| [`InverseDynamicsResult`](InverseDynamicsResult.md) | Type | Required generalized efforts and power at a prescribed state. |
+| [`ActuatorSpec`](ActuatorSpec.md) | Type | A finite ideal torque/force actuator bound to one scalar Joint. |
+| [`ActuatorProfile`](ActuatorProfile.md) | Type | A time-ordered public effort command, linearly interpolated. |
+| [`ForwardDynamicsRequest`](ForwardDynamicsRequest.md) | Type | Inputs for finite-actuator forward integration. |
+| [`DynamicSample`](DynamicSample.md) | Type | DynamicSample(*, time_s: 'float', joint_positions: 'Mapping[str, float]', joint_velocities: 'Mapping[str, float]', joint_accelerations: 'Mapping[str, float]', actuator_efforts: 'Mapping[str, float]') |
+| [`ForwardDynamicsResult`](ForwardDynamicsResult.md) | Type | ForwardDynamicsResult(*, operation: 'str' = 'solve_forward_dynamics', status: 'str' = 'passed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>, model_sha256: 'str | None' = None, result_index: 'int | None' = None, request: 'ForwardDynamicsRequest | None' = None, samples: 'tuple[DynamicSample, ...]' = (), energy_input_j: 'float' = 0.0, peak_power_w: 'float' = 0.0, peak_effort: 'Mapping[str, float]' = <factory>) |
+| [`ContactSpec`](ContactSpec.md) | Type | A declared planar contact capacity; normal points in the load direction. |
+| [`ContactReport`](ContactReport.md) | Type | ContactReport(*, operation: 'str' = 'check_contact_capacity', status: 'str' = 'passed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>, model_sha256: 'str | None' = None, result_index: 'int | None' = None, contact_id: 'str' = '', normal_force_n: 'float' = 0.0, tangential_force_n: 'float' = 0.0, friction_limit_n: 'float' = 0.0, pressure_pa: 'float | None' = None, utilization: 'Mapping[str, float]' = <factory>) |
+| [`solve_inverse_dynamics`](solve_inverse_dynamics.md) | Function | Compute scalar joint effort for prescribed position/velocity/acceleration. The calculation is MuJoCo's inverse dynamics with explicit CADIR-derived mass/COM/inertia. It supports tree revolute/prismatic joints only. |
+| [`solve_forward_dynamics`](solve_forward_dynamics.md) | Function | Integrate a finite-actuator scalar tree and retain energy evidence. |
+| [`check_dynamic_load_limits`](check_dynamic_load_limits.md) | Function | Compare inverse-dynamics effort against declared per-joint limits. |
+| [`check_dynamic_tracking`](check_dynamic_tracking.md) | Function | Check final forward-dynamics scalar positions against targets. |
+| [`check_contact_capacity`](check_contact_capacity.md) | Function | Check a declared Coulomb contact capacity. The normal points in the direction of the applied compressive load. This is a capacity check, not a contact-force or impact solver. |
 | [`read_mjcf_mass_properties`](read_mjcf_mass_properties.md) | Function | Compatibility import of explicit MJCF inertials, labeled mjcf_explicit. Density-only meshes, shell assumptions and unspecified triangulation error have no strict acceptance path in v0.6.0. World mass must be supplied explicitly because MuJoCo worldbody does not retain physical ground mass. |
 | [`measure_interface_centers`](measure_interface_centers.md) | Function | Resolve named CAD faces and return their measured definition-frame centres. Used for load attachment evidence, never to infer a missing interface by name or appearance. Coordinates are SI and topology IDs remain in the response. |
 | [`DynamicsModel`](DynamicsModel.md) | Type | DynamicsModel(*, assembly: 'AssemblyModel', component_properties: 'Mapping[str, RigidBodyProperties]', body_properties: 'Mapping[str, RigidBodyProperties]', occurrence_components: 'Mapping[str, str]', manifest: 'PhysicsManifest | None' = None, payloads: 'tuple[Payload, ...]' = (), base_component_properties: 'Mapping[str, RigidBodyProperties]' = <factory>) |
@@ -42,5 +57,5 @@ Real BREP mass properties, typed loads/supports, scalar tree statics and compile
 ## Module Rules
 
 - Use typed SI physics contracts after mass coverage and compiled inertia validation.
-- Kinematic results cannot support force, torque, contact force, impact, fatigue, or vibration claims.
-- Inverse/forward dynamics, contact response, structural analysis, vibration and fatigue are not implemented.
+- Inverse/forward dynamics support scalar revolute/prismatic trees without closures, couplings, or general constraints.
+- Contact capacity is a supplied-force Coulomb/pressure check; contact response, impact, structural stress, vibration, and fatigue remain outside the capability contract.

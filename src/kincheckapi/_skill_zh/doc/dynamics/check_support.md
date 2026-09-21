@@ -33,7 +33,8 @@ from kincheckapi.dynamics import check_support
 
 - 使用 dynamics 的强类型 SI 契约；先完成物性覆盖和编译反查。
 - 静力仅支持理想 fixed/revolute/prismatic 树；自由关节不能被静默锁定，多固定支点只输出唯一合量。
-- 逆/正动力学、接触响应、结构、振动和疲劳尚未实现，能力探针明确拒绝。
+- 逆/正动力学支持没有 closure、coupling 和一般约束的标量 revolute/prismatic 树；先探测 MuJoCo 能力并检查状态、驱动限值和采样证据。
+- 接触 API 只检查给定外力的法向、摩擦和压力容量，不提供接触响应、碰撞冲量、结构、振动或疲劳结论。
 
 ## 相关文档
 

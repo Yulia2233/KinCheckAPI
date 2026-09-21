@@ -60,7 +60,13 @@ def _principal_inertial_attributes(properties):
     values, axes = np.linalg.eigh(tensor)
     if np.linalg.det(axes) < 0:
         axes[:, -1] *= -1
-    if not np.allclose(axes @ np.diag(values) @ axes.T, tensor, rtol=1e-12, atol=1e-16):
+    # Eigen reconstruction is a floating point operation.  The previous
+    # absolute tolerance rejected perfectly valid metre-scale assemblies when
+    # a near-zero product of principal axes accumulated a few ulps of error.
+    # Keep the check strict, but scale it to the tensor magnitude.
+    reconstruction = axes @ np.diag(values) @ axes.T
+    scale = max(float(np.max(np.abs(tensor))), 1.0)
+    if not np.allclose(reconstruction, tensor, rtol=1e-10, atol=scale * 1e-14):
         fail(
             "BACKEND-INERTIAL-MISMATCH",
             "Principal tensor reconstruction failed.",
