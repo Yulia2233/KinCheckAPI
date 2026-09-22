@@ -3,7 +3,7 @@
 ## API Definition
 
 ```python
-solve_contact_dynamics(*, interface: kincheckapi.dynamics_v07.ContactInterface, times_s: Sequence[float], relative_gap_m: Sequence[float], relative_normal_velocity_m_s: Sequence[float]) -> kincheckapi.dynamics_v07.ContactDynamicsResult
+solve_contact_dynamics(*, interface: kincheckapi.dynamics_v07.ContactInterface, times_s: Sequence[float], relative_gap_m: Sequence[float], relative_normal_velocity_m_s: Sequence[float], relative_tangential_velocity_m_s: Optional[Sequence[Sequence[float]]] = None) -> kincheckapi.dynamics_v07.ContactDynamicsResult
 ```
 
 Source: `src/kincheckapi/dynamics_v07.py`.
@@ -26,6 +26,7 @@ Solve the specified kinematic problem: `solve_contact_dynamics`.
 | `times_s` | `Sequence[float]` | required | `times_s` in seconds; finite. |
 | `relative_gap_m` | `Sequence[float]` | required | `relative_gap_m` in metres; finite. |
 | `relative_normal_velocity_m_s` | `Sequence[float]` | required | `relative_normal_velocity_m_s` in m/s; finite. |
+| `relative_tangential_velocity_m_s` | `Optional[Sequence[Sequence[float]]]` | `None` | `relative_tangential_velocity_m_s` in m/s; finite. |
 
 ## Returns and Failures
 

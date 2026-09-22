@@ -14,6 +14,8 @@ class DynamicsLoadHistory:
     status: str
     issues: tuple[SimIssue, ...]
     evidence: Mapping[str, Any]
+    source_operations: tuple[str, ...]
+    units: Mapping[str, str]
 ```
 
 源码：`src/kincheckapi/dynamics_v07.py`。
@@ -41,6 +43,8 @@ from kincheckapi.dynamics import DynamicsLoadHistory
 | `status` | `str` | `'completed'` | 结构化状态；按对应结果类型允许的稳定值解释。 |
 | `issues` | `tuple[SimIssue, ...]` | `()` | 结构化问题集合；保留错误码、对象和证据。 |
 | `evidence` | `Mapping[str, Any]` | default_factory | 支持结论的机器可读证据。 |
+| `source_operations` | `tuple[str, ...]` | `()` | `source_operations` 的公开输入或数据字段。 |
+| `units` | `Mapping[str, str]` | default_factory | `units` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

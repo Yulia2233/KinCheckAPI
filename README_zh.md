@@ -187,7 +187,10 @@ uv run python examples/dynamics_loaded_arm/verification/verify_contact.py exampl
 v0.7 核心线增加多自由度状态、声明线性约束、刚体接触/冲量证据、驱动工况和
 可重放 `DynamicsLoadHistory`。结果保留单位、坐标帧、模型哈希、时间覆盖、
 反力、接触事件和收敛证据。结构网格、应力、结构振动和疲劳请查看独立
-FEACheckAPI 的未来设计。
+FEACheckAPI 的未来设计。`motion_package()` 可以归档经过校验的
+`dynamics.json`，独立 Viewer 可回放其中的刚体时程。v0.7 参考求解器支持
+声明的广义线性约束和惩罚接触；未支持的后端或未建模的碰撞恢复律会明确返回
+能力失败。
 
 ## v0.6.1–v0.6.3 动力学
 
@@ -195,8 +198,8 @@ FEACheckAPI 的未来设计。
 `solve_inverse_dynamics()`、有限驱动输入的 `solve_forward_dynamics()`、
 `check_dynamic_load_limits()`、`check_dynamic_tracking()`，以及给定外力的
 库仑摩擦/压力容量 `check_contact_capacity()`。每项结果都会保存模型哈希、
-SI 单位、后端证据和结构化失败修复信息。闭环、接触响应、碰撞冲量、应力、
-闭环、接触响应和碰撞冲量仍会明确报告为能力边界。
+SI 单位、后端证据和结构化失败修复信息。v0.7 API 在此兼容层上增加广义多
+自由度工况和接触时程。
 
 ## v0.6.0 真实物性与静力
 

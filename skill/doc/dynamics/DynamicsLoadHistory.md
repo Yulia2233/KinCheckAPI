@@ -14,6 +14,8 @@ class DynamicsLoadHistory:
     status: str
     issues: tuple[SimIssue, ...]
     evidence: Mapping[str, Any]
+    source_operations: tuple[str, ...]
+    units: Mapping[str, str]
 ```
 
 Source: `src/kincheckapi/dynamics_v07.py`.
@@ -26,7 +28,7 @@ from kincheckapi.dynamics import DynamicsLoadHistory
 
 ## Purpose
 
-DynamicsLoadHistory(*, history_id: 'str', model_sha256: 'str | None', scenario_id: 'str', times_s: 'tuple[float, ...]', records: 'tuple[Mapping[str, Any], ...]', schema_version: 'str' = 'kincheck.dynamics-history/1.0', status: 'str' = 'completed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>)
+DynamicsLoadHistory(*, history_id: 'str', model_sha256: 'str | None', scenario_id: 'str', times_s: 'tuple[float, ...]', records: 'tuple[Mapping[str, Any], ...]', schema_version: 'str' = 'kincheck.dynamics-history/1.0', status: 'str' = 'completed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>, source_operations: 'tuple[str, ...]' = (), units: 'Mapping[str, str]' = <factory>)
 
 ## Parameters and Fields
 
@@ -41,6 +43,8 @@ DynamicsLoadHistory(*, history_id: 'str', model_sha256: 'str | None', scenario_i
 | `status` | `str` | `'completed'` | Structured status interpreted according to the stable values for the result type. |
 | `issues` | `tuple[SimIssue, ...]` | `()` | Structured issues preserving error codes, objects, and evidence. |
 | `evidence` | `Mapping[str, Any]` | default_factory | Machine-readable evidence supporting the conclusion. |
+| `source_operations` | `tuple[str, ...]` | `()` | Public input or data field `source_operations`. |
+| `units` | `Mapping[str, str]` | default_factory | Public input or data field `units`. |
 
 ## Returns and Failures
 

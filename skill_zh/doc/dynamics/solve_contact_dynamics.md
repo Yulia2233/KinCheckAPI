@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-solve_contact_dynamics(*, interface: kincheckapi.dynamics_v07.ContactInterface, times_s: Sequence[float], relative_gap_m: Sequence[float], relative_normal_velocity_m_s: Sequence[float]) -> kincheckapi.dynamics_v07.ContactDynamicsResult
+solve_contact_dynamics(*, interface: kincheckapi.dynamics_v07.ContactInterface, times_s: Sequence[float], relative_gap_m: Sequence[float], relative_normal_velocity_m_s: Sequence[float], relative_tangential_velocity_m_s: Optional[Sequence[Sequence[float]]] = None) -> kincheckapi.dynamics_v07.ContactDynamicsResult
 ```
 
 源码：`src/kincheckapi/dynamics_v07.py`。
@@ -26,6 +26,7 @@ from kincheckapi.dynamics import solve_contact_dynamics
 | `times_s` | `Sequence[float]` | 必填 | `times_s`，单位 s，必须为有限值。 |
 | `relative_gap_m` | `Sequence[float]` | 必填 | `relative_gap_m`，单位 m，必须为有限值。 |
 | `relative_normal_velocity_m_s` | `Sequence[float]` | 必填 | `relative_normal_velocity_m_s`，单位 m/s，必须为有限值。 |
+| `relative_tangential_velocity_m_s` | `Optional[Sequence[Sequence[float]]]` | `None` | `relative_tangential_velocity_m_s`，单位 m/s，必须为有限值。 |
 
 ## 返回与失败
 

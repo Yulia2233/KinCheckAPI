@@ -193,6 +193,10 @@ The v0.7 core line adds general multi-DOF states, declared linear constraints,
 rigid contact/impulse evidence, driving scenarios and replayable
 `DynamicsLoadHistory` records. These APIs preserve units, frames, model hashes,
 time coverage, reactions, contact events and convergence evidence.
+`motion_package()` can archive a validated `dynamics.json` member and the
+standalone Viewer replays its rigid-body records. The v0.7 reference solver
+supports declared generalized linear constraints and penalty contact; an
+unsupported backend or unmodelled impact law is reported explicitly.
 
 ## v0.6.1–v0.6.3 dynamics
 
@@ -201,8 +205,8 @@ scalar joint states, `solve_forward_dynamics()` for finite actuator profiles,
 `check_dynamic_load_limits()` and `check_dynamic_tracking()`, and
 `check_contact_capacity()` for supplied-force Coulomb/pressure capacity. Every
 operation records model hashes, SI units, backend evidence, and structured
-failure guidance. Closed-loop dynamics and contact response/impact remain
-explicit capability boundaries.
+failure guidance. The v0.7 APIs extend this scalar compatibility layer with
+explicit multi-DOF scenarios and contact histories.
 
 ## v0.6.0 physical statics
 

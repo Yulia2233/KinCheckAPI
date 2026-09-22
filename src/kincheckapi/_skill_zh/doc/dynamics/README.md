@@ -61,12 +61,29 @@
 | [`MultibodyResult`](MultibodyResult.md) | 类型 | 表示 `MultibodyResult` 的公开、可序列化数据结构。 |
 | [`probe_multibody_capabilities`](probe_multibody_capabilities.md) | 函数 | 执行公开操作 `probe_multibody_capabilities`。 |
 | [`solve_multibody_dynamics`](solve_multibody_dynamics.md) | 函数 | 求解指定运动学问题：`solve_multibody_dynamics`。 |
+| [`DynamicsScenarioCase`](DynamicsScenarioCase.md) | 类型 | 表示 `DynamicsScenarioCase` 的公开、可序列化数据结构。 |
+| [`DynamicsScenarioMatrix`](DynamicsScenarioMatrix.md) | 类型 | 表示 `DynamicsScenarioMatrix` 的公开、可序列化数据结构。 |
+| [`DynamicsScenarioSuite`](DynamicsScenarioSuite.md) | 类型 | 表示 `DynamicsScenarioSuite` 的公开、可序列化数据结构。 |
+| [`run_dynamics_cases`](run_dynamics_cases.md) | 函数 | 执行公开操作 `run_dynamics_cases`。 |
 | [`ContactInterface`](ContactInterface.md) | 类型 | 表示 `ContactInterface` 的公开、可序列化数据结构。 |
 | [`ContactEvent`](ContactEvent.md) | 类型 | 表示 `ContactEvent` 的公开、可序列化数据结构。 |
 | [`ContactDynamicsResult`](ContactDynamicsResult.md) | 类型 | 表示 `ContactDynamicsResult` 的公开、可序列化数据结构。 |
 | [`solve_contact_dynamics`](solve_contact_dynamics.md) | 函数 | 求解指定运动学问题：`solve_contact_dynamics`。 |
+| [`check_contact_convergence`](check_contact_convergence.md) | 函数 | 执行结构化检查：`check_contact_convergence`。 |
+| [`ControllerSpec`](ControllerSpec.md) | 类型 | 表示 `ControllerSpec` 的公开、可序列化数据结构。 |
+| [`ActuatorEnvelope`](ActuatorEnvelope.md) | 类型 | 表示 `ActuatorEnvelope` 的公开、可序列化数据结构。 |
+| [`JointFriction`](JointFriction.md) | 类型 | 表示 `JointFriction` 的公开、可序列化数据结构。 |
+| [`BrakePolicy`](BrakePolicy.md) | 类型 | 表示 `BrakePolicy` 的公开、可序列化数据结构。 |
+| [`check_actuator_limits`](check_actuator_limits.md) | 函数 | 执行结构化检查：`check_actuator_limits`。 |
+| [`WrenchSample`](WrenchSample.md) | 类型 | 表示 `WrenchSample` 的公开、可序列化数据结构。 |
+| [`WrenchProfile`](WrenchProfile.md) | 类型 | 表示 `WrenchProfile` 的公开、可序列化数据结构。 |
+| [`RandomExcitation`](RandomExcitation.md) | 类型 | 表示 `RandomExcitation` 的公开、可序列化数据结构。 |
+| [`DutyCycle`](DutyCycle.md) | 类型 | 表示 `DutyCycle` 的公开、可序列化数据结构。 |
 | [`DynamicsLoadHistory`](DynamicsLoadHistory.md) | 类型 | 表示 `DynamicsLoadHistory` 的公开、可序列化数据结构。 |
 | [`history_from_multibody_result`](history_from_multibody_result.md) | 函数 | 执行公开操作 `history_from_multibody_result`。 |
+| [`record_dynamics_history`](record_dynamics_history.md) | 函数 | 执行公开操作 `record_dynamics_history`。 |
+| [`summarize_drive_duty`](summarize_drive_duty.md) | 函数 | 执行公开操作 `summarize_drive_duty`。 |
+| [`summarize_energy`](summarize_energy.md) | 函数 | 执行公开操作 `summarize_energy`。 |
 | [`export_load_history`](export_load_history.md) | 函数 | 导出公开结果资产：`export_load_history`。 |
 | [`read_load_history`](read_load_history.md) | 函数 | 读取并重建公开对象：`read_load_history`。 |
 

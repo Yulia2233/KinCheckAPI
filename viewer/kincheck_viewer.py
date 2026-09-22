@@ -85,6 +85,9 @@ def _verify_package(package_path: Path, archive: zipfile.ZipFile) -> Mapping[str
     missing = [member for member in required if member not in names]
     if missing:
         raise ViewerPackageError(f"required package members are missing: {missing}")
+    dynamics_path = manifest.get("dynamics_path")
+    if dynamics_path is not None and (dynamics_path != "dynamics.json" or dynamics_path not in names):
+        raise ViewerPackageError("manifest dynamics_path does not reference dynamics.json")
     return manifest
 
 
@@ -258,9 +261,16 @@ def unpack_package(
             if manifest.get("physics_path")
             else None
         )
+        dynamics = (
+            _read_json(archive, manifest["dynamics_path"])
+            if manifest.get("dynamics_path")
+            else None
+        )
         viewer_manifest = {
             "schema_version": VIEWER_SCHEMA_VERSION,
             "physics": physics,
+            "dynamics": dynamics,
+            "dynamics_sample_count": len(dynamics.get("times_s", ())) if dynamics else 0,
             "title": title or manifest.get("title") or manifest.get("assembly_id"),
             "assembly_id": manifest.get("assembly_id"),
             "scenario_id": manifest.get("scenario_id"),

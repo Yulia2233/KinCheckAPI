@@ -20,12 +20,10 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
-renderer.setClearColor(0x1b2529, 1);
+renderer.setClearColor(0xdce3e6, 1);
 
 const scene = new THREE.Scene();
-// Keep geometry colors legible for large CAD assemblies; fitView still uses
-// the scene bounds to set the camera and grid scale.
-scene.fog = null;
+scene.fog = new THREE.Fog(0xdce3e6, 0.7, 2.4);
 
 const camera = new THREE.PerspectiveCamera(38, 1, 0.0001, 20);
 camera.position.set(0.13, -0.15, 0.11);
@@ -161,6 +159,7 @@ function updateMetrics() {
 const physicsArrows = new THREE.Group();
 scene.add(physicsArrows);
 let physicsPanel;
+let dynamicsPanel;
 function physicsCaseCount() {
   return manifest?.physics_case_count ?? manifest?.physics?.static_results?.length ?? 0;
 }
@@ -183,6 +182,13 @@ function updateStaticCase(index) {
   document.querySelector("#time-readout").parentElement.lastChild.textContent = " (static case)";
   document.querySelector("#sample-readout").textContent = `Static case ${currentCaseIndex + 1} / ${count}`;
   updatePhysics(currentCaseIndex);
+  if (typeof updateDynamics === "function") updateDynamics(recordTimeForDynamics(index));
+}
+
+function recordTimeForDynamics(index) {
+  const history = manifest?.dynamics;
+  if (!history?.times_s?.length) return null;
+  return history.times_s[Math.max(0, Math.min(history.times_s.length - 1, Math.round(index)))];
 }
 
 function expectedRatioLabel(metrics) {
@@ -222,6 +228,35 @@ function updatePhysics(caseIndex) {
   }, null, 2);
 }
 
+function updateDynamics(time) {
+  const history = manifest?.dynamics;
+  if (!history?.times_s?.length || !Array.isArray(history.records)) return;
+  let index = 0;
+  if (time != null) {
+    let best = Infinity;
+    history.times_s.forEach((candidate, candidateIndex) => {
+      const distance = Math.abs(Number(candidate) - Number(time));
+      if (distance < best) { best = distance; index = candidateIndex; }
+    });
+  }
+  if (!dynamicsPanel) {
+    dynamicsPanel = document.createElement("details");
+    dynamicsPanel.style.cssText = "padding:12px;max-height:38vh;overflow:auto;font-size:12px";
+    const summary = document.createElement("summary"); summary.textContent = "Rigid dynamics history";
+    dynamicsPanel.append(summary); dynamicsPanel.append(document.createElement("pre"));
+    sidePanel.append(dynamicsPanel);
+  }
+  dynamicsPanel.querySelector("pre").textContent = JSON.stringify({
+    history_id: history.history_id,
+    status: history.status,
+    time_s: history.times_s[index],
+    units: history.units,
+    source_operations: history.source_operations,
+    record: history.records[index],
+    evidence: history.evidence,
+  }, null, 2);
+}
+
 function updateTime(time) {
   if (physicsCaseCount()) return updateStaticCase(time);
   currentTime = Math.max(manifest.start_time_s, Math.min(manifest.end_time_s, time));
@@ -235,6 +270,7 @@ function updateTime(time) {
   );
   document.querySelector("#sample-readout").textContent = manifest.physics ? `Static case ${frame} / ${manifest.sample_count}` : `Frame ${frame} / ${manifest.sample_count}`;
   updateMetrics();
+  updateDynamics(currentTime);
 }
 
 function setPlaying(value) {
@@ -259,13 +295,6 @@ function fitView() {
   camera.near = Math.max(span / 1000, 0.00001);
   camera.far = Math.max(span * 25, 2);
   camera.updateProjectionMatrix();
-  // Keep large CAD assemblies readable after fit-to-view.  The original
-  // fixed fog range is appropriate for small mechanism examples but washes
-  // out metre-scale gantries once the camera is moved farther away.
-  if (scene.fog) {
-    scene.fog.near = Math.max(span * 1.5, 0.7);
-    scene.fog.far = Math.max(span * 6.0, 2.4);
-  }
   controls.update();
   grid.position.z = bounds.min.z - span * 0.05;
   grid.scale.setScalar(Math.max(0.2, span / 0.4 * 2.2));
@@ -334,11 +363,13 @@ async function createComponent(component) {
     geometry.computeBoundingBox();
     mesh = new THREE.Mesh(
       geometry,
-      new THREE.MeshBasicMaterial({
+      new THREE.MeshStandardMaterial({
         color: component.color,
-        transparent: false,
-        opacity: 1,
-        depthWrite: true,
+        roughness: 0.46,
+        metalness: 0.48,
+        transparent: component.grounded,
+        opacity: component.grounded ? 0.46 : 1,
+        depthWrite: !component.grounded,
         side: THREE.DoubleSide,
       }),
     );

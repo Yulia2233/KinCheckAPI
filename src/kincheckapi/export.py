@@ -45,6 +45,7 @@ from .result import (
 PACKAGE_SCHEMA_VERSION = "kincheck.motion-package/1.0"
 ASSEMBLY_MEMBER = "assembly.json"
 MOTION_MEMBER = "motion.json"
+DYNAMICS_MEMBER = "dynamics.json"
 VALIDATION_MEMBER = "validation.json"
 MANIFEST_MEMBER = "manifest.json"
 _MAX_MEMBER_COUNT = 10_000
@@ -96,6 +97,7 @@ class MotionPackage:
     dynamics_model: DynamicsModel | None = None
     static_results: tuple[StaticResult, ...] = ()
     static_checks: tuple[PhysicsReport, ...] = ()
+    dynamics_history: Any | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "manifest", MappingProxyType(dict(self.manifest)))
@@ -195,6 +197,7 @@ def motion_package(
     dynamics_model: DynamicsModel | None = None,
     static_results: tuple[StaticResult, ...] = (),
     static_checks: tuple[PhysicsReport, ...] = (),
+    dynamics_history: Any | None = None,
 ) -> MotionPackageArtifact:
     """Export backend-independent motion data and meshes to one ``.kincheck`` file."""
 
@@ -212,6 +215,24 @@ def motion_package(
             object_ids=(motion_result.scenario_id, motion_result.assembly_id),
             details={"status": motion_result.status},
         )
+    if dynamics_history is not None:
+        from .dynamics_v07 import DynamicsLoadHistory
+        if not isinstance(dynamics_history, DynamicsLoadHistory):
+            _fail(
+                code="KINCHECK-PACKAGE-DYNAMICS-INVALID",
+                message="dynamics_history must be a DynamicsLoadHistory.",
+            )
+        if dynamics_history.status not in {"completed", "completed_with_warnings"}:
+            _fail(
+                code="KINCHECK-PACKAGE-DYNAMICS-INCOMPLETE",
+                message="Only completed dynamics histories can be archived.",
+                details={"status": dynamics_history.status},
+            )
+        if dynamics_history.model_sha256 and dynamics_model is not None and dynamics_history.model_sha256 != dynamics_model.content_hash:
+            _fail(
+                code="KINCHECK-PACKAGE-DYNAMICS-MODEL-MISMATCH",
+                message="Dynamics history model_sha256 does not match the packaged dynamics model.",
+            )
     if assembly.assembly_id != motion_result.assembly_id:
         _fail(
             code="KINCHECK-PACKAGE-ASSEMBLY-MISMATCH",
@@ -300,6 +321,8 @@ def motion_package(
         if dynamics_model is None or dynamics_model.assembly != assembly:
             _fail(code="KINCHECK-PACKAGE-ASSEMBLY-MISMATCH", message="Physics assembly differs from motion assembly.")
         payloads["physics.json"] = _json_bytes(physics_document(dynamics_model, static_results, static_checks))
+    if dynamics_history is not None:
+        payloads[DYNAMICS_MEMBER] = _json_bytes(dynamics_history.to_dict())
 
     files = [
         {
@@ -334,6 +357,7 @@ def motion_package(
         "metadata": dict(metadata or {}),
         "files": files,
         **({"physics_path": "physics.json", "capabilities": ["mass_properties", "tree_static_equilibrium"]} if dynamics_model is not None else {}),
+        **({"dynamics_path": DYNAMICS_MEMBER, "dynamics_capabilities": ["rigid_multibody_history", "constraint_reactions", "contact_events"]} if dynamics_history is not None else {}),
     }
     manifest_bytes = _json_bytes(manifest)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -623,6 +647,39 @@ def validate_package(*, path: str | Path) -> ValidationResult:
                         path=source,
                     )
                 )
+        if "dynamics_path" in manifest:
+            if manifest.get("dynamics_path") != DYNAMICS_MEMBER or DYNAMICS_MEMBER not in info_by_name:
+                issues.append(
+                    _issue(
+                        code="KINCHECK-PACKAGE-DYNAMICS-MEMBER-INVALID",
+                        message=f"Manifest dynamics_path must reference {DYNAMICS_MEMBER!r}.",
+                        path=source,
+                    )
+                )
+            elif DYNAMICS_MEMBER in info_by_name:
+                try:
+                    from .dynamics_v07 import DynamicsLoadHistory
+                    raw_history = json.loads(archive.read(DYNAMICS_MEMBER))
+                    if not isinstance(raw_history.get("evidence"), Mapping) or not raw_history["evidence"].get("records_sha256"):
+                        raise ValueError("Dynamics history must carry records_sha256 evidence")
+                    history = DynamicsLoadHistory.from_dict(raw_history)
+                    if raw_history.get("passed") is not history.passed:
+                        raise ValueError("Stored dynamics-history pass flag contradicts status and issues")
+                    if history.status not in {"completed", "completed_with_warnings"}:
+                        raise ValueError("Dynamics history is not complete")
+                    if history.model_sha256 and manifest.get("physics_path"):
+                        physics_info = info_by_name.get("physics.json")
+                        physics_data = _json_member(archive, physics_info) if physics_info else None
+                        if physics_data and history.model_sha256 != physics_data.get("model_sha256"):
+                            raise ValueError("Dynamics history model digest differs from physics model")
+                except Exception as exc:
+                    issues.append(
+                        _issue(
+                            code="KINCHECK-PACKAGE-DYNAMICS-INVALID",
+                            message=str(exc),
+                            path=source,
+                        )
+                    )
 
         assembly_data = (
             _json_member(archive, info_by_name[ASSEMBLY_MEMBER])
@@ -943,10 +1000,16 @@ def read_package(*, path: str | Path) -> MotionPackage:
         motion_data = json.loads(archive.read(str(manifest["motion_path"])))
         validation = json.loads(archive.read(str(manifest["validation_path"])))
         dynamics_model, static_results, static_checks = None, (), ()
+        dynamics_history = None
         if "physics_path" in manifest:
             from .physics_package import read_physics_document
             dynamics_model, static_results, static_checks = read_physics_document(
                 assembly_from_dict(data=assembly_data), json.loads(archive.read(manifest["physics_path"])))
+        if manifest.get("dynamics_path"):
+            from .dynamics_v07 import DynamicsLoadHistory
+            dynamics_history = DynamicsLoadHistory.from_dict(
+                json.loads(archive.read(manifest["dynamics_path"]))
+            )
     mesh_members = {
         str(item["part_id"]): str(item["path"]) for item in manifest.get("meshes", ())
     }
@@ -960,11 +1023,13 @@ def read_package(*, path: str | Path) -> MotionPackage:
         dynamics_model=dynamics_model,
         static_results=static_results,
         static_checks=static_checks,
+        dynamics_history=dynamics_history,
     )
 
 
 __all__ = [
     "PACKAGE_SCHEMA_VERSION",
+    "DYNAMICS_MEMBER",
     "MotionPackage",
     "MotionPackageArtifact",
     "export_motion_package",

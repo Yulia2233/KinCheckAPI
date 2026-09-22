@@ -4,7 +4,11 @@ import json
 
 import pytest
 
+from kincheckapi.assembly import AssemblyModel, Component, Part, Pose
 from kincheckapi.dynamics import (
+    ActuatorEnvelope,
+    DynamicsScenarioCase,
+    DynamicsScenarioMatrix,
     ContactInterface,
     ConstraintSpec,
     DynamicsLoadHistory,
@@ -16,7 +20,13 @@ from kincheckapi.dynamics import (
     read_load_history,
     solve_contact_dynamics,
     solve_multibody_dynamics,
+    check_actuator_limits,
+    run_dynamics_cases,
+    summarize_drive_duty,
+    summarize_energy,
 )
+from kincheckapi.export import motion_package, read_package, validate_package
+from kincheckapi.result import MotionResult, Trajectory
 
 
 def scenario(*, constrained=False):
@@ -73,3 +83,33 @@ def test_v071_rigid_contact_requires_declared_law_and_reports_impulse():
     assert any(event.state == "contact" for event in result.events)
     unsupported = solve_contact_dynamics(interface=ContactInterface(contact_id="missing-law", normal=(0.0, 0.0, 1.0), gap_m=0.0), times_s=(0.0, 0.1), relative_gap_m=(0.0, 0.0), relative_normal_velocity_m_s=(0.0, 0.0))
     assert unsupported.status == "capability_failed"
+
+
+def test_v072_scenario_matrix_and_drive_summaries():
+    first = DynamicsScenarioCase(case_id="nominal", scenario=scenario())
+    second = DynamicsScenarioCase(case_id="hold", scenario=scenario(constrained=True))
+    suite = run_dynamics_cases(matrix=DynamicsScenarioMatrix(matrix_id="duty", cases=(first, second)))
+    assert suite.passed, suite.to_dict()
+    history = history_from_multibody_result(result=suite.case_results[0], history_id="duty-history")
+    assert summarize_drive_duty(history=history).passed
+    assert summarize_energy(history=history).passed
+    assert check_actuator_limits(result=suite.case_results[0], envelope=ActuatorEnvelope(envelope_id="drive", dof_limits={"a[0]": 2.0, "b[0]": 2.0})).passed
+
+
+def test_v073_dynamics_history_is_hash_indexed_in_motion_package(tmp_path):
+    assembly = AssemblyModel(assembly_id="dynamics.package", parts=(Part("part"),), components=(Component("component", "part"),))
+    motion = MotionResult(
+        scenario_id="motion",
+        assembly_id=assembly.assembly_id,
+        status="completed",
+        start_time_s=0.0,
+        end_time_s=0.1,
+        sample_times_s=(0.0, 0.1),
+        trajectories=(Trajectory(component_id="component", times_s=(0.0, 0.1), poses=(Pose(), Pose(position_m=(0.1, 0.0, 0.0)))),),
+    )
+    history = history_from_multibody_result(result=solve_multibody_dynamics(scenario=scenario()), history_id="package-history")
+    artifact = motion_package(assembly=assembly, motion_result=motion, output_path=tmp_path / "dynamics.kincheck", dynamics_history=history)
+    assert validate_package(path=artifact.path).passed
+    restored = read_package(path=artifact.path)
+    assert restored.dynamics_history.history_id == "package-history"
+    assert restored.manifest["dynamics_path"] == "dynamics.json"
