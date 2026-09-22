@@ -124,7 +124,7 @@ from .dynamics import (
     read_load_history,
 )
 
-__version__ = "0.6.6"
+__version__ = "0.7.0"
 
 __all__ = [
     "AssemblyModel",

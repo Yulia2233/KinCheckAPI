@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-Current released version: **0.6.6**; this branch is the v0.7 development line. KinCheckAPI covers kinematics and rigid-body dynamics. Structural FEA, stress, deformation, structural vibration and fatigue are planned for the independent FEACheckAPI; the historical v0.6.4–v0.6.6 reference modules were removed from the v0.7 core.
+Current released version: **0.7.0**. KinCheckAPI covers kinematics and rigid-body dynamics. Structural FEA, stress, deformation, structural vibration and fatigue belong to the independent FEACheckAPI; the historical v0.6.4–v0.6.6 reference modules were removed from the v0.7 core.
 
 English | [简体中文](README_zh.md)
 
