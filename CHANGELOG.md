@@ -2,6 +2,18 @@
 
 All notable KinCheckAPI changes are documented here.
 
+## [0.8.0] - 2026-09-22
+
+### Added
+
+- Native local Tk scenario workbench launched with `kincheck gui`.
+- GUI scenario JSON documents, headless simulation service, result/diagnostic presentation data, and deterministic verification-bundle export.
+- Generated `verify.py` scripts that rerun saved typed scenarios without importing the GUI or Viewer.
+
+### Changed
+
+- Version and addon metadata now identify the v0.8.0 GUI development line.
+
 ## [0.7.0] - 2026-09-22
 
 ### Added

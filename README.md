@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-Current released version: **0.7.0**. KinCheckAPI covers kinematics and rigid-body dynamics. Structural FEA, stress, deformation, structural vibration and fatigue belong to the independent FEACheckAPI; the historical v0.6.4–v0.6.6 reference modules were removed from the v0.7 core.
+Current development version: **0.8.0**. KinCheckAPI covers kinematics and rigid-body dynamics. Structural FEA, stress, deformation, structural vibration and fatigue belong to the independent FEACheckAPI; the historical v0.6.4–v0.6.6 reference modules were removed from the v0.7 core.
 
 English | [简体中文](README_zh.md)
 
@@ -197,6 +197,13 @@ time coverage, reactions, contact events and convergence evidence.
 standalone Viewer replays its rigid-body records. The v0.7 reference solver
 supports declared generalized linear constraints and penalty contact; an
 unsupported backend or unmodelled impact law is reported explicitly.
+
+## v0.8 native GUI
+
+Run `kincheck gui` to open the local native scenario workbench. It edits typed
+scenario JSON, runs supported rigid-body analyses through the same public API,
+shows structured results, and exports a standalone `verify.py` bundle. The GUI
+is independent of the read-only Viewer and does not expose FEACheckAPI analyses.
 
 ## v0.6.1–v0.6.3 dynamics
 

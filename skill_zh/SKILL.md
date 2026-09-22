@@ -3,7 +3,7 @@ name: sca-kincheckapi-zh
 description: 使用 KinCheckAPI 验证 CAD 机构的拓扑、运动、传动、姿态、限位和几何安全。消费成品 .scadpkg 装配包中的定义、occurrence 图、几何及验收所需的 interface.* 标签，产出独立 Python 验证程序和结构化验收结果。用于验证先行的设计迭代或已有产品包检查；继续支持现有 MJCF 模型目录验证程序。
 ---
 
-# KinCheckAPI 验证程序技能（v0.7.0）
+# KinCheckAPI 验证程序技能（v0.8.0）
 
 把用户的机构要求固化成可执行的 Python 验收程序，再构建模型并用该程序驱动设计迭代。固定遵循下面的顺序：
 

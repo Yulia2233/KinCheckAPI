@@ -123,8 +123,17 @@ from .dynamics import (
     export_load_history,
     read_load_history,
 )
+from .gui import (
+    GUI_SCENARIO_SCHEMA_VERSION,
+    GuiRunResult,
+    GuiScenarioDocument,
+    GuiSimulationService,
+    export_verification_bundle,
+    generate_verification_script,
+    zip_verification_bundle,
+)
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 
 __all__ = [
     "AssemblyModel",
@@ -253,4 +262,11 @@ __all__ = [
     "summarize_energy",
     "export_load_history",
     "read_load_history",
+    "GUI_SCENARIO_SCHEMA_VERSION",
+    "GuiScenarioDocument",
+    "GuiRunResult",
+    "GuiSimulationService",
+    "export_verification_bundle",
+    "generate_verification_script",
+    "zip_verification_bundle",
 ]
