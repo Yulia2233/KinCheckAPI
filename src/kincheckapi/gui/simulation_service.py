@@ -17,12 +17,14 @@ from ..dynamics_v07 import (
     solve_contact_dynamics,
     solve_multibody_dynamics,
 )
-from ..physics_types import PhysicsReport
+from ..physics_types import DynamicsModel, PhysicsReport, RigidBodyProperties, StaticRequest
+from ..dynamic_types import DynamicRequest, ForwardDynamicsRequest
+from ..dynamic_solver import solve_forward_dynamics, solve_inverse_dynamics
+from ..statics import solve_static_equilibrium
 from ..assembly import assembly_from_dict
 from ..kinematics import solve_motion
 from ..scenario import (
     ComponentResultRequest,
-    ComponentResultScope,
     JointResultRequest,
     JointValue,
     MotionProfile,
@@ -66,7 +68,7 @@ class GuiRunResult:
 class GuiSimulationService:
     """Orchestrate typed public solvers without importing the Viewer."""
 
-    _UNIMPLEMENTED_ANALYSES = {"scalar_dynamics", "static"}
+    _UNIMPLEMENTED_ANALYSES = set()
 
     @staticmethod
     def _assembly(document: GuiScenarioDocument):
@@ -78,6 +80,30 @@ class GuiSimulationService:
             path = path / "assembly.json"
         value = json.loads(path.read_text(encoding="utf-8"))
         return assembly_from_dict(data=value)
+
+    @staticmethod
+    def _json_reference(value: Any) -> Mapping[str, Any]:
+        if isinstance(value, Mapping):
+            return value
+        loaded = json.loads(Path(str(value)).expanduser().read_text(encoding="utf-8"))
+        if not isinstance(loaded, Mapping):
+            raise ValueError("model JSON must contain an object")
+        return loaded
+
+    def _dynamics_model(self, document: GuiScenarioDocument) -> DynamicsModel:
+        raw = document.scenario.get("dynamics_model") or document.model.get("dynamics_model_json")
+        if raw is None:
+            raise ValueError("GUI dynamics requires model.dynamics_model_json or scenario.dynamics_model")
+        data = self._json_reference(raw)
+        assembly = assembly_from_dict(data=data["assembly"]) if "assembly" in data else self._assembly(document)
+        props = lambda values: {str(key): RigidBodyProperties.from_dict(item) for key, item in values.items()}
+        return DynamicsModel(
+            assembly=assembly,
+            component_properties=props(data["component_properties"]),
+            body_properties=props(data["body_properties"]),
+            occurrence_components=data["occurrence_components"],
+            base_component_properties=props(data.get("base_component_properties", data["component_properties"])),
+        )
 
     def _kinematic_scenario(self, document: GuiScenarioDocument) -> Scenario:
         value = document.scenario
@@ -110,6 +136,18 @@ class GuiSimulationService:
                 for name in ("times_s", "relative_gap_m", "relative_normal_velocity_m_s"):
                     if name not in document.scenario:
                         raise ValueError(f"contact scenario missing {name}")
+            elif document.analysis == "scalar_dynamics":
+                mode = str(document.scenario.get("mode", "inverse"))
+                if mode == "inverse":
+                    DynamicRequest.from_dict(document.scenario["request"])
+                elif mode == "forward":
+                    ForwardDynamicsRequest.from_dict(document.scenario["request"])
+                else:
+                    raise ValueError("scalar_dynamics mode must be inverse or forward")
+                self._dynamics_model(document)
+            elif document.analysis == "static":
+                StaticRequest.from_dict(document.scenario["request"])
+                self._dynamics_model(document)
             elif document.analysis == "scenario_matrix":
                 matrix = DynamicsScenarioMatrix(
                     matrix_id=document.document_id,
@@ -123,12 +161,6 @@ class GuiSimulationService:
                 )
                 if not matrix.cases:
                     raise ValueError("scenario matrix cannot be empty")
-            elif document.analysis in self._UNIMPLEMENTED_ANALYSES:
-                return PhysicsReport(
-                    operation="gui_validate_scenario",
-                    status="capability_failed",
-                    evidence={"analysis": document.analysis, "reason": "GUI adapter is not registered for this legacy request shape"},
-                )
             else:
                 raise ValueError(f"unsupported analysis {document.analysis}")
         except Exception as exc:
@@ -147,6 +179,14 @@ class GuiSimulationService:
         elif document.analysis == "kinematics":
             result = solve_motion(scenario=self._kinematic_scenario(document))
             payload = result.to_dict()
+        elif document.analysis == "scalar_dynamics":
+            model = self._dynamics_model(document)
+            mode = str(document.scenario.get("mode", "inverse"))
+            result = solve_inverse_dynamics(model=model, request=DynamicRequest.from_dict(document.scenario["request"])) if mode == "inverse" else solve_forward_dynamics(model=model, request=ForwardDynamicsRequest.from_dict(document.scenario["request"]))
+            payload = result.to_dict()
+        elif document.analysis == "static":
+            result = solve_static_equilibrium(model=self._dynamics_model(document), request=StaticRequest.from_dict(document.scenario["request"]))
+            payload = result.to_dict()
         elif document.analysis == "contact":
             scenario = document.scenario
             result = solve_contact_dynamics(
@@ -163,7 +203,7 @@ class GuiSimulationService:
                 cases=tuple(DynamicsScenarioCase(case_id=str(case["case_id"]), scenario=RigidDynamicsScenario.from_dict(case["scenario"])) for case in document.cases),
             )
             payload = run_dynamics_cases(matrix=matrix).to_dict()
-        else:  # validation already returned capability_failed for these paths
+        else:
             payload = {"status": "capability_failed", "passed": False}
         return GuiRunResult(run_id=run_id, document_id=document.document_id, analysis=document.analysis, status=str(payload.get("status", "failed")), passed=bool(payload.get("passed", False)), payload=payload, scenario_sha256=document.content_sha256)
 
