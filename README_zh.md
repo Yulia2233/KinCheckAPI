@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-当前版本：**0.6.3**。[v0.6.3 更新](doc/updates/v0.6.3.md) 增加接触/摩擦承载能力证据；[v0.6.2](doc/updates/v0.6.2.md) 增加有限驱动正动力学；[v0.6.1](doc/updates/v0.6.1.md) 增加 CADIR 标量树逆动力学。[v0.6.0](doc/updates/v0.6.0.md) 引入真实物性和树形静力转换层。
+当前版本：**0.6.6**。[v0.6.6 更新](doc/updates/v0.6.6.md) 增加高周疲劳、任务谱和工况包络；[v0.6.5](doc/updates/v0.6.5.md) 增加模态、频响、瞬态及 PSD/RMS 参考响应；[v0.6.4](doc/updates/v0.6.4.md) 增加线性结构载荷传递、应力、变形和屈曲筛查。此前版本提供接触/摩擦容量、有限驱动正动力学、标量树逆动力学以及真实物性/树形静力桥接。
 
 [English](README.md) | 简体中文
 
@@ -182,6 +182,17 @@ uv run python examples/dynamics_loaded_arm/verification/verify_dynamic.py exampl
 uv run python examples/dynamics_loaded_arm/verification/verify_contact.py examples/dynamics_loaded_arm/model
 ```
 
+## v0.6.4–v0.6.6 结构动力学链
+
+`kincheckapi.dynamics` 现在还提供分阶段结构链路。v0.6.4 提供
+`StructuralModel`、`transfer_loads()`、`solve_static_structure()`、
+`solve_buckling_screening()`，以及材料相关的应力、变形和结构裕度检查。
+v0.6.5 提供 `solve_modes()`、线性频响/瞬态响应、Welch PSD、RMS、共振裕度
+和振动限值检查。v0.6.6 提供带符号应力历程、雨流计数、Goodman/Gerber
+均值修正、Miner 损伤、驱动器任务统计和工况包络覆盖。每项结果都会保留
+假设、单位、模型哈希、残差和未覆盖工况；任意 BREP 自动网格、非线性接触、
+塑性/断裂、非线性振动及热-力耦合疲劳仍会返回能力边界状态。
+
 ## v0.6.1–v0.6.3 动力学
 
 `kincheckapi.dynamics` 现在提供预设标量关节状态的
@@ -189,7 +200,7 @@ uv run python examples/dynamics_loaded_arm/verification/verify_contact.py exampl
 `check_dynamic_load_limits()`、`check_dynamic_tracking()`，以及给定外力的
 库仑摩擦/压力容量 `check_contact_capacity()`。每项结果都会保存模型哈希、
 SI 单位、后端证据和结构化失败修复信息。闭环、接触响应、碰撞冲量、应力、
-振动和疲劳仍会明确报告为能力边界。
+闭环、接触响应和碰撞冲量仍会明确报告为能力边界。
 
 ## v0.6.0 真实物性与静力
 

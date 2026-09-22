@@ -3,7 +3,7 @@ name: sca-kincheckapi
 description: Verify CAD mechanism topology, motion, transmission, poses, limits and geometric safety with KinCheckAPI. Consume a finished .scadpkg assembly's definitions, occurrence graph, geometry and claim-required interface.* tags; produce an independent Python verifier and structured acceptance results. Use for verification-first design iteration or checking an existing package. Existing MJCF model-directory verifiers remain supported.
 ---
 
-# KinCheckAPI Verification Program Skill (v0.6.3)
+# KinCheckAPI Verification Program Skill (v0.6.6)
 
 Turn the user's mechanism requirements into an executable acceptance program, then build and iterate the model against that program. Always follow this order:
 
@@ -339,6 +339,17 @@ On partial or failed solving, retain `last_valid_result`, failure time, and diag
 - [`doc/guides/analysis-procedure.md`](doc/guides/analysis-procedure.md): analysis-specific procedure.
 - [`doc/README.md`](doc/README.md): API index by module.
 
+## v0.6.4-v0.6.6 structural dynamics acceptance
+
+Use the explicit linear-reference structural API for v0.6.4-v0.6.6:
+`StructuralModel`/`transfer_loads()`/`solve_static_structure()` for structural
+response and buckling screening, `solve_modes()`/frequency/transient/PSD APIs
+for vibration, and signed `StressHistory`/S-N/rainflow/Miner APIs for fatigue.
+These checks require declared matrices, units, material data and coverage
+evidence. Automatic BREP meshing, nonlinear contact, plasticity, fracture and
+nonlinear vibration remain capability boundaries; preserve their structured
+`capability_failed` or `indeterminate` results.
+
 ## v0.6.1-v0.6.3 dynamic acceptance
 
-Read [physical properties and statics](doc/guides/physical-statics.md) for density/BREP conversion and tree statics. Read the v0.6.1-v0.6.3 update notes for scalar-tree inverse dynamics, finite-actuator forward dynamics, and supplied-force contact/friction capacity. Probe each operation and preserve structured failure evidence. Closed-loop dynamics, contact response/impact, stress, vibration, and fatigue remain capability boundaries.
+Read [physical properties and statics](doc/guides/physical-statics.md) for density/BREP conversion and tree statics. Read the v0.6.1-v0.6.3 update notes for scalar-tree inverse dynamics, finite-actuator forward dynamics, and supplied-force contact/friction capacity. Probe each operation and preserve structured failure evidence. Closed-loop dynamics and contact response/impact remain capability boundaries.
