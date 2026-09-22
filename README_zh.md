@@ -88,7 +88,7 @@ skill 安装名称为 `sca-kincheckapi`。产品包命令强制运行时预检�
 - 不保证任意闭环机构都能稳定完成随时间变化的位置求解；模型错误、初态不一致或不支持的机构会明确报错或返回 `partial`，不会伪装为成功；
 - `partial` MotionResult 保留已记录的轨迹、残差和几何证据，其中可能包含违反约束的样本，不能据此给出通过结论；
 - 离散几何检查基于显式采样时刻的真实三角网格。`check_continuous_interference()` 在声明的分段刚体插值和速度上界下增加保守区间证明；它不覆盖任意变形体或动力学运动，也不等价于精确 BREP/NURBS 曲面距离；
-- 逆/正动力学目前支持没有 closure、coupling 和一般约束的标量 revolute/prismatic 树；接触 API 支持给定外力的摩擦和压力容量证据，接触力响应、摩擦稳定、碰撞冲量和多自由度关节（`cylindrical`、`spherical`、`planar`、`free`）仍不在后端支持范围内；
+- v0.6 逆/正动力学接口仍保留标量 revolute/prismatic 树契约；v0.7 刚体核心增加声明式广义多自由度状态、线性/KKT 约束、带 source map 的反力、耦合惩罚接触和库仑切向响应、控制器/执行器限值、工况矩阵与可回放载荷历程。自动从 Assembly 推导约束、瞬时 restitution、真实几何碰撞搜索和任意后端关节族仍会明确报告为能力边界；
 - `.scadpkg` 是持久化产品源；可选 addon 校验并准备产品包，再交给原有 MJCF 转换入口，不接受原始 CADIR XML。
 
 ## 运行测试
