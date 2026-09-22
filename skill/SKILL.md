@@ -3,7 +3,7 @@ name: sca-kincheckapi
 description: Verify CAD mechanism topology, motion, transmission, poses, limits and geometric safety with KinCheckAPI. Consume a finished .scadpkg assembly's definitions, occurrence graph, geometry and claim-required interface.* tags; produce an independent Python verifier and structured acceptance results. Use for verification-first design iteration or checking an existing package. Existing MJCF model-directory verifiers remain supported.
 ---
 
-# KinCheckAPI Verification Program Skill (v0.6.6)
+# KinCheckAPI Verification Program Skill (v0.7.0)
 
 Turn the user's mechanism requirements into an executable acceptance program, then build and iterate the model against that program. Always follow this order:
 
@@ -339,16 +339,13 @@ On partial or failed solving, retain `last_valid_result`, failure time, and diag
 - [`doc/guides/analysis-procedure.md`](doc/guides/analysis-procedure.md): analysis-specific procedure.
 - [`doc/README.md`](doc/README.md): API index by module.
 
-## v0.6.4-v0.6.6 structural dynamics acceptance
+## v0.7 rigid-body dynamics acceptance
 
-Use the explicit linear-reference structural API for v0.6.4-v0.6.6:
-`StructuralModel`/`transfer_loads()`/`solve_static_structure()` for structural
-response and buckling screening, `solve_modes()`/frequency/transient/PSD APIs
-for vibration, and signed `StressHistory`/S-N/rainflow/Miner APIs for fatigue.
-These checks require declared matrices, units, material data and coverage
-evidence. Automatic BREP meshing, nonlinear contact, plasticity, fracture and
-nonlinear vibration remain capability boundaries; preserve their structured
-`capability_failed` or `indeterminate` results.
+KinCheckAPI v0.7 covers general rigid-body states, constraints, contact/impact,
+driving scenarios, reactions, energy, and replayable load histories. Preserve
+units, frames, source IDs, time coverage, convergence and structured failure
+evidence. Structural meshes, stress, deformation, structural vibration and
+fatigue belong to FEACheckAPI and must not be imported or inferred here.
 
 ## v0.6.1-v0.6.3 dynamic acceptance
 

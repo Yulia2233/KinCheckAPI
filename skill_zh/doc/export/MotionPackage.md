@@ -14,6 +14,7 @@ class MotionPackage:
     dynamics_model: kincheckapi.physics_types.DynamicsModel | None
     static_results: tuple[kincheckapi.physics_types.StaticResult, ...]
     static_checks: tuple[kincheckapi.physics_types.PhysicsReport, ...]
+    dynamics_history: Any | None
 ```
 
 源码：`src/kincheckapi/export.py`。
@@ -41,6 +42,7 @@ from kincheckapi.export import MotionPackage
 | `dynamics_model` | `kincheckapi.physics_types.DynamicsModel | None` | `None` | `dynamics_model` 的公开输入或数据字段。 |
 | `static_results` | `tuple[kincheckapi.physics_types.StaticResult, ...]` | `()` | `static_results` 的公开输入或数据字段。 |
 | `static_checks` | `tuple[kincheckapi.physics_types.PhysicsReport, ...]` | `()` | `static_checks` 的公开输入或数据字段。 |
+| `dynamics_history` | `Any | None` | `None` | `dynamics_history` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

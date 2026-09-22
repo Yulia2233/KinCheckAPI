@@ -158,7 +158,10 @@ function updateMetrics() {
 
 const physicsArrows = new THREE.Group();
 scene.add(physicsArrows);
+const dynamicsArrows = new THREE.Group();
+scene.add(dynamicsArrows);
 let physicsPanel;
+let dynamicsPanel;
 function physicsCaseCount() {
   return manifest?.physics_case_count ?? manifest?.physics?.static_results?.length ?? 0;
 }
@@ -181,6 +184,13 @@ function updateStaticCase(index) {
   document.querySelector("#time-readout").parentElement.lastChild.textContent = " (static case)";
   document.querySelector("#sample-readout").textContent = `Static case ${currentCaseIndex + 1} / ${count}`;
   updatePhysics(currentCaseIndex);
+  if (typeof updateDynamics === "function") updateDynamics(recordTimeForDynamics(index));
+}
+
+function recordTimeForDynamics(index) {
+  const history = manifest?.dynamics;
+  if (!history?.times_s?.length) return null;
+  return history.times_s[Math.max(0, Math.min(history.times_s.length - 1, Math.round(index)))];
 }
 
 function expectedRatioLabel(metrics) {
@@ -220,6 +230,50 @@ function updatePhysics(caseIndex) {
   }, null, 2);
 }
 
+function updateDynamics(time) {
+  const history = manifest?.dynamics;
+  if (!history?.times_s?.length || !Array.isArray(history.records)) return;
+  let index = 0;
+  if (time != null) {
+    let best = Infinity;
+    history.times_s.forEach((candidate, candidateIndex) => {
+      const distance = Math.abs(Number(candidate) - Number(time));
+      if (distance < best) { best = distance; index = candidateIndex; }
+    });
+  }
+  for (const arrow of [...dynamicsArrows.children]) {
+    dynamicsArrows.remove(arrow);
+    arrow.line?.geometry.dispose(); arrow.cone?.geometry.dispose();
+    arrow.line?.material.dispose(); arrow.cone?.material.dispose();
+  }
+  for (const event of history.records[index]?.contact_events || []) {
+    const magnitude = Number(event.normal_force_n || 0);
+    const direction = new THREE.Vector3(...(event.normal || [0, 0, 1]));
+    if (magnitude <= 1e-12 || direction.length() <= 1e-12) continue;
+    const origin = new THREE.Vector3(...(event.contact_point_m || [0, 0, 0]));
+    const arrow = new THREE.ArrowHelper(direction.normalize(), origin,
+      Math.min(0.12, 0.025 + magnitude * 0.0007), 0x7b4bb3, 0.012, 0.006);
+    dynamicsArrows.add(arrow);
+  }
+  if (!dynamicsPanel) {
+    dynamicsPanel = document.createElement("details");
+    dynamicsPanel.style.cssText = "padding:12px;max-height:38vh;overflow:auto;font-size:12px";
+    const summary = document.createElement("summary"); summary.textContent = "Rigid dynamics history";
+    dynamicsPanel.append(summary); dynamicsPanel.append(document.createElement("pre"));
+    sidePanel.append(dynamicsPanel);
+  }
+  dynamicsPanel.querySelector("pre").textContent = JSON.stringify({
+    history_id: history.history_id,
+    status: history.status,
+    time_s: history.times_s[index],
+    units: history.units,
+    source_operations: history.source_operations,
+    record: history.records[index],
+    evidence: history.evidence,
+    contact_event_count: (history.records[index]?.contact_events || []).length,
+  }, null, 2);
+}
+
 function updateTime(time) {
   if (physicsCaseCount()) return updateStaticCase(time);
   currentTime = Math.max(manifest.start_time_s, Math.min(manifest.end_time_s, time));
@@ -233,6 +287,7 @@ function updateTime(time) {
   );
   document.querySelector("#sample-readout").textContent = manifest.physics ? `Static case ${frame} / ${manifest.sample_count}` : `Frame ${frame} / ${manifest.sample_count}`;
   updateMetrics();
+  updateDynamics(currentTime);
 }
 
 function setPlaying(value) {

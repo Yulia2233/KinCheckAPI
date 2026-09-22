@@ -7,6 +7,7 @@
 | 符号 | 类型 | 用途 |
 | --- | --- | --- |
 | [`PACKAGE_SCHEMA_VERSION`](PACKAGE_SCHEMA_VERSION.md) | 常量 | 公开常量 `PACKAGE_SCHEMA_VERSION`。 |
+| [`DYNAMICS_MEMBER`](DYNAMICS_MEMBER.md) | 常量 | 公开常量 `DYNAMICS_MEMBER`。 |
 | [`MotionPackage`](MotionPackage.md) | 类型 | 表示 `MotionPackage` 的公开、可序列化数据结构。 |
 | [`MotionPackageArtifact`](MotionPackageArtifact.md) | 类型 | 表示 `MotionPackageArtifact` 的公开、可序列化数据结构。 |
 | [`export_motion_package`](export_motion_package.md) | 函数 | 把装配、运动结果、校验信息和可选 mesh 写入一个 `.kincheck` 文件。 |

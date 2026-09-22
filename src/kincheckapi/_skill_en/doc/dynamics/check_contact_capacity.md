@@ -33,7 +33,8 @@ Returns `ContactReport`.
 
 - Use typed SI physics contracts after mass coverage and compiled inertia validation.
 - Inverse/forward dynamics support scalar revolute/prismatic trees without closures, couplings, or general constraints.
-- Contact capacity is a supplied-force Coulomb/pressure check; contact response, impact, structural stress, vibration, and fatigue remain outside the capability contract.
+- Contact capacity is a supplied-force Coulomb/pressure check; v0.7 rigid contact/impulse results must preserve contact state, momentum, energy, and convergence evidence.
+- Structural meshes, stress, structural vibration, and fatigue belong to the independent FEACheckAPI; KinCheckAPI exports motion, rigid loads, reactions, and impulses only.
 
 ## Related Documentation
 

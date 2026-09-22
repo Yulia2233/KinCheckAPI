@@ -3,10 +3,10 @@
 ## API Definition
 
 ```python
-summarize_drive_duty(*, times_s: Sequence[float], torque_nm: Sequence[float], speed_rad_s: Sequence[float]) -> kincheckapi.fatigue.DriveDutySummary
+summarize_drive_duty(*, history: 'DynamicsLoadHistory') -> kincheckapi.physics_types.PhysicsReport
 ```
 
-Source: `src/kincheckapi/fatigue.py`.
+Source: `src/kincheckapi/dynamics_v07.py`.
 
 ## Import
 
@@ -22,19 +22,18 @@ Execute the public operation `summarize_drive_duty`.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `times_s` | `Sequence[float]` | required | `times_s` in seconds; finite. |
-| `torque_nm` | `Sequence[float]` | required | Public input or data field `torque_nm`. |
-| `speed_rad_s` | `Sequence[float]` | required | `speed_rad_s` in rad/s; finite. |
+| `history` | `DynamicsLoadHistory` | required | Public input or data field `history`. |
 
 ## Returns and Failures
 
-Returns `DriveDutySummary`.
+Returns `PhysicsReport`.
 
 ## Module Constraints
 
 - Use typed SI physics contracts after mass coverage and compiled inertia validation.
 - Inverse/forward dynamics support scalar revolute/prismatic trees without closures, couplings, or general constraints.
-- Contact capacity is a supplied-force Coulomb/pressure check; contact response, impact, structural stress, vibration, and fatigue remain outside the capability contract.
+- Contact capacity is a supplied-force Coulomb/pressure check; v0.7 rigid contact/impulse results must preserve contact state, momentum, energy, and convergence evidence.
+- Structural meshes, stress, structural vibration, and fatigue belong to the independent FEACheckAPI; KinCheckAPI exports motion, rigid loads, reactions, and impulses only.
 
 ## Related Documentation
 
