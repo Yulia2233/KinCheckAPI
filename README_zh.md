@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-当前版本：**0.6.6**。[v0.6.6 更新](doc/updates/v0.6.6.md) 增加高周疲劳、任务谱和工况包络；[v0.6.5](doc/updates/v0.6.5.md) 增加模态、频响、瞬态及 PSD/RMS 参考响应；[v0.6.4](doc/updates/v0.6.4.md) 增加线性结构载荷传递、应力、变形和屈曲筛查。此前版本提供接触/摩擦容量、有限驱动正动力学、标量树逆动力学以及真实物性/树形静力桥接。
+当前发布版本：**0.6.6**；当前分支是 v0.7 开发线。KinCheckAPI 只负责运动学和刚体动力学。结构 FEA、应力、变形、结构振动和疲劳属于独立 FEACheckAPI；v0.6.4–v0.6.6 的历史结构参考模块已从 v0.7 核心移除。
 
 [English](README.md) | 简体中文
 
@@ -182,16 +182,12 @@ uv run python examples/dynamics_loaded_arm/verification/verify_dynamic.py exampl
 uv run python examples/dynamics_loaded_arm/verification/verify_contact.py examples/dynamics_loaded_arm/model
 ```
 
-## v0.6.4–v0.6.6 结构动力学链
+## v0.7 刚体动力学链
 
-`kincheckapi.dynamics` 现在还提供分阶段结构链路。v0.6.4 提供
-`StructuralModel`、`transfer_loads()`、`solve_static_structure()`、
-`solve_buckling_screening()`，以及材料相关的应力、变形和结构裕度检查。
-v0.6.5 提供 `solve_modes()`、线性频响/瞬态响应、Welch PSD、RMS、共振裕度
-和振动限值检查。v0.6.6 提供带符号应力历程、雨流计数、Goodman/Gerber
-均值修正、Miner 损伤、驱动器任务统计和工况包络覆盖。每项结果都会保留
-假设、单位、模型哈希、残差和未覆盖工况；任意 BREP 自动网格、非线性接触、
-塑性/断裂、非线性振动及热-力耦合疲劳仍会返回能力边界状态。
+v0.7 核心线增加多自由度状态、声明线性约束、刚体接触/冲量证据、驱动工况和
+可重放 `DynamicsLoadHistory`。结果保留单位、坐标帧、模型哈希、时间覆盖、
+反力、接触事件和收敛证据。结构网格、应力、结构振动和疲劳请查看独立
+FEACheckAPI 的未来设计。
 
 ## v0.6.1–v0.6.3 动力学
 

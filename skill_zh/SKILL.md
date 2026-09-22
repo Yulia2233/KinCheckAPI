@@ -3,7 +3,7 @@ name: sca-kincheckapi-zh
 description: 使用 KinCheckAPI 验证 CAD 机构的拓扑、运动、传动、姿态、限位和几何安全。消费成品 .scadpkg 装配包中的定义、occurrence 图、几何及验收所需的 interface.* 标签，产出独立 Python 验证程序和结构化验收结果。用于验证先行的设计迭代或已有产品包检查；继续支持现有 MJCF 模型目录验证程序。
 ---
 
-# KinCheckAPI 验证程序技能（v0.6.6）
+# KinCheckAPI 验证程序技能（v0.7.0-dev）
 
 把用户的机构要求固化成可执行的 Python 验收程序，再构建模型并用该程序驱动设计迭代。固定遵循下面的顺序：
 
@@ -324,15 +324,12 @@ if __name__ == "__main__":
 - [`doc/guides/failure-diagnosis.md`](doc/guides/failure-diagnosis.md)：失败、partial 和结构化诊断。
 - [`doc/README.md`](doc/README.md)：按模块的 API 索引。
 
-## v0.6.4-v0.6.6 结构动力学验收
+## v0.7 刚体动力学验收
 
-使用显式线性参考 API 完成 v0.6.4-v0.6.6：用
-`StructuralModel`/`transfer_loads()`/`solve_static_structure()` 完成结构响应和
-屈曲筛查；用 `solve_modes()`、频响/瞬态/PSD API 完成振动分析；用带符号
-`StressHistory`、S-N 曲线、雨流和 Miner API 完成疲劳评估。这些检查必须带有
-声明矩阵、单位、材料数据和覆盖证据。自动 BREP 网格、非线性接触、塑性、断裂
-和非线性振动仍是能力边界；保留其结构化 `capability_failed` 或 `indeterminate`
-结果。
+KinCheckAPI v0.7 只验收一般刚体状态、约束、接触/冲量、驱动工况、反力、能量
+和可重放载荷历程。保留单位、坐标帧、source ID、时间覆盖、收敛和结构化失败
+证据。结构网格、应力、变形、结构振动和疲劳属于 FEACheckAPI，不得在这里导入
+或推断。
 
 ## v0.6.1-v0.6.3 动力学验收
 
