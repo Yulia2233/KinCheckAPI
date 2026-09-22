@@ -52,6 +52,18 @@ def _issue(code: str, message: str, operation: str, objects: Sequence[str] = (),
     return issue(code, message, operation, tuple(objects), **kwargs)
 
 
+def _parse_issues(value: Mapping[str, Any]) -> tuple[SimIssue, ...]:
+    return tuple(
+        SimIssue(
+            **{
+                **item,
+                "evidence": tuple(Evidence(**evidence) for evidence in item.get("evidence", ())),
+            }
+        )
+        for item in value.get("issues", ())
+    )
+
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ElasticMaterial:
     material_id: str
@@ -219,6 +231,25 @@ class StructuralResult(PhysicsReport):
         if self.status in ("completed", "completed_with_warnings") and not self.displacements_m:
             fail("RESULT-INCOMPLETE", "Completed structural result requires displacements.", operation="StructuralResult")
 
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "StructuralResult":
+        return cls(
+            operation=value.get("operation", "solve_static_structure"),
+            status=value.get("status", "failed"),
+            issues=_parse_issues(value),
+            evidence=value.get("evidence", {}),
+            model_sha256=value.get("model_sha256"),
+            result_index=value.get("result_index"),
+            displacements_m=value.get("displacements_m", {}),
+            reactions_n=value.get("reactions_n", {}),
+            stresses_pa=value.get("stresses_pa", {}),
+            strains=value.get("strains", {}),
+            load_resultant=tuple(value.get("load_resultant", ())),
+            residual_norm=value.get("residual_norm", 0.0),
+            converged=value.get("converged", False),
+            roi=tuple(value.get("roi", ())),
+        )
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class BucklingResult(PhysicsReport):
@@ -234,6 +265,21 @@ class BucklingResult(PhysicsReport):
         object.__setattr__(self, "eigenvalues", tuple(_finite(v, "eigenvalue", self.operation) for v in self.eigenvalues))
         object.__setattr__(self, "mode_shapes", tuple(tuple(_finite(v, "mode_shape", self.operation) for v in row) for row in self.mode_shapes))
         object.__setattr__(self, "reference_load_n", _finite(self.reference_load_n, "reference_load_n", self.operation))
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "BucklingResult":
+        return cls(
+            operation=value.get("operation", "solve_buckling_screening"),
+            status=value.get("status", "failed"),
+            issues=_parse_issues(value),
+            evidence=value.get("evidence", {}),
+            model_sha256=value.get("model_sha256"),
+            result_index=value.get("result_index"),
+            eigenvalues=tuple(value.get("eigenvalues", ())),
+            mode_shapes=tuple(tuple(row) for row in value.get("mode_shapes", ())),
+            reference_load_n=value.get("reference_load_n", 0.0),
+            converged=value.get("converged", False),
+        )
 
 
 def transfer_loads(*, model: StructuralModel, loads: Sequence[StructuralLoad] = (), maps: Sequence[LoadTransferMap] = ()) -> tuple[np.ndarray, PhysicsReport]:
@@ -259,7 +305,7 @@ def transfer_loads(*, model: StructuralModel, loads: Sequence[StructuralLoad] = 
             continue
         for dof, value in zip(mapping.target_dofs, mapping.force_components):
             vector[dof] += value
-        records.append({"load_id": load.load_id, "source": load.source, "mapping": {"source_id": mapping.source_id, "target_dofs": list(mapping.target_dofs), "force_components": list(mapping.force_components), "reference_point_m": list(mapping.reference_point_m), "coordinate_frame": mapping.coordinate_frame}})
+        records.append({"load_id": load.load_id, "source": load.source, "target_dofs": list(mapping.target_dofs), "values": list(mapping.force_components), "mapping": {"source_id": mapping.source_id, "target_dofs": list(mapping.target_dofs), "force_components": list(mapping.force_components), "reference_point_m": list(mapping.reference_point_m), "coordinate_frame": mapping.coordinate_frame}})
     status = "passed" if not issues else "validation_failed"
     return vector, PhysicsReport(operation=op, status=status, issues=tuple(issues), evidence={"load_records": records, "resultant": vector.tolist()})
 
@@ -314,10 +360,21 @@ def solve_static_structure(*, model: StructuralModel, loads: Sequence[Structural
 def solve_buckling_screening(*, model: StructuralModel, compressive_load_n: float | None = None, mode_count: int = 3, effective_length_factor: float = 1.0, geometric_stiffness_matrix: Sequence[Sequence[float]] | None = None) -> BucklingResult:
     """Return generalized eigenvalue screening or Euler load for a beam model."""
     op = "solve_buckling_screening"
-    if mode_count < 1 or effective_length_factor <= 0:
-        return BucklingResult(status="validation_failed", issues=(_issue("VALUE-INVALID", "mode_count and effective_length_factor must be positive.", op),), model_sha256=model.content_hash)
-    if compressive_load_n is not None and compressive_load_n <= 0:
-        return BucklingResult(status="validation_failed", issues=(_issue("LOAD-INVALID", "compressive_load_n must be positive.", op),), model_sha256=model.content_hash)
+    try:
+        finite_length = float(effective_length_factor)
+    except (TypeError, ValueError):
+        finite_length = math.nan
+    if mode_count < 1 or not math.isfinite(finite_length) or finite_length <= 0:
+        return BucklingResult(status="validation_failed", issues=(_issue("VALUE-INVALID", "mode_count and effective_length_factor must be finite and positive.", op, actual=effective_length_factor, expected="> 0"),), model_sha256=model.content_hash)
+    if compressive_load_n is not None:
+        try:
+            finite_load = float(compressive_load_n)
+        except (TypeError, ValueError):
+            finite_load = math.nan
+        if not math.isfinite(finite_load) or finite_load <= 0:
+            return BucklingResult(status="validation_failed", issues=(_issue("LOAD-INVALID", "compressive_load_n must be finite and positive.", op, actual=compressive_load_n, expected="> 0", unit="N"),), model_sha256=model.content_hash)
+        compressive_load_n = finite_load
+    effective_length_factor = finite_length
     if model.length_m and model.second_moment_m4 and model.material:
         base = math.pi**2 * model.material.youngs_modulus_pa * model.second_moment_m4 / (effective_length_factor * model.length_m) ** 2
         eigenvalues = tuple(base * n * n for n in range(1, mode_count + 1))

@@ -3,7 +3,7 @@
 ## API 定义
 
 ```python
-solve_modes(*, model: kincheckapi.structural.StructuralModel, request: kincheckapi.vibration.ModalRequest = ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None, participation_vector=())) -> kincheckapi.vibration.ModalResult
+solve_modes(*, model: kincheckapi.structural.StructuralModel, request: kincheckapi.vibration.ModalRequest = ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None, participation_vector=(), participation_frame='model', participation_unit='dimensionless')) -> kincheckapi.vibration.ModalResult
 ```
 
 源码：`src/kincheckapi/vibration.py`。
@@ -23,7 +23,7 @@ from kincheckapi.dynamics import solve_modes
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `model` | `kincheckapi.structural.StructuralModel` | 必填 | `model` 的公开输入或数据字段。 |
-| `request` | `kincheckapi.vibration.ModalRequest` | `ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None, participation_vector=())` | `request` 的公开输入或数据字段。 |
+| `request` | `kincheckapi.vibration.ModalRequest` | `ModalRequest(mode_count=6, fixed_dofs=(), frequency_min_hz=0.0, frequency_max_hz=None, participation_vector=(), participation_frame='model', participation_unit='dimensionless')` | `request` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

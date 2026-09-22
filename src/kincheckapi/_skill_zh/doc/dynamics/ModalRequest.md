@@ -10,6 +10,8 @@ class ModalRequest:
     frequency_min_hz: float
     frequency_max_hz: float | None
     participation_vector: tuple[float, ...]
+    participation_frame: str
+    participation_unit: str
 ```
 
 源码：`src/kincheckapi/vibration.py`。
@@ -33,6 +35,8 @@ from kincheckapi.dynamics import ModalRequest
 | `frequency_min_hz` | `float` | `0.0` | `frequency_min_hz` 的公开输入或数据字段。 |
 | `frequency_max_hz` | `float | None` | `None` | `frequency_max_hz` 的公开输入或数据字段。 |
 | `participation_vector` | `tuple[float, ...]` | `()` | `participation_vector` 的公开输入或数据字段。 |
+| `participation_frame` | `str` | `'model'` | `participation_frame` 的公开输入或数据字段。 |
+| `participation_unit` | `str` | `'dimensionless'` | `participation_unit` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

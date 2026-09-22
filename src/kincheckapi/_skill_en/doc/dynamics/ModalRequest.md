@@ -10,6 +10,8 @@ class ModalRequest:
     frequency_min_hz: float
     frequency_max_hz: float | None
     participation_vector: tuple[float, ...]
+    participation_frame: str
+    participation_unit: str
 ```
 
 Source: `src/kincheckapi/vibration.py`.
@@ -22,7 +24,7 @@ from kincheckapi.dynamics import ModalRequest
 
 ## Purpose
 
-ModalRequest(*, mode_count: 'int' = 6, fixed_dofs: 'tuple[int, ...]' = (), frequency_min_hz: 'float' = 0.0, frequency_max_hz: 'float | None' = None, participation_vector: 'tuple[float, ...]' = ())
+ModalRequest(*, mode_count: 'int' = 6, fixed_dofs: 'tuple[int, ...]' = (), frequency_min_hz: 'float' = 0.0, frequency_max_hz: 'float | None' = None, participation_vector: 'tuple[float, ...]' = (), participation_frame: 'str' = 'model', participation_unit: 'str' = 'dimensionless')
 
 ## Parameters and Fields
 
@@ -33,6 +35,8 @@ ModalRequest(*, mode_count: 'int' = 6, fixed_dofs: 'tuple[int, ...]' = (), frequ
 | `frequency_min_hz` | `float` | `0.0` | Public input or data field `frequency_min_hz`. |
 | `frequency_max_hz` | `float | None` | `None` | Public input or data field `frequency_max_hz`. |
 | `participation_vector` | `tuple[float, ...]` | `()` | Public input or data field `participation_vector`. |
+| `participation_frame` | `str` | `'model'` | Public input or data field `participation_frame`. |
+| `participation_unit` | `str` | `'dimensionless'` | Public input or data field `participation_unit`. |
 
 ## Returns and Failures
 

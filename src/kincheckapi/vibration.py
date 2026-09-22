@@ -35,6 +35,8 @@ class ModalRequest:
     frequency_min_hz: float = 0.0
     frequency_max_hz: float | None = None
     participation_vector: tuple[float, ...] = ()
+    participation_frame: str = "model"
+    participation_unit: str = "dimensionless"
 
     def __post_init__(self) -> None:
         if not isinstance(self.mode_count, int) or self.mode_count < 1:
@@ -50,6 +52,8 @@ class ModalRequest:
                 fail("VALUE-INVALID", "frequency_max_hz must exceed frequency_min_hz.", operation="ModalRequest")
             object.__setattr__(self, "frequency_max_hz", hi)
         object.__setattr__(self, "participation_vector", tuple(_finite(v, "participation_vector", "ModalRequest") for v in self.participation_vector))
+        if not self.participation_frame or not self.participation_unit:
+            fail("PARTICIPATION-VECTOR-INVALID", "participation_frame and participation_unit are required.", operation="ModalRequest")
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -101,6 +105,23 @@ class ModalResult(PhysicsReport):
         object.__setattr__(self, "normalization_mass", tuple(_finite(v, "normalization_mass", self.operation) for v in self.normalization_mass))
         if self.omitted_frequency_hz is not None:
             object.__setattr__(self, "omitted_frequency_hz", _finite(self.omitted_frequency_hz, "omitted_frequency_hz", self.operation))
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "ModalResult":
+        return cls(
+            operation=value.get("operation", "solve_modes"),
+            status=value.get("status", "failed"),
+            issues=_parse_issues(value),
+            evidence=value.get("evidence", {}),
+            model_sha256=value.get("model_sha256"),
+            result_index=value.get("result_index"),
+            frequencies_hz=tuple(value.get("frequencies_hz", ())),
+            mode_shapes=tuple(tuple(row) for row in value.get("mode_shapes", ())),
+            effective_modal_mass=tuple(value.get("effective_modal_mass", ())),
+            normalization_mass=tuple(value.get("normalization_mass", ())),
+            omitted_frequency_hz=value.get("omitted_frequency_hz"),
+            normalized=value.get("normalized", "mass"),
+        )
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -253,7 +274,7 @@ def solve_modes(*, model: StructuralModel, request: ModalRequest = ModalRequest(
         if not np.any(mask):
             return ModalResult(status="indeterminate", issues=(_issue("FREQUENCY-BAND-EMPTY", "No computed mode lies inside the requested frequency band.", op),), model_sha256=model.content_hash, evidence={"frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz]})
         omitted = float(frequencies_all[request.mode_count]) if len(frequencies_all) > request.mode_count else None
-        evidence = {"free_dofs": free.tolist(), "mass_normalized": True, "normalization_mass": list(normalization_mass), "effective_modal_mass_available": bool(effective_mass), "rigid_body_modes": int(np.count_nonzero(frequencies < 1e-8)), "frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz], "band_filtered": True, "computed_mode_count": len(frequencies), "uncomputed_mode_lower_bound_hz": omitted}
+        evidence = {"free_dofs": free.tolist(), "mass_normalized": True, "normalization_mass": list(normalization_mass), "effective_modal_mass_available": bool(effective_mass), "participation_vector": list(request.participation_vector) if request.participation_vector else None, "participation_frame": request.participation_frame, "participation_unit": request.participation_unit, "request": plain(request), "rigid_body_modes": int(np.count_nonzero(frequencies < 1e-8)), "frequency_band_hz": [request.frequency_min_hz, request.frequency_max_hz], "band_filtered": True, "computed_mode_count": len(frequencies), "uncomputed_mode_lower_bound_hz": omitted}
         selected = np.flatnonzero(mask)
         selected_effective_mass = tuple(effective_mass[i] for i in selected) if effective_mass else ()
         return ModalResult(status="completed", model_sha256=model.content_hash, frequencies_hz=tuple(float(frequencies[i]) for i in selected), mode_shapes=tuple(tuple(float(v) for v in shapes[i]) for i in selected), effective_modal_mass=selected_effective_mass, normalization_mass=tuple(normalization_mass[i] for i in selected), omitted_frequency_hz=omitted, evidence=evidence)

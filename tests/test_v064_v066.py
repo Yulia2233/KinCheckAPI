@@ -62,6 +62,9 @@ def test_v064_static_stress_and_buckling_reference(sdof):
     result = solve_static_structure(model=sdof, load_vector=(100.0,))
     assert result.passed
     assert result.displacements_m["dof_0"] == pytest.approx(1.0)
+    structural_round_trip = type(result).from_dict(json.loads(json.dumps(result.to_dict(), allow_nan=False)))
+    assert structural_round_trip.model_sha256 == result.model_sha256
+    assert structural_round_trip.displacements_m == result.displacements_m
     assert check_stress(result=result, material=sdof.material).passed
     assert check_stress(result=result, material=sdof.material, criterion=FailureCriterion(name="von_mises")).status == "capability_failed"
 
@@ -99,6 +102,8 @@ def test_v064_matrix_buckling_requires_geometric_stiffness(sdof):
     result = solve_buckling_screening(model=unstable, compressive_load_n=1.0, geometric_stiffness_matrix=((1.0,),))
     assert result.status == "indeterminate"
     assert result.eigenvalues[0] < 0
+    assert solve_buckling_screening(model=sdof, compressive_load_n=float("nan")).status == "validation_failed"
+    assert solve_buckling_screening(model=sdof, effective_length_factor=float("inf")).status == "validation_failed"
 
 
 def test_v065_sdof_modes_frequency_response_and_transient(sdof):
@@ -133,6 +138,12 @@ def test_v065_frequency_response_json_and_modal_boundary_checks(sdof):
     participation = solve_modes(model=sdof, request=ModalRequest(mode_count=1, participation_vector=(1.0,)))
     assert participation.effective_modal_mass[0] == pytest.approx(1.0)
     assert participation.omitted_frequency_hz is None
+    assert tuple(participation.evidence["participation_vector"]) == (1.0,)
+    modal_round_trip = type(participation).from_dict(json.loads(json.dumps(participation.to_dict(), allow_nan=False)))
+    assert modal_round_trip.normalization_mass == participation.normalization_mass
+    buckling = solve_buckling_screening(model=StructuralModel(model_id="b", stiffness_matrix=((100.0,),), mass_matrix=((1.0,),)), geometric_stiffness_matrix=((1.0,),), compressive_load_n=2.0)
+    buckling_round_trip = type(buckling).from_dict(json.loads(json.dumps(buckling.to_dict(), allow_nan=False)))
+    assert buckling_round_trip.eigenvalues == buckling.eigenvalues
     failed = solve_frequency_response(model=sdof, frequencies_hz=(1.0,), force_vector=(float("nan"),))
     failed_round_trip = type(failed).from_dict(json.loads(json.dumps(failed.to_dict(), allow_nan=False)))
     assert failed_round_trip.issues and failed_round_trip.issues[0].code == failed.issues[0].code
