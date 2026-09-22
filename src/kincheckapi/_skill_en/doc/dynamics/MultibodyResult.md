@@ -16,6 +16,9 @@ class MultibodyResult:
     reaction_mode: str
     constraint_residual_max: float
     energy_residual_j: float
+    reaction_rank: int
+    reaction_constraint_count: int
+    contact_events: tuple[Any, ...]
 ```
 
 Source: `src/kincheckapi/dynamics_v07.py`.
@@ -28,7 +31,7 @@ from kincheckapi.dynamics import MultibodyResult
 
 ## Purpose
 
-MultibodyResult(*, operation: 'str' = 'solve_multibody_dynamics', status: 'str' = 'passed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>, model_sha256: 'str | None' = None, result_index: 'int | None' = None, scenario_id: 'str' = '', samples: 'tuple[MultibodySample, ...]' = (), reaction_mode: 'str' = 'identifiable', constraint_residual_max: 'float' = 0.0, energy_residual_j: 'float' = 0.0)
+MultibodyResult(*, operation: 'str' = 'solve_multibody_dynamics', status: 'str' = 'passed', issues: 'tuple[SimIssue, ...]' = (), evidence: 'Mapping[str, Any]' = <factory>, model_sha256: 'str | None' = None, result_index: 'int | None' = None, scenario_id: 'str' = '', samples: 'tuple[MultibodySample, ...]' = (), reaction_mode: 'str' = 'identifiable', constraint_residual_max: 'float' = 0.0, energy_residual_j: 'float' = 0.0, reaction_rank: 'int' = 0, reaction_constraint_count: 'int' = 0, contact_events: 'tuple[Any, ...]' = ())
 
 ## Parameters and Fields
 
@@ -45,6 +48,9 @@ MultibodyResult(*, operation: 'str' = 'solve_multibody_dynamics', status: 'str' 
 | `reaction_mode` | `str` | `'identifiable'` | Public input or data field `reaction_mode`. |
 | `constraint_residual_max` | `float` | `0.0` | Public input or data field `constraint_residual_max`. |
 | `energy_residual_j` | `float` | `0.0` | Public input or data field `energy_residual_j`. |
+| `reaction_rank` | `int` | `0` | Public input or data field `reaction_rank`. |
+| `reaction_constraint_count` | `int` | `0` | Public input or data field `reaction_constraint_count`. |
+| `contact_events` | `tuple[Any, ...]` | `()` | Public input or data field `contact_events`. |
 
 ## Returns and Failures
 

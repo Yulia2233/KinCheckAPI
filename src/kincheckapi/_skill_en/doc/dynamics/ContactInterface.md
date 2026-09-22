@@ -8,6 +8,12 @@ class ContactInterface:
     contact_id: str
     normal: tuple[float, float, float]
     gap_m: float
+    body_a: str
+    body_b: str
+    contact_point_m: tuple[float, float, float]
+    coordinate_frame: str
+    dof_coefficients: Mapping[str, float]
+    tangential_coefficients: tuple[Mapping[str, float], ...]
     friction_coefficient: float
     normal_stiffness_n_m: float | None
     normal_damping_n_s_m: float
@@ -25,7 +31,7 @@ from kincheckapi.dynamics import ContactInterface
 
 ## Purpose
 
-ContactInterface(*, contact_id: 'str', normal: 'tuple[float, float, float]', gap_m: 'float', friction_coefficient: 'float' = 0.0, normal_stiffness_n_m: 'float | None' = None, normal_damping_n_s_m: 'float' = 0.0, restitution: 'float | None' = None, source: 'str' = 'declared')
+ContactInterface(*, contact_id: 'str', normal: 'tuple[float, float, float]', gap_m: 'float', body_a: 'str' = '', body_b: 'str' = '', contact_point_m: 'tuple[float, float, float]' = (0.0, 0.0, 0.0), coordinate_frame: 'str' = 'world', dof_coefficients: 'Mapping[str, float]' = <factory>, tangential_coefficients: 'tuple[Mapping[str, float], ...]' = (), friction_coefficient: 'float' = 0.0, normal_stiffness_n_m: 'float | None' = None, normal_damping_n_s_m: 'float' = 0.0, restitution: 'float | None' = None, source: 'str' = 'declared')
 
 ## Parameters and Fields
 
@@ -34,6 +40,12 @@ ContactInterface(*, contact_id: 'str', normal: 'tuple[float, float, float]', gap
 | `contact_id` | `str` | required | Stable, resolvable `contact_id`. |
 | `normal` | `tuple[float, float, float]` | required | Public input or data field `normal`. |
 | `gap_m` | `float` | required | `gap_m` in metres; finite. |
+| `body_a` | `str` | `''` | Public input or data field `body_a`. |
+| `body_b` | `str` | `''` | Public input or data field `body_b`. |
+| `contact_point_m` | `tuple[float, float, float]` | `(0.0, 0.0, 0.0)` | `contact_point_m` in metres; finite. |
+| `coordinate_frame` | `str` | `'world'` | Public input or data field `coordinate_frame`. |
+| `dof_coefficients` | `Mapping[str, float]` | default_factory | Public input or data field `dof_coefficients`. |
+| `tangential_coefficients` | `tuple[Mapping[str, float], ...]` | `()` | Public input or data field `tangential_coefficients`. |
 | `friction_coefficient` | `float` | `0.0` | Public input or data field `friction_coefficient`. |
 | `normal_stiffness_n_m` | `float | None` | `None` | `normal_stiffness_n_m` in metres; finite. |
 | `normal_damping_n_s_m` | `float` | `0.0` | `normal_damping_n_s_m` in metres; finite. |

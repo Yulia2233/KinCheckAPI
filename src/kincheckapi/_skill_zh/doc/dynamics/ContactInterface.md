@@ -8,6 +8,12 @@ class ContactInterface:
     contact_id: str
     normal: tuple[float, float, float]
     gap_m: float
+    body_a: str
+    body_b: str
+    contact_point_m: tuple[float, float, float]
+    coordinate_frame: str
+    dof_coefficients: Mapping[str, float]
+    tangential_coefficients: tuple[Mapping[str, float], ...]
     friction_coefficient: float
     normal_stiffness_n_m: float | None
     normal_damping_n_s_m: float
@@ -34,6 +40,12 @@ from kincheckapi.dynamics import ContactInterface
 | `contact_id` | `str` | 必填 | 稳定且可解析的 `contact_id`。 |
 | `normal` | `tuple[float, float, float]` | 必填 | `normal` 的公开输入或数据字段。 |
 | `gap_m` | `float` | 必填 | `gap_m`，单位 m，必须为有限值。 |
+| `body_a` | `str` | `''` | `body_a` 的公开输入或数据字段。 |
+| `body_b` | `str` | `''` | `body_b` 的公开输入或数据字段。 |
+| `contact_point_m` | `tuple[float, float, float]` | `(0.0, 0.0, 0.0)` | `contact_point_m`，单位 m，必须为有限值。 |
+| `coordinate_frame` | `str` | `'world'` | `coordinate_frame` 的公开输入或数据字段。 |
+| `dof_coefficients` | `Mapping[str, float]` | default_factory | `dof_coefficients` 的公开输入或数据字段。 |
+| `tangential_coefficients` | `tuple[Mapping[str, float], ...]` | `()` | `tangential_coefficients` 的公开输入或数据字段。 |
 | `friction_coefficient` | `float` | `0.0` | `friction_coefficient` 的公开输入或数据字段。 |
 | `normal_stiffness_n_m` | `float | None` | `None` | `normal_stiffness_n_m`，单位 m，必须为有限值。 |
 | `normal_damping_n_s_m` | `float` | `0.0` | `normal_damping_n_s_m`，单位 m，必须为有限值。 |

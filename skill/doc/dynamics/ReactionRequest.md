@@ -8,6 +8,7 @@ class ReactionRequest:
     object_ids: tuple[str, ...]
     mode: str
     reference_frame: str
+    require_unique: bool
 ```
 
 Source: `src/kincheckapi/dynamics_v07.py`.
@@ -20,7 +21,7 @@ from kincheckapi.dynamics import ReactionRequest
 
 ## Purpose
 
-ReactionRequest(*, object_ids: 'tuple[str, ...]', mode: 'str' = 'identifiable', reference_frame: 'str' = 'world')
+ReactionRequest(*, object_ids: 'tuple[str, ...]', mode: 'str' = 'identifiable', reference_frame: 'str' = 'world', require_unique: 'bool' = True)
 
 ## Parameters and Fields
 
@@ -29,6 +30,7 @@ ReactionRequest(*, object_ids: 'tuple[str, ...]', mode: 'str' = 'identifiable', 
 | `object_ids` | `tuple[str, ...]` | required | Explicitly specified `object_ids` collection. |
 | `mode` | `str` | `'identifiable'` | Public input or data field `mode`. |
 | `reference_frame` | `str` | `'world'` | Public input or data field `reference_frame`. |
+| `require_unique` | `bool` | `True` | Public input or data field `require_unique`. |
 
 ## Returns and Failures
 

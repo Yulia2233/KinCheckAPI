@@ -12,6 +12,8 @@ class ContactEvent:
     tangential_force_n: tuple[float, float, float]
     penetration_m: float
     normal_impulse_ns: float
+    normal: tuple[float, float, float]
+    contact_point_m: tuple[float, float, float]
 ```
 
 Source: `src/kincheckapi/dynamics_v07.py`.
@@ -24,7 +26,7 @@ from kincheckapi.dynamics import ContactEvent
 
 ## Purpose
 
-ContactEvent(*, time_s: 'float', contact_id: 'str', state: 'str', normal_force_n: 'float', tangential_force_n: 'tuple[float, float, float]', penetration_m: 'float', normal_impulse_ns: 'float' = 0.0)
+ContactEvent(*, time_s: 'float', contact_id: 'str', state: 'str', normal_force_n: 'float', tangential_force_n: 'tuple[float, float, float]', penetration_m: 'float', normal_impulse_ns: 'float' = 0.0, normal: 'tuple[float, float, float]' = (0.0, 0.0, 1.0), contact_point_m: 'tuple[float, float, float]' = (0.0, 0.0, 0.0))
 
 ## Parameters and Fields
 
@@ -37,6 +39,8 @@ ContactEvent(*, time_s: 'float', contact_id: 'str', state: 'str', normal_force_n
 | `tangential_force_n` | `tuple[float, float, float]` | required | Public input or data field `tangential_force_n`. |
 | `penetration_m` | `float` | required | `penetration_m` in metres; finite. |
 | `normal_impulse_ns` | `float` | `0.0` | Public input or data field `normal_impulse_ns`. |
+| `normal` | `tuple[float, float, float]` | `(0.0, 0.0, 1.0)` | Public input or data field `normal`. |
+| `contact_point_m` | `tuple[float, float, float]` | `(0.0, 0.0, 0.0)` | `contact_point_m` in metres; finite. |
 
 ## Returns and Failures
 

@@ -24,6 +24,9 @@ from kincheckapi.dynamics import (
     run_dynamics_cases,
     summarize_drive_duty,
     summarize_energy,
+    RandomExcitation,
+    WrenchProfile,
+    WrenchSample,
 )
 from kincheckapi.export import motion_package, read_package, validate_package
 from kincheckapi.result import MotionResult, Trajectory
@@ -58,6 +61,8 @@ def test_v070_generalized_multibody_and_reaction_history_round_trip(tmp_path):
     assert DynamicsLoadHistory.from_dict(json.loads(encoded)).times_s == history.times_s
     path = export_load_history(history=history, path=tmp_path / "history.json")
     assert read_load_history(path=path).history_id == "h"
+    assert result.evidence["constraint_rank"] == 1
+    assert result.evidence["source_map"]["equal"]["relation"] == "linear"
 
 
 def test_v070_unknown_constraint_reference_is_structured_failure():
@@ -85,6 +90,44 @@ def test_v071_rigid_contact_requires_declared_law_and_reports_impulse():
     assert unsupported.status == "capability_failed"
 
 
+def test_v071_contact_is_applied_during_multibody_integration_and_records_events():
+    interface = ContactInterface(
+        contact_id="floor",
+        normal=(0.0, 0.0, 1.0),
+        gap_m=-0.01,
+        normal_stiffness_n_m=100.0,
+        dof_coefficients={"a[0]": 1.0},
+        contact_point_m=(0.0, 0.0, 0.2),
+    )
+    result = solve_multibody_dynamics(
+        scenario=RigidDynamicsScenario(
+            states=(GeneralizedJointState(joint_id="a", position=0.0),),
+            mass_matrix=((1.0,),),
+            force_vector=(0.0,),
+            duration_s=0.1,
+            sample_period_s=0.05,
+            contacts=(interface,),
+        )
+    )
+    assert result.status == "completed", result.to_dict()
+    assert result.contact_events
+    assert result.contact_events[0].normal_force_n == pytest.approx(1.0)
+
+
+def test_v071_redundant_reaction_requires_allocation_model():
+    redundant = RigidDynamicsScenario(
+        states=(GeneralizedJointState(joint_id="a", position=0.0),),
+        mass_matrix=((1.0,),), force_vector=(0.0,), duration_s=0.1, sample_period_s=0.1,
+        constraints=(
+            ConstraintSpec(constraint_id="c1", coefficients={"a[0]": 1.0}),
+            ConstraintSpec(constraint_id="c2", coefficients={"a[0]": 2.0}),
+        ),
+    )
+    result = solve_multibody_dynamics(scenario=redundant, reaction_request=ReactionRequest(object_ids=("c1", "c2")))
+    assert result.status == "indeterminate"
+    assert result.issues[0].code.endswith("REACTION-NONUNIQUE")
+
+
 def test_v072_scenario_matrix_and_drive_summaries():
     first = DynamicsScenarioCase(case_id="nominal", scenario=scenario())
     second = DynamicsScenarioCase(case_id="hold", scenario=scenario(constrained=True))
@@ -94,6 +137,9 @@ def test_v072_scenario_matrix_and_drive_summaries():
     assert summarize_drive_duty(history=history).passed
     assert summarize_energy(history=history).passed
     assert check_actuator_limits(result=suite.case_results[0], envelope=ActuatorEnvelope(envelope_id="drive", dof_limits={"a[0]": 2.0, "b[0]": 2.0})).passed
+    profile = WrenchProfile(profile_id="load", samples=(WrenchSample(time_s=0.0, force_n=(0, 0, 0), moment_nm=(0, 0, 0), point_m=(0, 0, 0)), WrenchSample(time_s=1.0, force_n=(2, 0, 0), moment_nm=(0, 0, 0), point_m=(0, 0, 0))))
+    assert profile.at(0.5).force_n == pytest.approx((1.0, 0.0, 0.0))
+    assert RandomExcitation.generate(excitation_id="noise", seed=7, duration_s=0.1, sample_rate_hz=20.0, bandwidth_hz=5.0).samples == RandomExcitation.generate(excitation_id="noise", seed=7, duration_s=0.1, sample_rate_hz=20.0, bandwidth_hz=5.0).samples
 
 
 def test_v073_dynamics_history_is_hash_indexed_in_motion_package(tmp_path):
@@ -113,3 +159,8 @@ def test_v073_dynamics_history_is_hash_indexed_in_motion_package(tmp_path):
     restored = read_package(path=artifact.path)
     assert restored.dynamics_history.history_id == "package-history"
     assert restored.manifest["dynamics_path"] == "dynamics.json"
+    from viewer.kincheck_viewer import unpack_package
+    unpack_package(package_path=artifact.path, output_dir=tmp_path / "viewer")
+    viewer_manifest = json.loads((tmp_path / "viewer" / "viewer.json").read_text())
+    assert viewer_manifest["dynamics"]["history_id"] == "package-history"
+    assert viewer_manifest["dynamics_sample_count"] == len(history.times_s)

@@ -15,6 +15,9 @@ class RigidDynamicsScenario:
     constraints: tuple[kincheckapi.dynamics_v07.ConstraintSpec, ...]
     model_sha256: str | None
     scenario_id: str
+    contacts: tuple[Any, ...]
+    controllers: tuple[Any, ...]
+    brake_policy: Any | None
 ```
 
 Source: `src/kincheckapi/dynamics_v07.py`.
@@ -27,7 +30,7 @@ from kincheckapi.dynamics import RigidDynamicsScenario
 
 ## Purpose
 
-RigidDynamicsScenario(*, states: 'tuple[GeneralizedJointState, ...]', mass_matrix: 'tuple[tuple[float, ...], ...]', force_vector: 'tuple[float, ...]', duration_s: 'float', sample_period_s: 'float', damping_matrix: 'tuple[tuple[float, ...], ...] | None' = None, stiffness_matrix: 'tuple[tuple[float, ...], ...] | None' = None, constraints: 'tuple[ConstraintSpec, ...]' = (), model_sha256: 'str | None' = None, scenario_id: 'str' = '')
+RigidDynamicsScenario(*, states: 'tuple[GeneralizedJointState, ...]', mass_matrix: 'tuple[tuple[float, ...], ...]', force_vector: 'tuple[float, ...]', duration_s: 'float', sample_period_s: 'float', damping_matrix: 'tuple[tuple[float, ...], ...] | None' = None, stiffness_matrix: 'tuple[tuple[float, ...], ...] | None' = None, constraints: 'tuple[ConstraintSpec, ...]' = (), model_sha256: 'str | None' = None, scenario_id: 'str' = '', contacts: 'tuple[Any, ...]' = (), controllers: 'tuple[Any, ...]' = (), brake_policy: 'Any | None' = None)
 
 ## Parameters and Fields
 
@@ -43,6 +46,9 @@ RigidDynamicsScenario(*, states: 'tuple[GeneralizedJointState, ...]', mass_matri
 | `constraints` | `tuple[kincheckapi.dynamics_v07.ConstraintSpec, ...]` | `()` | Public input or data field `constraints`. |
 | `model_sha256` | `str | None` | `None` | Public input or data field `model_sha256`. |
 | `scenario_id` | `str` | `''` | Stable, resolvable `scenario_id`. |
+| `contacts` | `tuple[Any, ...]` | `()` | Public input or data field `contacts`. |
+| `controllers` | `tuple[Any, ...]` | `()` | Public input or data field `controllers`. |
+| `brake_policy` | `Any | None` | `None` | Public input or data field `brake_policy`. |
 
 ## Returns and Failures
 

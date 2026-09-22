@@ -16,6 +16,9 @@ class MultibodyResult:
     reaction_mode: str
     constraint_residual_max: float
     energy_residual_j: float
+    reaction_rank: int
+    reaction_constraint_count: int
+    contact_events: tuple[Any, ...]
 ```
 
 源码：`src/kincheckapi/dynamics_v07.py`。
@@ -45,6 +48,9 @@ from kincheckapi.dynamics import MultibodyResult
 | `reaction_mode` | `str` | `'identifiable'` | `reaction_mode` 的公开输入或数据字段。 |
 | `constraint_residual_max` | `float` | `0.0` | `constraint_residual_max` 的公开输入或数据字段。 |
 | `energy_residual_j` | `float` | `0.0` | `energy_residual_j` 的公开输入或数据字段。 |
+| `reaction_rank` | `int` | `0` | `reaction_rank` 的公开输入或数据字段。 |
+| `reaction_constraint_count` | `int` | `0` | `reaction_constraint_count` 的公开输入或数据字段。 |
+| `contact_events` | `tuple[Any, ...]` | `()` | `contact_events` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

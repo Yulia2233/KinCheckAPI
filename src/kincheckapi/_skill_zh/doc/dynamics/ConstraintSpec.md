@@ -12,6 +12,9 @@ class ConstraintSpec:
     acceleration_target: float
     tolerance: float
     source: str
+    relation: str
+    receiver_ids: tuple[str, ...]
+    source_map: Mapping[str, Any]
 ```
 
 源码：`src/kincheckapi/dynamics_v07.py`。
@@ -37,6 +40,9 @@ from kincheckapi.dynamics import ConstraintSpec
 | `acceleration_target` | `float` | `0.0` | `acceleration_target` 的公开输入或数据字段。 |
 | `tolerance` | `float` | `1e-08` | `tolerance` 的公开输入或数据字段。 |
 | `source` | `str` | `'declared'` | `source` 的公开输入或数据字段。 |
+| `relation` | `str` | `'linear'` | `relation` 的公开输入或数据字段。 |
+| `receiver_ids` | `tuple[str, ...]` | `()` | 显式指定的 `receiver_ids` 集合。 |
+| `source_map` | `Mapping[str, Any]` | default_factory | `source_map` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

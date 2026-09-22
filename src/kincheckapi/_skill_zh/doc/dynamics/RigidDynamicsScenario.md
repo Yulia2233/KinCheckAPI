@@ -15,6 +15,9 @@ class RigidDynamicsScenario:
     constraints: tuple[kincheckapi.dynamics_v07.ConstraintSpec, ...]
     model_sha256: str | None
     scenario_id: str
+    contacts: tuple[Any, ...]
+    controllers: tuple[Any, ...]
+    brake_policy: Any | None
 ```
 
 源码：`src/kincheckapi/dynamics_v07.py`。
@@ -43,6 +46,9 @@ from kincheckapi.dynamics import RigidDynamicsScenario
 | `constraints` | `tuple[kincheckapi.dynamics_v07.ConstraintSpec, ...]` | `()` | `constraints` 的公开输入或数据字段。 |
 | `model_sha256` | `str | None` | `None` | `model_sha256` 的公开输入或数据字段。 |
 | `scenario_id` | `str` | `''` | 稳定且可解析的 `scenario_id`。 |
+| `contacts` | `tuple[Any, ...]` | `()` | `contacts` 的公开输入或数据字段。 |
+| `controllers` | `tuple[Any, ...]` | `()` | `controllers` 的公开输入或数据字段。 |
+| `brake_policy` | `Any | None` | `None` | `brake_policy` 的公开输入或数据字段。 |
 
 ## 返回与失败
 

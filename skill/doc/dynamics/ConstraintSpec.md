@@ -12,6 +12,9 @@ class ConstraintSpec:
     acceleration_target: float
     tolerance: float
     source: str
+    relation: str
+    receiver_ids: tuple[str, ...]
+    source_map: Mapping[str, Any]
 ```
 
 Source: `src/kincheckapi/dynamics_v07.py`.
@@ -37,6 +40,9 @@ One linearized scalar constraint Jq=target for a declared state basis.
 | `acceleration_target` | `float` | `0.0` | Public input or data field `acceleration_target`. |
 | `tolerance` | `float` | `1e-08` | Public input or data field `tolerance`. |
 | `source` | `str` | `'declared'` | Public input or data field `source`. |
+| `relation` | `str` | `'linear'` | Public input or data field `relation`. |
+| `receiver_ids` | `tuple[str, ...]` | `()` | Explicitly specified `receiver_ids` collection. |
+| `source_map` | `Mapping[str, Any]` | default_factory | Public input or data field `source_map`. |
 
 ## Returns and Failures
 

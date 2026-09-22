@@ -357,7 +357,7 @@ def motion_package(
         "metadata": dict(metadata or {}),
         "files": files,
         **({"physics_path": "physics.json", "capabilities": ["mass_properties", "tree_static_equilibrium"]} if dynamics_model is not None else {}),
-        **({"dynamics_path": DYNAMICS_MEMBER, "dynamics_capabilities": ["rigid_multibody_history", "constraint_reactions", "contact_events"]} if dynamics_history is not None else {}),
+        **({"dynamics_path": DYNAMICS_MEMBER, "dynamics_schema_version": dynamics_history.schema_version, "dynamics_history_id": dynamics_history.history_id, "dynamics_capabilities": ["rigid_multibody_history", "constraint_reactions", "contact_events", "energy_work"]} if dynamics_history is not None else {}),
     }
     manifest_bytes = _json_bytes(manifest)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -663,6 +663,8 @@ def validate_package(*, path: str | Path) -> ValidationResult:
                     if not isinstance(raw_history.get("evidence"), Mapping) or not raw_history["evidence"].get("records_sha256"):
                         raise ValueError("Dynamics history must carry records_sha256 evidence")
                     history = DynamicsLoadHistory.from_dict(raw_history)
+                    if manifest.get("dynamics_schema_version") != history.schema_version or manifest.get("dynamics_history_id") != history.history_id:
+                        raise ValueError("Dynamics history identity differs from manifest")
                     if raw_history.get("passed") is not history.passed:
                         raise ValueError("Stored dynamics-history pass flag contradicts status and issues")
                     if history.status not in {"completed", "completed_with_warnings"}:

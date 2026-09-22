@@ -120,11 +120,16 @@ class ConstraintSpec:
     acceleration_target: float = 0.0
     tolerance: float = 1e-8
     source: str = "declared"
+    relation: str = "linear"
+    receiver_ids: tuple[str, ...] = ()
+    source_map: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         op = "ConstraintSpec"
         if not self.constraint_id or not self.coefficients or not self.source:
             fail("CONSTRAINT-INVALID", "constraint_id, coefficients and source are required.", operation=op)
+        if self.relation not in ("linear", "transmission", "closure", "support"):
+            fail("CONSTRAINT-INVALID", "relation must be linear, transmission, closure or support.", operation=op)
         object.__setattr__(self, "coefficients", {str(k): _finite(v, "coefficient", op) for k, v in self.coefficients.items()})
         for name in ("target", "velocity_target", "acceleration_target"):
             object.__setattr__(self, name, _finite(getattr(self, name), name, op))
@@ -132,6 +137,8 @@ class ConstraintSpec:
         if tolerance <= 0:
             fail("CONSTRAINT-INVALID", "tolerance must be positive.", operation=op, objects=(self.constraint_id,))
         object.__setattr__(self, "tolerance", tolerance)
+        object.__setattr__(self, "receiver_ids", tuple(str(item) for item in self.receiver_ids))
+        object.__setattr__(self, "source_map", dict(self.source_map))
 
     def to_dict(self) -> dict[str, Any]:
         return plain(self)
@@ -146,10 +153,13 @@ class ReactionRequest:
     object_ids: tuple[str, ...]
     mode: str = "identifiable"
     reference_frame: str = "world"
+    require_unique: bool = True
 
     def __post_init__(self) -> None:
         if not self.object_ids or self.mode not in ("identifiable", "model_allocation", "aggregate"):
             fail("REACTION-INVALID", "Reaction request needs object IDs and a supported mode.", operation="ReactionRequest")
+        if not self.reference_frame:
+            fail("REACTION-INVALID", "reference_frame is required.", operation="ReactionRequest")
         object.__setattr__(self, "object_ids", tuple(self.object_ids))
 
 
@@ -165,6 +175,9 @@ class RigidDynamicsScenario:
     constraints: tuple[ConstraintSpec, ...] = ()
     model_sha256: str | None = None
     scenario_id: str = ""
+    contacts: tuple[Any, ...] = ()
+    controllers: tuple[Any, ...] = ()
+    brake_policy: Any | None = None
 
     def __post_init__(self) -> None:
         op = "RigidDynamicsScenario"
@@ -196,6 +209,8 @@ class RigidDynamicsScenario:
         object.__setattr__(self, "duration_s", duration)
         object.__setattr__(self, "sample_period_s", period)
         object.__setattr__(self, "constraints", tuple(self.constraints))
+        object.__setattr__(self, "contacts", tuple(self.contacts))
+        object.__setattr__(self, "controllers", tuple(self.controllers))
 
     @property
     def dof_ids(self) -> tuple[str, ...]:
@@ -211,6 +226,11 @@ class RigidDynamicsScenario:
                 **value,
                 "states": tuple(GeneralizedJointState.from_dict(item) for item in value["states"]),
                 "constraints": tuple(ConstraintSpec.from_dict(item) for item in value.get("constraints", ())),
+                "contacts": tuple(
+                    ContactInterface.from_dict(item) if isinstance(item, Mapping) else item
+                    for item in value.get("contacts", ())
+                ),
+                "controllers": tuple(value.get("controllers", ())),
             }
         )
 
@@ -246,6 +266,9 @@ class MultibodyResult(PhysicsReport):
     reaction_mode: str = "identifiable"
     constraint_residual_max: float = 0.0
     energy_residual_j: float = 0.0
+    reaction_rank: int = 0
+    reaction_constraint_count: int = 0
+    contact_events: tuple[Any, ...] = ()
 
     def __post_init__(self) -> None:
         PhysicsReport.__post_init__(self)
@@ -255,6 +278,9 @@ class MultibodyResult(PhysicsReport):
         object.__setattr__(self, "samples", samples)
         object.__setattr__(self, "constraint_residual_max", _finite(self.constraint_residual_max, "constraint_residual_max", self.operation))
         object.__setattr__(self, "energy_residual_j", _finite(self.energy_residual_j, "energy_residual_j", self.operation))
+        if self.reaction_rank < 0 or self.reaction_constraint_count < 0:
+            fail("RESULT-INVALID", "Reaction rank/count cannot be negative.", operation=self.operation)
+        object.__setattr__(self, "contact_events", tuple(self.contact_events))
 
     def to_dict(self) -> dict[str, Any]:
         return {**plain(self), "passed": self.passed}
@@ -273,6 +299,12 @@ class MultibodyResult(PhysicsReport):
             reaction_mode=value.get("reaction_mode", "identifiable"),
             constraint_residual_max=value.get("constraint_residual_max", 0.0),
             energy_residual_j=value.get("energy_residual_j", 0.0),
+            reaction_rank=value.get("reaction_rank", 0),
+            reaction_constraint_count=value.get("reaction_constraint_count", 0),
+            contact_events=tuple(
+                ContactEvent(**item) if isinstance(item, Mapping) else item
+                for item in value.get("contact_events", ())
+            ),
         )
 
 
@@ -383,7 +415,11 @@ class DynamicsScenarioSuite(PhysicsReport):
 def probe_multibody_capabilities(*, scenario: RigidDynamicsScenario | None, operation: str = "solve_multibody_dynamics") -> PhysicsReport:
     if not isinstance(scenario, RigidDynamicsScenario):
         return PhysicsReport(operation=operation, status="validation_failed", issues=(_issue("SCENARIO-INVALID", "A typed RigidDynamicsScenario is required.", operation),))
-    return PhysicsReport(operation=operation, status="passed", evidence={"backend": "kincheck-rigid-generalized-reference", "supports": ["linear_constraints", "multi_dof_state", "reaction_history"], "fea_dependency": False})
+    if any(getattr(contact, "restitution", None) is not None for contact in scenario.contacts):
+        return PhysicsReport(operation=operation, status="capability_failed", issues=(_issue("CONTACT-IMPACT-LAW-UNSUPPORTED", "The reference integrator supports penalty contact but not instantaneous restitution impulses.", operation),), evidence={"backend": "kincheck-rigid-generalized-reference", "fea_dependency": False})
+    if any(getattr(contact, "dof_coefficients", {}) and getattr(contact, "normal_stiffness_n_m", None) is None for contact in scenario.contacts):
+        return PhysicsReport(operation=operation, status="capability_failed", issues=(_issue("CONTACT-LAW-MISSING", "A coupled contact requires normal_stiffness_n_m for the reference penalty response.", operation),), evidence={"backend": "kincheck-rigid-generalized-reference", "fea_dependency": False})
+    return PhysicsReport(operation=operation, status="passed", evidence={"backend": "kincheck-rigid-generalized-reference", "supports": ["linear_constraints", "multi_dof_state", "reaction_history", "declared_contact_penalty", "contact_friction"], "fea_dependency": False})
 
 
 def solve_multibody_dynamics(*, scenario: RigidDynamicsScenario, reaction_request: ReactionRequest | None = None) -> MultibodyResult:
@@ -400,6 +436,7 @@ def solve_multibody_dynamics(*, scenario: RigidDynamicsScenario, reaction_reques
     K = np.zeros_like(M) if scenario.stiffness_matrix is None else np.asarray(scenario.stiffness_matrix, dtype=float)
     key_to_index = {key: index for index, key in enumerate(scenario.dof_ids)}
     constraint_rows = []
+    source_map: dict[str, Any] = {}
     for constraint in scenario.constraints:
         row = np.zeros(dimension, dtype=float)
         for key, coefficient in constraint.coefficients.items():
@@ -407,14 +444,85 @@ def solve_multibody_dynamics(*, scenario: RigidDynamicsScenario, reaction_reques
                 return MultibodyResult(status="validation_failed", issues=(_issue("CONSTRAINT-REFERENCE-MISSING", "Constraint references an unknown generalized DOF.", op, (constraint.constraint_id, key)),), model_sha256=scenario.model_sha256)
             row[key_to_index[key]] = coefficient
         constraint_rows.append((constraint, row))
+        source_map[constraint.constraint_id] = {
+            "relation": constraint.relation,
+            "source": constraint.source,
+            "receiver_ids": list(constraint.receiver_ids),
+            "coefficients": dict(constraint.coefficients),
+            "source_map": dict(constraint.source_map),
+        }
+    reaction_rank = 0
+    reaction_count = len(constraint_rows)
+    J = np.vstack([row for _, row in constraint_rows]) if constraint_rows else np.zeros((0, dimension))
+    if constraint_rows:
+        reaction_rank = int(np.linalg.matrix_rank(J, tol=1e-10))
+        if reaction_request is not None and reaction_request.require_unique and reaction_request.mode != "aggregate" and reaction_rank < reaction_count:
+            return MultibodyResult(status="indeterminate", issues=(_issue("REACTION-NONUNIQUE", "Constraint reactions are redundant and cannot be uniquely allocated without a declared compliance or allocation model.", op, actual=reaction_rank, expected=reaction_count),), model_sha256=scenario.model_sha256, reaction_mode=reaction_request.mode, reaction_rank=reaction_rank, reaction_constraint_count=reaction_count, evidence={"dof_ids": list(scenario.dof_ids), "constraint_rank": reaction_rank, "constraint_count": reaction_count, "source_map": source_map, "allocation": "aggregate-only"})
+        if reaction_rank < reaction_count:
+            return MultibodyResult(status="indeterminate", issues=(_issue("CONSTRAINT-SOLVE-SINGULAR", "Constraint rows are linearly dependent; only an aggregate reaction can be reported.", op, actual=reaction_rank, expected=reaction_count),), model_sha256=scenario.model_sha256, reaction_mode="aggregate", reaction_rank=reaction_rank, reaction_constraint_count=reaction_count, evidence={"dof_ids": list(scenario.dof_ids), "constraint_rank": reaction_rank, "constraint_count": reaction_count, "source_map": source_map})
+        if not np.all(np.isfinite(J)):
+            return MultibodyResult(status="validation_failed", issues=(_issue("CONSTRAINT-MATRIX-INVALID", "The constraint Jacobian contains nonfinite values.", op),), model_sha256=scenario.model_sha256, evidence={"source_map": source_map})
+        initial_residual = J @ q - np.array([constraint.target for constraint, _ in constraint_rows], dtype=float)
+        initial_tolerance = max((constraint.tolerance for constraint, _ in constraint_rows), default=1e-8)
+        if float(np.max(np.abs(initial_residual))) > initial_tolerance:
+            return MultibodyResult(status="validation_failed", issues=(_issue("INITIAL-CONSTRAINT-VIOLATION", "Initial generalized positions do not satisfy the declared constraints.", op, actual=float(np.max(np.abs(initial_residual))), expected=initial_tolerance),), model_sha256=scenario.model_sha256, reaction_rank=reaction_rank, reaction_constraint_count=reaction_count, evidence={"initial_residual": initial_residual.tolist(), "source_map": source_map})
     times = np.arange(0.0, scenario.duration_s + scenario.sample_period_s * 0.5, scenario.sample_period_s)
     samples: list[MultibodySample] = []
+    contact_events: list[Any] = []
     max_residual = 0.0
     reaction_records: dict[str, float] = {}
+    work_j = 0.0
+    controller_violations: list[str] = []
     for time_s in times:
         force = np.asarray(scenario.force_vector, dtype=float) - C @ v - K @ q
+        for controller in scenario.controllers:
+            limits = getattr(controller, "dof_limits", {})
+            for dof, limit in limits.items():
+                if dof in key_to_index and abs(float(force[key_to_index[dof]])) > float(limit):
+                    controller_violations.append(dof)
+            stop_time = getattr(controller, "emergency_stop_time_s", None)
+            if stop_time is not None and float(time_s) >= float(stop_time):
+                for dof in limits:
+                    if dof in key_to_index:
+                        force[key_to_index[dof]] = 0.0
+        brake = scenario.brake_policy
+        if brake is not None and float(time_s) >= float(getattr(brake, "trigger_time_s", math.inf)) + float(getattr(brake, "delay_s", 0.0)):
+            for dof, limit in getattr(brake, "braking_limits", {}).items():
+                if dof in key_to_index and abs(v[key_to_index[dof]]) > 1e-12:
+                    force[key_to_index[dof]] -= math.copysign(float(limit), v[key_to_index[dof]])
+        for contact in scenario.contacts:
+            if not isinstance(contact, ContactInterface):
+                return MultibodyResult(status="validation_failed", issues=(_issue("CONTACT-INVALID", "Scenario contacts must contain ContactInterface values.", op),), model_sha256=scenario.model_sha256)
+            coefficients = getattr(contact, "dof_coefficients", {})
+            if not coefficients:
+                continue
+            row = np.zeros(dimension, dtype=float)
+            for dof, coefficient in coefficients.items():
+                if dof not in key_to_index:
+                    return MultibodyResult(status="validation_failed", issues=(_issue("CONTACT-REFERENCE-MISSING", "Contact references an unknown generalized DOF.", op, (contact.contact_id, str(dof))),), model_sha256=scenario.model_sha256)
+                row[key_to_index[dof]] = float(coefficient)
+            gap = float(contact.gap_m + row @ q)
+            normal_velocity = float(row @ v)
+            penetration = max(0.0, -gap)
+            normal_force = max(0.0, float(contact.normal_stiffness_n_m or 0.0) * penetration - float(contact.normal_damping_n_s_m) * normal_velocity)
+            force += row * normal_force
+            tangent_force_vector = np.zeros(3, dtype=float)
+            for tangent_row_map in getattr(contact, "tangential_coefficients", ()):
+                tangent_row = np.zeros(dimension, dtype=float)
+                for dof, coefficient in tangent_row_map.items():
+                    if dof not in key_to_index:
+                        return MultibodyResult(status="validation_failed", issues=(_issue("CONTACT-REFERENCE-MISSING", "Contact tangent references an unknown generalized DOF.", op, (contact.contact_id, str(dof))),), model_sha256=scenario.model_sha256)
+                    tangent_row[key_to_index[dof]] = float(coefficient)
+                tangent_velocity = float(tangent_row @ v)
+                if abs(tangent_velocity) > 1e-12 and normal_force > 0:
+                    tangent_force = -float(contact.friction_coefficient) * normal_force * math.copysign(1.0, tangent_velocity)
+                    force += tangent_row * tangent_force
+                    if len(tangent_force_vector) > 0:
+                        tangent_force_vector[0] += tangent_force
+            contact_events.append(ContactEvent(time_s=float(time_s), contact_id=contact.contact_id, state="contact" if penetration > 0 else "separated", normal_force_n=normal_force, tangential_force_n=tuple(float(value) for value in tangent_force_vector), penetration_m=penetration, normal=contact.normal, contact_point_m=contact.contact_point_m))
+        if controller_violations:
+            return MultibodyResult(status="failed", issues=(_issue("ACTUATOR-LIMIT-EXCEEDED", "A declared controller force limit was exceeded.", op, actual=sorted(set(controller_violations)), expected="controller limit"),), model_sha256=scenario.model_sha256, scenario_id=scenario.scenario_id, reaction_rank=reaction_rank, reaction_constraint_count=reaction_count, evidence={"source_map": source_map})
         if constraint_rows:
-            J = np.vstack([row for _, row in constraint_rows])
             rhs_constraint = np.array([constraint.acceleration_target for constraint, _ in constraint_rows], dtype=float)
             kkt = np.block([[M, -J.T], [J, np.zeros((len(constraint_rows), len(constraint_rows)))]])
             rhs = np.concatenate((force, rhs_constraint))
@@ -433,12 +541,14 @@ def solve_multibody_dynamics(*, scenario: RigidDynamicsScenario, reaction_reques
                 a = np.linalg.solve(M, force)
             except np.linalg.LinAlgError as exc:
                 return MultibodyResult(status="indeterminate", issues=(_issue("DYNAMICS-SOLVE-FAILED", str(exc), op),), model_sha256=scenario.model_sha256)
-        samples.append(MultibodySample(time_s=float(time_s), positions=dict(zip(scenario.dof_ids, q)), velocities=dict(zip(scenario.dof_ids, v)), accelerations=dict(zip(scenario.dof_ids, a)), generalized_forces=dict(zip(scenario.dof_ids, scenario.force_vector)), constraint_reactions=dict(reaction_records)))
+        samples.append(MultibodySample(time_s=float(time_s), positions=dict(zip(scenario.dof_ids, q)), velocities=dict(zip(scenario.dof_ids, v)), accelerations=dict(zip(scenario.dof_ids, a)), generalized_forces=dict(zip(scenario.dof_ids, force)), constraint_reactions=dict(reaction_records)))
+        if len(samples) > 1:
+            work_j += float(np.dot(force, v)) * scenario.sample_period_s
         v = v + scenario.sample_period_s * a
         q = q + scenario.sample_period_s * v
     status = "completed" if max_residual <= max((constraint.tolerance for constraint, _ in constraint_rows), default=1e-8) else "indeterminate"
     issues = () if status == "completed" else (_issue("CONSTRAINT-RESIDUAL-EXCEEDED", "Constraint residual exceeded its declared tolerance.", op, actual=max_residual),)
-    return MultibodyResult(status=status, issues=issues, model_sha256=scenario.model_sha256, scenario_id=scenario.scenario_id, samples=tuple(samples), reaction_mode=reaction_request.mode if reaction_request else "identifiable", constraint_residual_max=max_residual, evidence={"backend": "kincheck-rigid-generalized-reference", "dof_ids": list(scenario.dof_ids), "fea_dependency": False})
+    return MultibodyResult(status=status, issues=issues, model_sha256=scenario.model_sha256, scenario_id=scenario.scenario_id, samples=tuple(samples), reaction_mode=reaction_request.mode if reaction_request else "identifiable", constraint_residual_max=max_residual, energy_residual_j=work_j, reaction_rank=reaction_rank, reaction_constraint_count=reaction_count, contact_events=tuple(contact_events), evidence={"backend": "kincheck-rigid-generalized-reference", "dof_ids": list(scenario.dof_ids), "fea_dependency": False, "constraint_rank": reaction_rank, "constraint_count": reaction_count, "source_map": source_map, "contact_event_count": len(contact_events), "controller_count": len(scenario.controllers), "energy": {"work_j": work_j, "integration": "sampled-generalized-power"}})
 
 
 def run_dynamics_cases(*, matrix: DynamicsScenarioMatrix) -> DynamicsScenarioSuite:
@@ -500,6 +610,12 @@ class ContactInterface:
     contact_id: str
     normal: tuple[float, float, float]
     gap_m: float
+    body_a: str = ""
+    body_b: str = ""
+    contact_point_m: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    coordinate_frame: str = "world"
+    dof_coefficients: Mapping[str, float] = field(default_factory=dict)
+    tangential_coefficients: tuple[Mapping[str, float], ...] = ()
     friction_coefficient: float = 0.0
     normal_stiffness_n_m: float | None = None
     normal_damping_n_s_m: float = 0.0
@@ -514,6 +630,15 @@ class ContactInterface:
         if abs(norm - 1.0) > 1e-9:
             fail("CONTACT-INVALID", "normal must be unit length.", operation="ContactInterface")
         object.__setattr__(self, "normal", tuple(normal))
+        point = tuple(_finite(value, "contact_point_m", "ContactInterface") for value in self.contact_point_m)
+        if len(point) != 3 or not self.coordinate_frame:
+            fail("CONTACT-INVALID", "contact_point_m must be a 3-vector and coordinate_frame is required.", operation="ContactInterface")
+        object.__setattr__(self, "contact_point_m", point)
+        object.__setattr__(self, "dof_coefficients", {str(key): _finite(value, "dof_coefficient", "ContactInterface") for key, value in self.dof_coefficients.items()})
+        tangent_maps = tuple({str(key): _finite(value, "tangent_coefficient", "ContactInterface") for key, value in mapping.items()} for mapping in self.tangential_coefficients)
+        if len(tangent_maps) > 2:
+            fail("CONTACT-INVALID", "At most two tangential coefficient rows are supported.", operation="ContactInterface")
+        object.__setattr__(self, "tangential_coefficients", tangent_maps)
         gap = _finite(self.gap_m, "gap_m", "ContactInterface")
         mu = _finite(self.friction_coefficient, "friction_coefficient", "ContactInterface")
         damping = _finite(self.normal_damping_n_s_m, "normal_damping_n_s_m", "ContactInterface")
@@ -530,6 +655,13 @@ class ContactInterface:
         if self.restitution is not None and not 0 <= _finite(self.restitution, "restitution", "ContactInterface") <= 1:
             fail("CONTACT-INVALID", "restitution must lie in [0, 1].", operation="ContactInterface")
 
+    def to_dict(self) -> dict[str, Any]:
+        return plain(self)
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "ContactInterface":
+        return cls(**value)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ContactEvent:
@@ -540,6 +672,8 @@ class ContactEvent:
     tangential_force_n: tuple[float, float, float]
     penetration_m: float
     normal_impulse_ns: float = 0.0
+    normal: tuple[float, float, float] = (0.0, 0.0, 1.0)
+    contact_point_m: tuple[float, float, float] = (0.0, 0.0, 0.0)
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "time_s", _finite(self.time_s, "time_s", "ContactEvent"))
@@ -550,6 +684,12 @@ class ContactEvent:
         if len(tangent) != 3:
             fail("CONTACT-INVALID", "tangential_force_n must be a 3-vector.", operation="ContactEvent")
         object.__setattr__(self, "tangential_force_n", tangent)
+        normal = tuple(_finite(value, "normal", "ContactEvent") for value in self.normal)
+        point = tuple(_finite(value, "contact_point_m", "ContactEvent") for value in self.contact_point_m)
+        if len(normal) != 3 or len(point) != 3:
+            fail("CONTACT-INVALID", "normal and contact_point_m must be 3-vectors.", operation="ContactEvent")
+        object.__setattr__(self, "normal", normal)
+        object.__setattr__(self, "contact_point_m", point)
 
     def to_dict(self) -> dict[str, Any]:
         return plain(self)
@@ -618,7 +758,7 @@ def solve_contact_dynamics(*, interface: ContactInterface, times_s: Sequence[flo
         if index:
             dt = times[index] - times[index - 1]
             cumulative_impulse += 0.5 * (forces[index - 1] + normal_force) * dt
-        events.append(ContactEvent(time_s=time_s, contact_id=interface.contact_id, state=state, normal_force_n=normal_force, tangential_force_n=tangent_force, penetration_m=penetration, normal_impulse_ns=cumulative_impulse))
+        events.append(ContactEvent(time_s=time_s, contact_id=interface.contact_id, state=state, normal_force_n=normal_force, tangential_force_n=tangent_force, penetration_m=penetration, normal=interface.normal, contact_point_m=interface.contact_point_m, normal_impulse_ns=cumulative_impulse))
     integral = float(np.trapezoid(forces, times) if hasattr(np, "trapezoid") else np.trapz(forces, times))
     tangential_work = float(sum(np.linalg.norm(force) * np.linalg.norm(velocity) for force, velocity in zip(tangent_forces, tangential_velocities)) * (times[-1] - times[0]) / len(times))
     damping_work = float(sum(max(0.0, interface.normal_damping_n_s_m * velocity * velocity) for velocity in velocities) * (times[-1] - times[0]) / len(times))
@@ -838,6 +978,31 @@ class WrenchProfile:
     def to_dict(self) -> dict[str, Any]:
         return plain(self)
 
+    def at(self, time_s: float) -> WrenchSample:
+        """Return a deterministic interpolated wrench sample at ``time_s``."""
+        time = _finite(time_s, "time_s", "WrenchProfile")
+        if not self.samples:
+            fail("WRENCH-PROFILE-INVALID", "Cannot sample an empty wrench profile.", operation="WrenchProfile")
+        if time <= self.samples[0].time_s:
+            return self.samples[0]
+        if time >= self.samples[-1].time_s:
+            return self.samples[-1]
+        for left, right in zip(self.samples, self.samples[1:]):
+            if left.time_s <= time <= right.time_s:
+                if self.interpolation == "zoh":
+                    return left
+                weight = (time - left.time_s) / (right.time_s - left.time_s)
+                blend = lambda a, b: a + weight * (b - a)
+                return WrenchSample(
+                    time_s=time,
+                    force_n=tuple(blend(a, b) for a, b in zip(left.force_n, right.force_n)),
+                    moment_nm=tuple(blend(a, b) for a, b in zip(left.moment_nm, right.moment_nm)),
+                    point_m=tuple(blend(a, b) for a, b in zip(left.point_m, right.point_m)),
+                    frame_id=left.frame_id,
+                    source=f"{self.source}:interpolated",
+                )
+        return self.samples[-1]
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class RandomExcitation:
@@ -860,6 +1025,18 @@ class RandomExcitation:
         object.__setattr__(self, "sample_rate_hz", sample_rate)
         object.__setattr__(self, "bandwidth_hz", bandwidth)
         object.__setattr__(self, "samples", tuple(_finite(value, "sample", op) for value in self.samples))
+
+    @classmethod
+    def generate(cls, *, excitation_id: str, seed: int, duration_s: float, sample_rate_hz: float, bandwidth_hz: float, scale: float = 1.0) -> "RandomExcitation":
+        op = "RandomExcitation.generate"
+        duration = _finite(duration_s, "duration_s", op)
+        scale_value = _finite(scale, "scale", op)
+        if duration <= 0 or scale_value < 0:
+            fail("EXCITATION-INVALID", "duration_s must be positive and scale cannot be negative.", operation=op)
+        count = max(1, int(math.floor(duration * sample_rate_hz)) + 1)
+        rng = np.random.default_rng(int(seed))
+        samples = tuple(float(value) for value in rng.normal(0.0, scale_value, count))
+        return cls(excitation_id=excitation_id, seed=int(seed), sample_rate_hz=sample_rate_hz, bandwidth_hz=bandwidth_hz, samples=samples, algorithm="numpy.default_rng.normal/1", source="generated")
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -955,8 +1132,11 @@ class DynamicsLoadHistory:
 
 
 def history_from_multibody_result(*, result: MultibodyResult, history_id: str = "dynamics-history") -> DynamicsLoadHistory:
-    records = tuple({"positions": sample.positions, "velocities": sample.velocities, "accelerations": sample.accelerations, "generalized_forces": sample.generalized_forces, "constraint_reactions": sample.constraint_reactions, "source": "solve_multibody_dynamics"} for sample in result.samples)
-    return DynamicsLoadHistory(history_id=history_id, model_sha256=result.model_sha256, scenario_id=result.scenario_id, times_s=tuple(sample.time_s for sample in result.samples), records=records, status=result.status, issues=result.issues, source_operations=(result.operation,), evidence={"result_operation": result.operation, "record_scope": "multibody_state_and_reactions"})
+    events_by_time: dict[float, list[dict[str, Any]]] = {}
+    for event in result.contact_events:
+        events_by_time.setdefault(float(event.time_s), []).append(event.to_dict() if hasattr(event, "to_dict") else dict(event))
+    records = tuple({"positions": sample.positions, "velocities": sample.velocities, "accelerations": sample.accelerations, "generalized_forces": sample.generalized_forces, "constraint_reactions": sample.constraint_reactions, "contact_events": events_by_time.get(float(sample.time_s), []), "source": "solve_multibody_dynamics"} for sample in result.samples)
+    return DynamicsLoadHistory(history_id=history_id, model_sha256=result.model_sha256, scenario_id=result.scenario_id, times_s=tuple(sample.time_s for sample in result.samples), records=records, status=result.status, issues=result.issues, source_operations=(result.operation,), evidence={"result_operation": result.operation, "record_scope": "multibody_state_reactions_and_contact_events", "source_map": result.evidence.get("source_map", {})})
 
 
 def record_dynamics_history(*, result: MultibodyResult | ContactDynamicsResult, history_id: str = "dynamics-history") -> DynamicsLoadHistory:

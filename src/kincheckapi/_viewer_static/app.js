@@ -158,6 +158,8 @@ function updateMetrics() {
 
 const physicsArrows = new THREE.Group();
 scene.add(physicsArrows);
+const dynamicsArrows = new THREE.Group();
+scene.add(dynamicsArrows);
 let physicsPanel;
 let dynamicsPanel;
 function physicsCaseCount() {
@@ -239,6 +241,20 @@ function updateDynamics(time) {
       if (distance < best) { best = distance; index = candidateIndex; }
     });
   }
+  for (const arrow of [...dynamicsArrows.children]) {
+    dynamicsArrows.remove(arrow);
+    arrow.line?.geometry.dispose(); arrow.cone?.geometry.dispose();
+    arrow.line?.material.dispose(); arrow.cone?.material.dispose();
+  }
+  for (const event of history.records[index]?.contact_events || []) {
+    const magnitude = Number(event.normal_force_n || 0);
+    const direction = new THREE.Vector3(...(event.normal || [0, 0, 1]));
+    if (magnitude <= 1e-12 || direction.length() <= 1e-12) continue;
+    const origin = new THREE.Vector3(...(event.contact_point_m || [0, 0, 0]));
+    const arrow = new THREE.ArrowHelper(direction.normalize(), origin,
+      Math.min(0.12, 0.025 + magnitude * 0.0007), 0x7b4bb3, 0.012, 0.006);
+    dynamicsArrows.add(arrow);
+  }
   if (!dynamicsPanel) {
     dynamicsPanel = document.createElement("details");
     dynamicsPanel.style.cssText = "padding:12px;max-height:38vh;overflow:auto;font-size:12px";
@@ -254,6 +270,7 @@ function updateDynamics(time) {
     source_operations: history.source_operations,
     record: history.records[index],
     evidence: history.evidence,
+    contact_event_count: (history.records[index]?.contact_events || []).length,
   }, null, 2);
 }
 

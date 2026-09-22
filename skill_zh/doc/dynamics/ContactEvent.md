@@ -12,6 +12,8 @@ class ContactEvent:
     tangential_force_n: tuple[float, float, float]
     penetration_m: float
     normal_impulse_ns: float
+    normal: tuple[float, float, float]
+    contact_point_m: tuple[float, float, float]
 ```
 
 源码：`src/kincheckapi/dynamics_v07.py`。
@@ -37,6 +39,8 @@ from kincheckapi.dynamics import ContactEvent
 | `tangential_force_n` | `tuple[float, float, float]` | 必填 | `tangential_force_n` 的公开输入或数据字段。 |
 | `penetration_m` | `float` | 必填 | `penetration_m`，单位 m，必须为有限值。 |
 | `normal_impulse_ns` | `float` | `0.0` | `normal_impulse_ns` 的公开输入或数据字段。 |
+| `normal` | `tuple[float, float, float]` | `(0.0, 0.0, 1.0)` | `normal` 的公开输入或数据字段。 |
+| `contact_point_m` | `tuple[float, float, float]` | `(0.0, 0.0, 0.0)` | `contact_point_m`，单位 m，必须为有限值。 |
 
 ## 返回与失败
 

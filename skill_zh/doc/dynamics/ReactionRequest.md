@@ -8,6 +8,7 @@ class ReactionRequest:
     object_ids: tuple[str, ...]
     mode: str
     reference_frame: str
+    require_unique: bool
 ```
 
 源码：`src/kincheckapi/dynamics_v07.py`。
@@ -29,6 +30,7 @@ from kincheckapi.dynamics import ReactionRequest
 | `object_ids` | `tuple[str, ...]` | 必填 | 显式指定的 `object_ids` 集合。 |
 | `mode` | `str` | `'identifiable'` | `mode` 的公开输入或数据字段。 |
 | `reference_frame` | `str` | `'world'` | `reference_frame` 的公开输入或数据字段。 |
+| `require_unique` | `bool` | `True` | `require_unique` 的公开输入或数据字段。 |
 
 ## 返回与失败
 
