@@ -199,6 +199,9 @@ def build_parser() -> argparse.ArgumentParser:
     pack.add_argument("--archive", action="store_true")
     pack.add_argument("--adapters", action="store_true")
     pack.add_argument("--source-root", type=Path, default=None)
+
+    gui = subparsers.add_parser("gui", help="Open the native KinCheck scenario workbench")
+    gui.add_argument("--scenario", type=Path, default=None, help="Open a saved kincheck.gui-scenario JSON document")
     return parser
 
 
@@ -215,6 +218,15 @@ def main(argv: list[str] | None = None) -> int:
             source_root=args.source_root,
         )
         return EXIT_OK
+
+    if args.command == "gui":
+        try:
+            from .gui.app import launch
+            launch(scenario_path=args.scenario)
+            return EXIT_OK
+        except Exception as exc:
+            _emit({"operation": "gui", "status": "capability_failed", "passed": False, "code": "KINCHECK-GUI-LAUNCH-FAILED", "message": str(exc), "error_type": type(exc).__name__}, "json")
+            return EXIT_CAPABILITY_FAILED
 
     try:
         if args.command == "doctor":

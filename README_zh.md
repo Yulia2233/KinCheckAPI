@@ -1,6 +1,6 @@
 # KinCheckAPI
 
-当前发布版本：**0.7.0**。KinCheckAPI 只负责运动学和刚体动力学。结构 FEA、应力、变形、结构振动和疲劳属于独立 FEACheckAPI；v0.6.4–v0.6.6 的历史结构参考模块已从 v0.7 核心移除。
+当前开发版本：**0.8.0**。KinCheckAPI 只负责运动学和刚体动力学。结构 FEA、应力、变形、结构振动和疲劳属于独立 FEACheckAPI；v0.6.4–v0.6.6 的历史结构参考模块已从 v0.7 核心移除。
 
 [English](README.md) | 简体中文
 
@@ -183,6 +183,12 @@ uv run python examples/dynamics_loaded_arm/verification/verify_contact.py exampl
 ```
 
 ## v0.7 刚体动力学链
+
+## v0.8 原生 GUI
+
+运行 `kincheck gui` 可以打开本地原生工况工作台。它编辑带类型的工况 JSON，
+通过同一组公开 API 执行当前支持的刚体分析，显示结构化结果，并导出独立的
+`verify.py` 验证包。GUI 独立于只读 Viewer，也不会暴露 FEACheckAPI 分析。
 
 v0.7 核心线增加多自由度状态、声明线性约束、刚体接触/冲量证据、驱动工况和
 可重放 `DynamicsLoadHistory`。结果保留单位、坐标帧、模型哈希、时间覆盖、
